@@ -186,6 +186,7 @@ export default function App() {
 
         {/* Animated Telegram Action Button */}
         <AnimatedTelegramButton
+          telegramLink={config.telegramLink}
           buttonText={config.buttonText}
           buttonSubtext={config.buttonSubtext}
           secondaryButtonText={config.secondaryButtonText}

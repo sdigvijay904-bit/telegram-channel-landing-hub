@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink } from 'lucide-react';
+import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink, Copy, Check, Info } from 'lucide-react';
 import { AnimationType, ThemeColor } from '../types';
 import { themePresets } from '../utils/themeStyles';
+import { getMetaDirectLink, isMetaInAppBrowser, parseTelegramUrl } from '../utils/telegramHelper';
 
 interface AnimatedTelegramButtonProps {
+  telegramLink?: string;
   buttonText: string;
   buttonSubtext: string;
   secondaryButtonText?: string;
@@ -18,6 +20,7 @@ interface AnimatedTelegramButtonProps {
 }
 
 export function AnimatedTelegramButton({
+  telegramLink = '',
   buttonText,
   buttonSubtext,
   secondaryButtonText,
@@ -30,6 +33,21 @@ export function AnimatedTelegramButton({
   totalClicks
 }: AnimatedTelegramButtonProps) {
   const theme = themePresets[themeColor] || themePresets['red-emerald'];
+  const [copied, setCopied] = useState(false);
+
+  const inMeta = isMetaInAppBrowser();
+  const directHref = getMetaDirectLink(telegramLink);
+  const parsed = parseTelegramUrl(telegramLink);
+
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (parsed.formattedHttps) {
+      navigator.clipboard.writeText(parsed.formattedHttps);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   // Button Animation Variants
   const getAnimationProps = () => {
@@ -100,12 +118,18 @@ export function AnimatedTelegramButton({
         <span className="absolute -inset-1 rounded-2xl bg-sky-400/50 blur-md animate-pulse opacity-80 pointer-events-none" />
         <span className="absolute -inset-2 rounded-2xl bg-cyan-400/20 animate-ping opacity-40 pointer-events-none" />
 
-        <motion.button
-          onClick={onClick}
+        <motion.a
+          href={directHref}
+          target="_top"
+          rel="noopener noreferrer"
+          onClick={(e) => {
+            // Trigger logging & JS fallbacks
+            onClick();
+          }}
           {...animProps}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.96 }}
-          className="relative w-full overflow-hidden rounded-2xl py-3.5 sm:py-4 px-4 sm:px-6 bg-gradient-to-r from-[#0088cc] via-[#2AABEE] to-[#0088cc] hover:from-[#0077b5] hover:to-[#229ED9] text-white border-2 border-sky-200/60 font-black tracking-wide shadow-[0_10px_30px_rgba(0,136,204,0.7)] transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95"
+          className="relative w-full overflow-hidden rounded-2xl py-3.5 sm:py-4 px-4 sm:px-6 bg-gradient-to-r from-[#0088cc] via-[#2AABEE] to-[#0088cc] hover:from-[#0077b5] hover:to-[#229ED9] text-white border-2 border-sky-200/60 font-black tracking-wide shadow-[0_10px_30px_rgba(0,136,204,0.7)] transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95 no-underline block"
         >
           {/* Shimmer Light Beam Effect */}
           <motion.div
@@ -133,8 +157,44 @@ export function AnimatedTelegramButton({
               {buttonText || "JOIN TELEGRAM CHANNEL NOW"}
             </span>
           </div>
-        </motion.button>
+        </motion.a>
       </div>
+
+      {/* Special Helper Banner for Instagram / Facebook In-App Browsers */}
+      {inMeta && (
+        <motion.div
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-2.5 rounded-xl bg-slate-900/90 border border-sky-500/30 text-left space-y-1.5 shadow-inner"
+        >
+          <div className="flex items-center justify-between text-xs text-sky-300 font-bold">
+            <span className="flex items-center gap-1">
+              <Info className="w-3.5 h-3.5 text-amber-400" />
+              <span>Instagram Browser Notice:</span>
+            </span>
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              className="px-2 py-1 rounded bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-500/40 text-[11px] font-bold flex items-center gap-1 transition"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  <span className="text-emerald-300">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3 h-3" />
+                  <span>Copy Link</span>
+                </>
+              )}
+            </button>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-tight">
+            Agar Telegram App na khule, toh upar <strong className="text-amber-300">(⋮) 3 Dots</strong> par click karke <strong className="text-sky-300">'Open in External Browser / Chrome'</strong> select karein.
+          </p>
+        </motion.div>
+      )}
 
       {/* Secondary WhatsApp Button if enabled */}
       {showWhatsapp && (
@@ -159,3 +219,4 @@ export function AnimatedTelegramButton({
     </div>
   );
 }
+

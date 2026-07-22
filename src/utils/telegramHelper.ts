@@ -94,6 +94,29 @@ export function isAndroid(): boolean {
   return /Android/i.test(navigator.userAgent || '');
 }
 
+/**
+ * Returns the best direct `href` attribute for HTML `<a>` tags in Meta Ads (Instagram / Facebook) in-app browsers
+ */
+export function getMetaDirectLink(rawUrl: string): string {
+  const parsed = parseTelegramUrl(rawUrl);
+  if (!parsed.formattedHttps) return '#';
+
+  const inMeta = isMetaInAppBrowser();
+  const onAndroid = isAndroid();
+
+  if (inMeta && onAndroid) {
+    // Android Intent scheme forces Instagram WebView to release navigation to Android OS / Telegram
+    return parsed.androidIntent;
+  }
+
+  if (inMeta && !onAndroid) {
+    // iOS Meta In-App Browser handles tg:// scheme deep link directly
+    return parsed.deepLinkTg || parsed.formattedHttps;
+  }
+
+  return parsed.formattedHttps;
+}
+
 export function openTelegramInApp(rawUrl: string): void {
   const parsed = parseTelegramUrl(rawUrl);
   if (!parsed.formattedHttps) return;
@@ -101,36 +124,31 @@ export function openTelegramInApp(rawUrl: string): void {
   const inMeta = isMetaInAppBrowser();
   const onAndroid = isAndroid();
 
-  // CRITICAL FIX FOR INSTAGRAM & FACEBOOK META ADS WEBVIEW:
-  // 1. Never use `window.open(..., '_blank')` in Meta webview as pop-ups are silently blocked.
-  // 2. On Android Meta Webview, `intent://` protocol or `tg://` forces the native Telegram app to open.
-  // 3. On iOS Meta Webview, `tg://` deep link forces iOS to trigger "Open in Telegram?".
-  
   if (inMeta) {
     if (onAndroid) {
-      // Try Android Intent scheme first - opens Telegram app directly
+      // 1. First attempt Android Intent
       window.location.href = parsed.androidIntent;
-      
-      // Secondary fallback after 300ms
+
+      // 2. Secondary fallback after 200ms
       setTimeout(() => {
         window.location.href = parsed.deepLinkTg;
-      }, 300);
+      }, 200);
 
-      // Tertiary fallback to HTTPS
+      // 3. Tertiary HTTPS fallback
       setTimeout(() => {
         window.location.href = parsed.formattedHttps;
-      }, 800);
+      }, 600);
     } else {
       // iOS Meta Webview
       window.location.href = parsed.deepLinkTg;
 
       setTimeout(() => {
         window.location.href = parsed.formattedHttps;
-      }, 400);
+      }, 300);
     }
   } else {
-    // Standard Mobile or Desktop Browser:
-    // Direct location redirect ensures instant 1-click opening
+    // Standard Mobile or Desktop Browser
     window.location.href = parsed.formattedHttps;
   }
 }
+
