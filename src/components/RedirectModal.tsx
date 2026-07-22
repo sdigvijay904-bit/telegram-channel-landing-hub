@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, CheckCircle, ExternalLink, Loader2, ShieldCheck, X } from 'lucide-react';
+import { Send, CheckCircle, ExternalLink, Loader2, ShieldCheck, X, Copy, Check } from 'lucide-react';
+import { openTelegramInApp, parseTelegramUrl, isMetaInAppBrowser } from '../utils/telegramHelper';
 
 interface RedirectModalProps {
   isOpen: boolean;
@@ -10,13 +11,18 @@ interface RedirectModalProps {
 }
 
 export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: RedirectModalProps) {
-  const [countdown, setCountdown] = useState(2);
+  const [countdown, setCountdown] = useState(1);
   const [isRedirected, setIsRedirected] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const inMeta = isMetaInAppBrowser();
+  const parsed = parseTelegramUrl(telegramLink);
 
   useEffect(() => {
     if (!isOpen) {
-      setCountdown(2);
+      setCountdown(1);
       setIsRedirected(false);
+      setCopied(false);
       return;
     }
 
@@ -29,16 +35,23 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
         }
         return prev - 1;
       });
-    }, 800);
+    }, 600);
 
     return () => clearInterval(timer);
-  }, [isOpen]);
+  }, [isOpen, telegramLink]);
 
   const triggerRedirect = () => {
     setIsRedirected(true);
-    // Open telegram link
     if (telegramLink) {
-      window.open(telegramLink, '_blank', 'noopener,noreferrer');
+      openTelegramInApp(telegramLink);
+    }
+  };
+
+  const handleCopy = () => {
+    if (parsed.formattedHttps) {
+      navigator.clipboard.writeText(parsed.formattedHttps);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -46,7 +59,7 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -73,51 +86,77 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
             Opening Telegram App...
           </h3>
 
-          <p className="text-xs text-slate-300 font-medium mb-4">
+          <p className="text-xs text-slate-300 font-medium mb-3">
             Connecting you to <span className="text-amber-400 font-bold">{channelTitle || "Telegram Channel"}</span>
           </p>
 
+          {inMeta && (
+            <div className="mb-3 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-300 font-semibold flex items-center justify-center gap-1.5">
+              <span>⚡ Instagram/Facebook In-App Browser Detected</span>
+            </div>
+          )}
+
           {/* Countdown & Spinner status */}
-          <div className="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700 mb-5 flex items-center justify-center space-x-2">
+          <div className="bg-slate-800/80 rounded-xl p-3 border border-slate-700 mb-4 flex items-center justify-center space-x-2">
             {!isRedirected ? (
               <>
-                <Loader2 className="w-5 h-5 text-sky-400 animate-spin" />
+                <Loader2 className="w-4 h-4 text-sky-400 animate-spin" />
                 <span className="text-xs font-semibold text-sky-200">
                   Redirecting in <strong className="text-amber-400 text-sm font-black">{countdown}s</strong>...
                 </span>
               </>
             ) : (
               <>
-                <CheckCircle className="w-5 h-5 text-emerald-400" />
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
                 <span className="text-xs font-semibold text-emerald-300">
-                  Telegram Opened!
+                  Telegram Launch Triggered!
                 </span>
               </>
             )}
           </div>
 
-          {/* Direct Fallback Button */}
-          <motion.a
-            href={telegramLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => {
-              setIsRedirected(true);
-            }}
-            className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-sm shadow-lg flex items-center justify-center space-x-2"
-          >
-            <span>CLICK HERE IF NOT OPENING</span>
-            <ExternalLink className="w-4 h-4" />
-          </motion.a>
+          {/* Action Buttons */}
+          <div className="space-y-2">
+            <motion.button
+              type="button"
+              onClick={() => {
+                triggerRedirect();
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-sky-500/30 flex items-center justify-center space-x-2 cursor-pointer"
+            >
+              <Send className="w-4 h-4 fill-current" />
+              <span>OPEN IN TELEGRAM APP NOW</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </motion.button>
+
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold border border-slate-700 flex items-center justify-center space-x-2 transition"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-emerald-400" />
+                  <span className="text-emerald-400">Link Copied! Paste in Telegram Search</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4 text-slate-400" />
+                  <span>Copy Link to Open Manually</span>
+                </>
+              )}
+            </button>
+          </div>
 
           <div className="mt-4 flex items-center justify-center text-[11px] text-slate-400 gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
-            <span>100% Safe & Instant Telegram Redirect</span>
+            <span>Direct Deep-Link Integration for Meta Ads</span>
           </div>
         </motion.div>
       </div>
     </AnimatePresence>
   );
 }
+

@@ -7,6 +7,7 @@ import { AdminPanelModal } from './components/AdminPanelModal';
 import { TrustFooter } from './components/TrustFooter';
 import { AppConfig, AnimationType, ThemeColor } from './types';
 import { themePresets } from './utils/themeStyles';
+import { openTelegramInApp } from './utils/telegramHelper';
 import { Settings, ExternalLink, ShieldCheck, Sparkles } from 'lucide-react';
 
 const defaultConfig: AppConfig = {
@@ -89,19 +90,9 @@ export default function App() {
 
   // Handle Telegram Button Click (Direct Telegram Join)
   const handleTelegramClick = () => {
-    let link = config.telegramLink ? config.telegramLink.trim() : '';
+    const link = config.telegramLink ? config.telegramLink.trim() : '';
     if (link) {
-      // Auto-format handle or URL if missing protocol
-      if (!link.startsWith('http://') && !link.startsWith('https://')) {
-        if (link.startsWith('@')) {
-          link = `https://t.me/${link.substring(1)}`;
-        } else if (link.startsWith('t.me/') || link.startsWith('telegram.me/')) {
-          link = `https://${link}`;
-        } else {
-          link = `https://t.me/${link}`;
-        }
-      }
-      window.open(link, '_blank', 'noopener,noreferrer') || (window.location.href = link);
+      openTelegramInApp(link);
     }
 
     // Record click on server
