@@ -120,11 +120,13 @@ export function AnimatedTelegramButton({
 
         <motion.a
           href={directHref}
-          target="_top"
+          target="_self"
           rel="noopener noreferrer"
           onClick={(e) => {
-            // Trigger logging & JS fallbacks
-            onClick();
+            // Log click hit to backend without interfering with direct href navigation
+            try {
+              fetch('/api/click', { method: 'POST' }).catch(() => {});
+            } catch (err) {}
           }}
           {...animProps}
           whileHover={{ scale: 1.02 }}
