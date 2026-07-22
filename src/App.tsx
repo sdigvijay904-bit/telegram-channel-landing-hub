@@ -10,7 +10,7 @@ import { themePresets } from './utils/themeStyles';
 import { Settings, ExternalLink, ShieldCheck, Sparkles } from 'lucide-react';
 
 const defaultConfig: AppConfig = {
-  telegramLink: "https://t.me/example_channel",
+  telegramLink: "",
   title: "Money Hub",
   subtitle: "Join India's Most Trusted Telegram Channel for Daily Earnings",
   badges: [
@@ -67,7 +67,11 @@ export default function App() {
               if (data.config.themeColor === 'red-emerald') {
                 data.config.themeColor = 'frosted-glass';
               }
-              const updated = { ...prev, ...data.config };
+              const serverLink = data.config.telegramLink;
+              const isServerLinkDefault = !serverLink || serverLink === 'https://t.me/example_channel';
+              const activeLink = isServerLinkDefault ? (prev.telegramLink || '') : serverLink;
+
+              const updated = { ...prev, ...data.config, telegramLink: activeLink };
               localStorage.setItem('tg_app_config', JSON.stringify(updated));
               return updated;
             });

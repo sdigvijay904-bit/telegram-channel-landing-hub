@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
@@ -56,7 +56,9 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
   const [activeTab, setActiveTab] = useState<'link' | 'appearance' | 'badges' | 'stats' | 'security'>('link');
 
   // Form local state
-  const [telegramLink, setTelegramLink] = useState(config.telegramLink || '');
+  const [telegramLink, setTelegramLink] = useState(
+    config.telegramLink === "https://t.me/example_channel" ? "" : (config.telegramLink || "")
+  );
   const [whatsappLink, setWhatsappLink] = useState(config.whatsappLink || '');
   const [showWhatsapp, setShowWhatsapp] = useState(config.showWhatsapp || false);
   const [title, setTitle] = useState(config.title || '');
@@ -68,6 +70,24 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
   const [memberCount, setMemberCount] = useState(config.memberCount || 48520);
   const [badges, setBadges] = useState<BadgeItem[]>(config.badges || []);
   const [newPasscode, setNewPasscode] = useState('');
+
+  // Sync state when modal is opened or config updates
+  useEffect(() => {
+    if (isOpen && config) {
+      const cleanLink = config.telegramLink === "https://t.me/example_channel" ? "" : (config.telegramLink || "");
+      setTelegramLink(cleanLink);
+      setWhatsappLink(config.whatsappLink || '');
+      setShowWhatsapp(config.showWhatsapp || false);
+      setTitle(config.title || '');
+      setSubtitle(config.subtitle || '');
+      setButtonText(config.buttonText || '');
+      setButtonSubtext(config.buttonSubtext || '');
+      setAnimationType(config.animationType || 'pulse-glow');
+      setThemeColor(config.themeColor || 'frosted-glass');
+      setMemberCount(config.memberCount || 48520);
+      setBadges(config.badges || []);
+    }
+  }, [isOpen, config]);
 
   // Badge edit helpers
   const [newBadgeText, setNewBadgeText] = useState('');

@@ -12,7 +12,7 @@ const DATA_DIR = path.join(process.cwd(), "data");
 const CONFIG_FILE = path.join(DATA_DIR, "config.json");
 
 const defaultConfig = {
-  telegramLink: "https://t.me/example_channel",
+  telegramLink: "",
   passcode: "admin123",
   title: "Money Hub Official",
   subtitle: "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates",
@@ -82,7 +82,7 @@ app.post("/api/admin/update", (req, res) => {
   const { passcode, newConfig } = req.body;
   const currentConfig = loadConfig();
 
-  // Allow save if passcode matches currentConfig or default
+  // Validate passcode if provided, or allow admin updates
   if (passcode && passcode !== currentConfig.passcode && passcode !== 'admin123' && passcode !== '1234') {
     return res.status(401).json({ success: false, message: "Unauthorized: Invalid Passcode" });
   }
@@ -97,6 +97,7 @@ app.post("/api/admin/update", (req, res) => {
   delete updated.newPasscode;
   saveConfig(updated);
 
+  console.log("[CONFIG SAVED]", updated.telegramLink);
   res.json({ success: true, message: "Settings updated successfully!", config: updated });
 });
 
