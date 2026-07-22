@@ -1,0 +1,6 @@
+{
+  "name": "Telegram Channel Landing Hub",
+  "description": "High-converting animated Telegram landing page with admin panel to update channel links and features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
