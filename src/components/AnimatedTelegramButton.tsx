@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
-import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink, Copy, Check, Info } from 'lucide-react';
+import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink } from 'lucide-react';
 import { AnimationType, ThemeColor } from '../types';
 import { themePresets } from '../utils/themeStyles';
-import { getMetaDirectLink, isMetaInAppBrowser, parseTelegramUrl } from '../utils/telegramHelper';
+import { getMetaDirectLink } from '../utils/telegramHelper';
 
 interface AnimatedTelegramButtonProps {
   telegramLink?: string;
@@ -33,21 +33,7 @@ export function AnimatedTelegramButton({
   totalClicks
 }: AnimatedTelegramButtonProps) {
   const theme = themePresets[themeColor] || themePresets['red-emerald'];
-  const [copied, setCopied] = useState(false);
-
-  const inMeta = isMetaInAppBrowser();
   const directHref = getMetaDirectLink(telegramLink);
-  const parsed = parseTelegramUrl(telegramLink);
-
-  const handleCopyLink = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (parsed.formattedHttps) {
-      navigator.clipboard.writeText(parsed.formattedHttps);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
 
   // Button Animation Variants
   const getAnimationProps = () => {
@@ -161,42 +147,6 @@ export function AnimatedTelegramButton({
           </div>
         </motion.a>
       </div>
-
-      {/* Special Helper Banner for Instagram / Facebook In-App Browsers */}
-      {inMeta && (
-        <motion.div
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="p-2.5 rounded-xl bg-slate-900/90 border border-sky-500/30 text-left space-y-1.5 shadow-inner"
-        >
-          <div className="flex items-center justify-between text-xs text-sky-300 font-bold">
-            <span className="flex items-center gap-1">
-              <Info className="w-3.5 h-3.5 text-amber-400" />
-              <span>Instagram Browser Notice:</span>
-            </span>
-            <button
-              type="button"
-              onClick={handleCopyLink}
-              className="px-2 py-1 rounded bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-500/40 text-[11px] font-bold flex items-center gap-1 transition"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-3 h-3 text-emerald-400" />
-                  <span className="text-emerald-300">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3 h-3" />
-                  <span>Copy Link</span>
-                </>
-              )}
-            </button>
-          </div>
-          <p className="text-[11px] text-slate-300 leading-tight">
-            Agar Telegram App na khule, toh upar <strong className="text-amber-300">(⋮) 3 Dots</strong> par click karke <strong className="text-sky-300">'Open in External Browser / Chrome'</strong> select karein.
-          </p>
-        </motion.div>
-      )}
 
       {/* Secondary WhatsApp Button if enabled */}
       {showWhatsapp && (
