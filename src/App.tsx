@@ -69,8 +69,21 @@ export default function App() {
                 data.config.themeColor = 'frosted-glass';
               }
               const serverLink = data.config.telegramLink;
-              const isServerLinkDefault = !serverLink || serverLink === 'https://t.me/example_channel';
-              const activeLink = isServerLinkDefault ? (prev.telegramLink || '') : serverLink;
+              
+              // Determine active link: preference to valid server link, or fallback to local
+              let activeLink = serverLink || '';
+              if (!serverLink && prev.telegramLink && prev.telegramLink !== 'https://t.me/example_channel') {
+                activeLink = prev.telegramLink;
+                // Background auto-sync local link to server so all other devices see it
+                fetch('/api/admin/update', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    passcode: 'admin123',
+                    newConfig: { telegramLink: prev.telegramLink }
+                  })
+                }).catch(() => {});
+              }
 
               const updated = { ...prev, ...data.config, telegramLink: activeLink };
               localStorage.setItem('tg_app_config', JSON.stringify(updated));

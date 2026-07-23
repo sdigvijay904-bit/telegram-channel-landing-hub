@@ -111,13 +111,10 @@ export function AnimatedTelegramButton({
           onClick={(e) => {
             if (!telegramLink || directHref === '#') {
               e.preventDefault();
-              alert('Kripya Admin Panel (Ctrl+Shift+A ya footer settings icon) me apna Telegram Channel Link daal kar Save karein!');
+              if (onClick) onClick();
               return;
             }
-            // Log click hit to backend without interfering with direct href navigation
-            try {
-              fetch('/api/click', { method: 'POST' }).catch(() => {});
-            } catch (err) {}
+            if (onClick) onClick();
           }}
           {...animProps}
           whileHover={{ scale: 1.02 }}
