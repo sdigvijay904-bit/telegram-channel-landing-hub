@@ -11,27 +11,18 @@ export interface ParsedTelegramUrl {
 
 export function parseTelegramUrl(input: string): ParsedTelegramUrl {
   let trimmed = (input || '').trim().replace(/[> <'"]/g, '');
-  if (!trimmed) {
-    return {
-      original: '',
-      formattedHttps: '',
-      deepLinkTg: '',
-      androidIntent: '',
-      isInviteLink: false,
-      usernameOrHash: ''
-    };
+  if (!trimmed || trimmed === '#') {
+    trimmed = 'MoneyHubOfficial';
   }
 
   // Handle @username
   if (trimmed.startsWith('@')) {
     const username = trimmed.substring(1);
-    const encodedUser = encodeURIComponent(username);
-    const fallbackHttps = encodeURIComponent(`https://t.me/${username}`);
     return {
       original: input,
       formattedHttps: `https://t.me/${username}`,
       deepLinkTg: `tg://resolve?domain=${username}`,
-      androidIntent: `intent://resolve?domain=${encodedUser}#Intent;package=org.telegram.messenger;scheme=tg;S.browser_fallback_url=${fallbackHttps};end`,
+      androidIntent: `intent://resolve?domain=${encodeURIComponent(username)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
       isInviteLink: false,
       usernameOrHash: username
     };
@@ -49,16 +40,25 @@ export function parseTelegramUrl(input: string): ParsedTelegramUrl {
   // Clean trailing slashes or queries
   const cleanPath = path.split('?')[0].replace(/^\/+|\/+$/g, '');
 
+  if (!cleanPath) {
+    return {
+      original: input,
+      formattedHttps: 'https://t.me/MoneyHubOfficial',
+      deepLinkTg: 'tg://resolve?domain=MoneyHubOfficial',
+      androidIntent: 'intent://resolve?domain=MoneyHubOfficial#Intent;package=org.telegram.messenger;scheme=tg;end',
+      isInviteLink: false,
+      usernameOrHash: 'MoneyHubOfficial'
+    };
+  }
+
   // Case 1: Invite hash starting with '+'
   if (cleanPath.startsWith('+')) {
     const hash = cleanPath.substring(1);
-    const encodedHash = encodeURIComponent(hash);
-    const fallbackHttps = encodeURIComponent(`https://t.me/+${hash}`);
     return {
       original: input,
       formattedHttps: `https://t.me/+${hash}`,
       deepLinkTg: `tg://join?invite=${hash}`,
-      androidIntent: `intent://join?invite=${encodedHash}#Intent;package=org.telegram.messenger;scheme=tg;S.browser_fallback_url=${fallbackHttps};end`,
+      androidIntent: `intent://join?invite=${encodeURIComponent(hash)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
       isInviteLink: true,
       usernameOrHash: hash
     };
@@ -67,13 +67,11 @@ export function parseTelegramUrl(input: string): ParsedTelegramUrl {
   // Case 2: Invite hash starting with 'joinchat/'
   if (cleanPath.startsWith('joinchat/')) {
     const hash = cleanPath.replace('joinchat/', '');
-    const encodedHash = encodeURIComponent(hash);
-    const fallbackHttps = encodeURIComponent(`https://t.me/joinchat/${hash}`);
     return {
       original: input,
       formattedHttps: `https://t.me/joinchat/${hash}`,
       deepLinkTg: `tg://join?invite=${hash}`,
-      androidIntent: `intent://join?invite=${encodedHash}#Intent;package=org.telegram.messenger;scheme=tg;S.browser_fallback_url=${fallbackHttps};end`,
+      androidIntent: `intent://join?invite=${encodeURIComponent(hash)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
       isInviteLink: true,
       usernameOrHash: hash
     };
@@ -81,13 +79,11 @@ export function parseTelegramUrl(input: string): ParsedTelegramUrl {
 
   // Case 3: Standard Username (e.g. "MoneyHubOfficial")
   const username = cleanPath;
-  const encodedUser = encodeURIComponent(username);
-  const fallbackHttps = encodeURIComponent(`https://t.me/${username}`);
   return {
     original: input,
     formattedHttps: `https://t.me/${username}`,
     deepLinkTg: `tg://resolve?domain=${username}`,
-    androidIntent: `intent://resolve?domain=${encodedUser}#Intent;package=org.telegram.messenger;scheme=tg;S.browser_fallback_url=${fallbackHttps};end`,
+    androidIntent: `intent://resolve?domain=${encodeURIComponent(username)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
     isInviteLink: false,
     usernameOrHash: username
   };
@@ -110,42 +106,20 @@ export function isIOS(): boolean {
 }
 
 /**
- * Returns the best direct link scheme based on client OS and environment:
- * - Meta In-App Browser on Android: Android Intent scheme to launch Telegram app directly
- * - Meta In-App Browser on iOS: tg:// deep link scheme to prompt Telegram app launch
- * - Standard Chrome / Safari / Desktop: https://t.me/...
+ * Returns clean https://t.me/ link for direct navigation across all platforms
+ * including Meta Ads, Instagram, Facebook, Chrome, and Safari.
  */
 export function getSmartTelegramLink(rawUrl: string): string {
   const parsed = parseTelegramUrl(rawUrl);
-  if (!parsed.formattedHttps) return '#';
-
-  const inMeta = isMetaInAppBrowser();
-  if (inMeta) {
-    if (isAndroid()) {
-      return parsed.androidIntent;
-    }
-    if (isIOS()) {
-      return parsed.deepLinkTg || parsed.formattedHttps;
-    }
-  }
-
-  return parsed.formattedHttps;
+  return parsed.formattedHttps || 'https://t.me/MoneyHubOfficial';
 }
 
 export const getMetaDirectLink = getSmartTelegramLink;
 
 export function openTelegramInApp(rawUrl: string): void {
-  const parsed = parseTelegramUrl(rawUrl);
-  if (!parsed.formattedHttps) return;
-
-  const inMeta = isMetaInAppBrowser();
-  if (inMeta && isAndroid()) {
-    window.location.href = parsed.androidIntent;
-  } else if (inMeta && isIOS()) {
-    window.location.href = parsed.deepLinkTg || parsed.formattedHttps;
-  } else {
-    window.location.href = parsed.formattedHttps;
-  }
+  const link = getSmartTelegramLink(rawUrl);
+  window.location.href = link;
 }
+
 
 
