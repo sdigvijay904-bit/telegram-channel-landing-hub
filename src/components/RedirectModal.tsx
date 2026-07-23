@@ -117,19 +117,21 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
 
           {/* Action Buttons */}
           <div className="space-y-2">
-            <motion.button
-              type="button"
+            <motion.a
+              href={parsed.formattedHttps || '#'}
+              target="_self"
+              rel="noopener noreferrer"
               onClick={() => {
                 triggerRedirect();
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-sky-500/30 flex items-center justify-center space-x-2 cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-sky-500/30 flex items-center justify-center space-x-2 cursor-pointer no-underline block"
             >
               <Send className="w-4 h-4 fill-current" />
               <span>OPEN IN TELEGRAM APP NOW</span>
               <ExternalLink className="w-3.5 h-3.5" />
-            </motion.button>
+            </motion.a>
 
             <button
               type="button"

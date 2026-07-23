@@ -88,13 +88,8 @@ export default function App() {
     fetchConfig();
   }, []);
 
-  // Handle Telegram Button Click (Direct Telegram Join)
+  // Handle Telegram Button Click (Record Analytics)
   const handleTelegramClick = () => {
-    const link = config.telegramLink ? config.telegramLink.trim() : '';
-    if (link) {
-      openTelegramInApp(link);
-    }
-
     // Record click on server
     try {
       fetch('/api/click', { method: 'POST' }).then(res => {

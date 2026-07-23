@@ -95,60 +95,20 @@ export function isAndroid(): boolean {
 }
 
 /**
- * Returns the best direct `href` attribute for HTML `<a>` tags in Meta Ads (Instagram / Facebook) in-app browsers
+ * Returns the best direct `href` attribute for HTML `<a>` tags.
+ * Always returns formatted HTTPS (https://t.me/...) to guarantee 100% compatibility
+ * across Instagram, Facebook, and all in-app browsers without triggering "Page can't be loaded" errors.
  */
 export function getMetaDirectLink(rawUrl: string): string {
   const parsed = parseTelegramUrl(rawUrl);
-  if (!parsed.formattedHttps) return '#';
-
-  const inMeta = isMetaInAppBrowser();
-  const onAndroid = isAndroid();
-
-  if (inMeta && onAndroid) {
-    // Android Intent scheme forces Instagram WebView to release navigation to Android OS / Telegram
-    return parsed.androidIntent;
-  }
-
-  if (inMeta && !onAndroid) {
-    // iOS Meta In-App Browser handles tg:// scheme deep link directly
-    return parsed.deepLinkTg || parsed.formattedHttps;
-  }
-
-  return parsed.formattedHttps;
+  return parsed.formattedHttps || '#';
 }
 
 export function openTelegramInApp(rawUrl: string): void {
   const parsed = parseTelegramUrl(rawUrl);
   if (!parsed.formattedHttps) return;
 
-  const inMeta = isMetaInAppBrowser();
-  const onAndroid = isAndroid();
-
-  if (inMeta) {
-    if (onAndroid) {
-      // 1. First attempt Android Intent
-      window.location.href = parsed.androidIntent;
-
-      // 2. Secondary fallback after 200ms
-      setTimeout(() => {
-        window.location.href = parsed.deepLinkTg;
-      }, 200);
-
-      // 3. Tertiary HTTPS fallback
-      setTimeout(() => {
-        window.location.href = parsed.formattedHttps;
-      }, 600);
-    } else {
-      // iOS Meta Webview
-      window.location.href = parsed.deepLinkTg;
-
-      setTimeout(() => {
-        window.location.href = parsed.formattedHttps;
-      }, 300);
-    }
-  } else {
-    // Standard Mobile or Desktop Browser
-    window.location.href = parsed.formattedHttps;
-  }
+  // Always navigate to standard Telegram HTTPS URL
+  window.location.href = parsed.formattedHttps;
 }
 
