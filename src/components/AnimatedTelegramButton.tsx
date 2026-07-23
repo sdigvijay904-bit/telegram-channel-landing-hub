@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink } from 'lucide-react';
+import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink, CheckCircle2 } from 'lucide-react';
 import { AnimationType, ThemeColor } from '../types';
 import { themePresets } from '../utils/themeStyles';
-import { getMetaDirectLink } from '../utils/telegramHelper';
+import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
 
 interface AnimatedTelegramButtonProps {
   telegramLink?: string;
@@ -147,6 +147,14 @@ export function AnimatedTelegramButton({
           </div>
         </motion.a>
       </div>
+
+      {/* Meta/Instagram Popup Note */}
+      {isMetaInAppBrowser() && (
+        <div className="flex items-center justify-center gap-1.5 py-1 px-3 bg-sky-950/60 border border-sky-500/30 rounded-lg text-[11px] font-medium text-sky-200">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          <span>Popup aane par <strong className="text-amber-300 font-bold">"CONTINUE"</strong> par click karein</span>
+        </div>
+      )}
 
       {/* Secondary WhatsApp Button if enabled */}
       {showWhatsapp && (
