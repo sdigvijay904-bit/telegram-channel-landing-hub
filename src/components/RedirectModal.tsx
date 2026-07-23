@@ -120,7 +120,7 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
           <div className="space-y-2">
             <motion.a
               href={smartHref}
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
               onClick={() => {
                 triggerRedirect();

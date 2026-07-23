@@ -110,14 +110,26 @@ export function isIOS(): boolean {
 }
 
 /**
- * Returns the best direct link for HTML <a> tags.
- * Always returns formatted HTTPS (https://t.me/...) to guarantee 100% compatibility
- * across Instagram, Facebook, Messenger, Chrome, Safari, and all mobile in-app browsers
- * without triggering "Page can't be loaded" or scheme errors on any device.
+ * Returns the best direct link scheme based on client OS and environment:
+ * - Meta In-App Browser on Android: Android Intent scheme to launch Telegram app directly
+ * - Meta In-App Browser on iOS: tg:// deep link scheme to prompt Telegram app launch
+ * - Standard Chrome / Safari / Desktop: https://t.me/...
  */
 export function getSmartTelegramLink(rawUrl: string): string {
   const parsed = parseTelegramUrl(rawUrl);
-  return parsed.formattedHttps || '#';
+  if (!parsed.formattedHttps) return '#';
+
+  const inMeta = isMetaInAppBrowser();
+  if (inMeta) {
+    if (isAndroid()) {
+      return parsed.androidIntent;
+    }
+    if (isIOS()) {
+      return parsed.deepLinkTg || parsed.formattedHttps;
+    }
+  }
+
+  return parsed.formattedHttps;
 }
 
 export const getMetaDirectLink = getSmartTelegramLink;
@@ -126,8 +138,14 @@ export function openTelegramInApp(rawUrl: string): void {
   const parsed = parseTelegramUrl(rawUrl);
   if (!parsed.formattedHttps) return;
 
-  // Navigate to standard t.me HTTPS URL
-  window.location.href = parsed.formattedHttps;
+  const inMeta = isMetaInAppBrowser();
+  if (inMeta && isAndroid()) {
+    window.location.href = parsed.androidIntent;
+  } else if (inMeta && isIOS()) {
+    window.location.href = parsed.deepLinkTg || parsed.formattedHttps;
+  } else {
+    window.location.href = parsed.formattedHttps;
+  }
 }
 
 
