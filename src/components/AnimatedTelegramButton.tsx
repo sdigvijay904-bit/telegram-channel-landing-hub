@@ -106,7 +106,7 @@ export function AnimatedTelegramButton({
 
         <motion.a
           href={directHref}
-          target="_self"
+          target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => {
             // Log click hit to backend without interfering with direct href navigation
@@ -147,14 +147,6 @@ export function AnimatedTelegramButton({
           </div>
         </motion.a>
       </div>
-
-      {/* Meta/Instagram Popup Note */}
-      {isMetaInAppBrowser() && (
-        <div className="flex items-center justify-center gap-1.5 py-1 px-3 bg-sky-950/60 border border-sky-500/30 rounded-lg text-[11px] font-medium text-sky-200">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <span>Popup aane par <strong className="text-amber-300 font-bold">"CONTINUE"</strong> par click karein</span>
-        </div>
-      )}
 
       {/* Secondary WhatsApp Button if enabled */}
       {showWhatsapp && (
