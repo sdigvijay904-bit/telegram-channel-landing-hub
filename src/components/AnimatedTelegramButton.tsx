@@ -106,7 +106,7 @@ export function AnimatedTelegramButton({
 
         <motion.a
           href={directHref}
-          target="_self"
+          target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => {
             // Log click hit to backend without interfering with direct href navigation

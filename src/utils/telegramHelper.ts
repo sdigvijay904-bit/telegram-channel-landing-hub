@@ -118,7 +118,12 @@ export const getMetaDirectLink = getSmartTelegramLink;
 
 export function openTelegramInApp(rawUrl: string): void {
   const link = getSmartTelegramLink(rawUrl);
-  window.location.href = link;
+  if (typeof window !== 'undefined' && window.top !== window.self) {
+    // If running inside an iframe (like AI Studio Preview), open in a new tab to avoid breaking the iframe
+    window.open(link, '_blank');
+  } else {
+    window.location.href = link;
+  }
 }
 
 
