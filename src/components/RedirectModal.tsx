@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, CheckCircle, ExternalLink, Loader2, ShieldCheck, X, Copy, Check } from 'lucide-react';
-import { openTelegramInApp, parseTelegramUrl, isMetaInAppBrowser } from '../utils/telegramHelper';
+import { openTelegramInApp, parseTelegramUrl, isMetaInAppBrowser, getSmartTelegramLink } from '../utils/telegramHelper';
 
 interface RedirectModalProps {
   isOpen: boolean;
@@ -17,6 +17,7 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
 
   const inMeta = isMetaInAppBrowser();
   const parsed = parseTelegramUrl(telegramLink);
+  const smartHref = getSmartTelegramLink(telegramLink);
 
   useEffect(() => {
     if (!isOpen) {
@@ -118,7 +119,7 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
           {/* Action Buttons */}
           <div className="space-y-2">
             <motion.a
-              href={parsed.formattedHttps || '#'}
+              href={smartHref}
               target="_self"
               rel="noopener noreferrer"
               onClick={() => {
