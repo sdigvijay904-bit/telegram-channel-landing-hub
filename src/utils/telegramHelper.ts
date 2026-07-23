@@ -12,7 +12,14 @@ export interface ParsedTelegramUrl {
 export function parseTelegramUrl(input: string): ParsedTelegramUrl {
   let trimmed = (input || '').trim().replace(/[> <'"]/g, '');
   if (!trimmed || trimmed === '#') {
-    trimmed = 'MoneyHubOfficial';
+    return {
+      original: input || '',
+      formattedHttps: '#',
+      deepLinkTg: '',
+      androidIntent: '',
+      isInviteLink: false,
+      usernameOrHash: ''
+    };
   }
 
   // Handle @username
@@ -43,11 +50,11 @@ export function parseTelegramUrl(input: string): ParsedTelegramUrl {
   if (!cleanPath) {
     return {
       original: input,
-      formattedHttps: 'https://t.me/MoneyHubOfficial',
-      deepLinkTg: 'tg://resolve?domain=MoneyHubOfficial',
-      androidIntent: 'intent://resolve?domain=MoneyHubOfficial#Intent;package=org.telegram.messenger;scheme=tg;end',
+      formattedHttps: '#',
+      deepLinkTg: '',
+      androidIntent: '',
       isInviteLink: false,
-      usernameOrHash: 'MoneyHubOfficial'
+      usernameOrHash: ''
     };
   }
 
@@ -110,8 +117,9 @@ export function isIOS(): boolean {
  * including Meta Ads, Instagram, Facebook, Chrome, and Safari.
  */
 export function getSmartTelegramLink(rawUrl: string): string {
+  if (!rawUrl || !rawUrl.trim() || rawUrl.trim() === '#') return '#';
   const parsed = parseTelegramUrl(rawUrl);
-  return parsed.formattedHttps || 'https://t.me/MoneyHubOfficial';
+  return parsed.formattedHttps || '#';
 }
 
 export const getMetaDirectLink = getSmartTelegramLink;

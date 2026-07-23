@@ -43,7 +43,7 @@ export function RedirectModal({ isOpen, telegramLink, channelTitle, onClose }: R
 
   const triggerRedirect = () => {
     setIsRedirected(true);
-    if (telegramLink) {
+    if (telegramLink && telegramLink !== '#') {
       openTelegramInApp(telegramLink);
     }
   };

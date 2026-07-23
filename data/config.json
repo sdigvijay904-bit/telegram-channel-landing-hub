@@ -1,7 +1,7 @@
 {
   "telegramLink": "",
   "passcode": "admin123",
-  "title": "Money Hub Official",
+  "title": "Telegram Official",
   "subtitle": "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates",
   "badges": [
     {
@@ -38,6 +38,39 @@
   "themeColor": "frosted-glass",
   "memberCount": 48520,
   "timerMinutes": 5,
-  "totalClicks": 1240,
-  "clickHistory": []
+  "totalClicks": 1248,
+  "clickHistory": [
+    {
+      "timestamp": "2026-07-23T10:41:46.206Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-23T10:36:52.664Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-23T10:32:41.685Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-23T10:32:30.178Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-23T10:24:06.686Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-23T10:10:56.389Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-23T10:04:56.483Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-23T10:04:38.756Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    }
+  ]
 }

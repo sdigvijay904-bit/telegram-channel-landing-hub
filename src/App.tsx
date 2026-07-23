@@ -12,7 +12,7 @@ import { Settings, ExternalLink, ShieldCheck, Sparkles } from 'lucide-react';
 
 const defaultConfig: AppConfig = {
   telegramLink: "",
-  title: "Money Hub",
+  title: "Telegram Official",
   subtitle: "Join India's Most Trusted Telegram Channel for Daily Earnings",
   badges: [
     { id: "1", text: "Telegram Group Join Karo", icon: "CheckCircle2", color: "emerald" },

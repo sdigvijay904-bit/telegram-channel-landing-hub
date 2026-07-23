@@ -14,7 +14,7 @@ const CONFIG_FILE = path.join(DATA_DIR, "config.json");
 const defaultConfig = {
   telegramLink: "",
   passcode: "admin123",
-  title: "Money Hub Official",
+  title: "Telegram Official",
   subtitle: "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates",
   badges: [
     { id: "1", text: "Telegram Group Join Karo", icon: "CheckCircle2", color: "emerald" },
