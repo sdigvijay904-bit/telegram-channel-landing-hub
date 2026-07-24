@@ -1,5 +1,5 @@
 {
-  "telegramLink": "",
+  "telegramLink": "https://t.me/propertyN_99",
   "passcode": "admin123",
   "title": "Telegram Official",
   "subtitle": "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates",
@@ -29,7 +29,7 @@
       "color": "blue"
     }
   ],
-  "buttonText": "JOIN TELEGRAM CHANNEL NOW",
+  "buttonText": "JOIN NOW FAST",
   "buttonSubtext": "Click to Open in Telegram • Free Access",
   "secondaryButtonText": "DIRECT WHATSAPP SUPPORT",
   "whatsappLink": "https://wa.me/",
@@ -37,9 +37,17 @@
   "animationType": "pulse-glow",
   "themeColor": "frosted-glass",
   "memberCount": 48520,
-  "timerMinutes": 5,
-  "totalClicks": 1248,
+  "timerMinutes": 1,
+  "totalClicks": 1250,
   "clickHistory": [
+    {
+      "timestamp": "2026-07-24T17:42:54.927Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-24T17:33:42.545Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
     {
       "timestamp": "2026-07-23T10:41:46.206Z",
       "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"

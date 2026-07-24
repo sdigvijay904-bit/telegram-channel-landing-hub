@@ -20,12 +20,12 @@ const defaultConfig: AppConfig = {
     { id: "3", text: "Limited Seats Available", icon: "Flame", color: "rose" },
     { id: "4", text: "Instant Payment Proof & Signals", icon: "Zap", color: "blue" }
   ],
-  buttonText: "JOIN TELEGRAM CHANNEL NOW",
+  buttonText: "JOIN NOW FAST",
   buttonSubtext: "",
   animationType: "pulse-glow",
   themeColor: "frosted-glass",
   memberCount: 48520,
-  timerMinutes: 5,
+  timerMinutes: 1,
   totalClicks: 1240
 };
 
@@ -41,6 +41,9 @@ export default function App() {
         if (parsed.themeColor === 'red-emerald') {
           parsed.themeColor = 'frosted-glass';
         }
+        if (!parsed.buttonText || parsed.buttonText === "JOIN TELEGRAM CHANNEL NOW") {
+          parsed.buttonText = "JOIN NOW FAST";
+        }
         return { ...defaultConfig, ...parsed };
       } catch (e) {
         console.error("Local config parse error", e);
@@ -52,6 +55,56 @@ export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isRedirectOpen, setIsRedirectOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // 1-Minute (60 seconds) Auto Redirect Countdown Timer
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [hasAutoRedirected, setHasAutoRedirected] = useState(false);
+
+  // Handle Telegram Button Click (Record Analytics)
+  const handleTelegramClick = () => {
+    try {
+      fetch('/api/click', { method: 'POST' }).then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+      }).then(data => {
+        if (data && data.totalClicks) {
+          setConfig(prev => ({
+            ...prev,
+            totalClicks: data.totalClicks
+          }));
+        }
+      });
+    } catch (e) {
+      console.warn('Click logging offline:', e);
+    }
+  };
+
+  // 2-Minute Timer Interval & Automatic Redirect Effect
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      if (!hasAutoRedirected) {
+        setHasAutoRedirected(true);
+        if (config.telegramLink && config.telegramLink !== '#') {
+          openTelegramInApp(config.telegramLink);
+          handleTelegramClick();
+        }
+      }
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeLeft, config.telegramLink, hasAutoRedirected]);
 
   // Fetch server config on mount
   useEffect(() => {
@@ -67,6 +120,9 @@ export default function App() {
               }
               if (data.config.themeColor === 'red-emerald') {
                 data.config.themeColor = 'frosted-glass';
+              }
+              if (!data.config.buttonText || data.config.buttonText === "JOIN TELEGRAM CHANNEL NOW") {
+                data.config.buttonText = "JOIN NOW FAST";
               }
               const serverLink = data.config.telegramLink;
               
@@ -100,27 +156,6 @@ export default function App() {
 
     fetchConfig();
   }, []);
-
-  // Handle Telegram Button Click (Record Analytics)
-  const handleTelegramClick = () => {
-    // Record click on server
-    try {
-      fetch('/api/click', { method: 'POST' }).then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      }).then(data => {
-        if (data && data.totalClicks) {
-          setConfig(prev => ({
-            ...prev,
-            totalClicks: data.totalClicks
-          }));
-        }
-      });
-    } catch (e) {
-      console.warn('Click logging offline:', e);
-    }
-  };
 
   // Save Settings from Admin
   const handleSaveConfig = async (updatedFields: Partial<AppConfig>, newPasscode?: string, currentPasscode?: string): Promise<boolean> => {
@@ -204,6 +239,7 @@ export default function App() {
           themeColor={config.themeColor}
           onClick={handleTelegramClick}
           totalClicks={config.totalClicks}
+          timeLeft={timeLeft}
         />
 
         {/* Trust Footer */}

@@ -22,7 +22,7 @@ const defaultConfig = {
     { id: "3", text: "Limited Seats Available", icon: "Flame", color: "rose" },
     { id: "4", text: "Instant Payment Proof & Signals", icon: "Zap", color: "blue" }
   ],
-  buttonText: "JOIN TELEGRAM CHANNEL NOW",
+  buttonText: "JOIN NOW FAST",
   buttonSubtext: "Click to Open in Telegram • Free Access",
   secondaryButtonText: "DIRECT WHATSAPP SUPPORT",
   whatsappLink: "https://wa.me/",
@@ -30,7 +30,7 @@ const defaultConfig = {
   animationType: "pulse-glow", // 'pulse-glow' | 'shimmer' | 'bounce' | 'ripple-ring' | 'neon-breath'
   themeColor: "frosted-glass", // 'frosted-glass' | 'red-emerald' | 'cyan-blue' | 'purple-gold' | 'neon-dark' | 'sunset-fire'
   memberCount: 48520,
-  timerMinutes: 5,
+  timerMinutes: 1,
   totalClicks: 1240,
   clickHistory: [] as Array<{ timestamp: string; userAgent?: string }>
 };

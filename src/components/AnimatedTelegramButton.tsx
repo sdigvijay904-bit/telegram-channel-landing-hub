@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink, CheckCircle2 } from 'lucide-react';
+import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink, CheckCircle2, Clock } from 'lucide-react';
 import { AnimationType, ThemeColor } from '../types';
 import { themePresets } from '../utils/themeStyles';
 import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
@@ -17,6 +17,7 @@ interface AnimatedTelegramButtonProps {
   onClick: () => void;
   onWhatsappClick?: () => void;
   totalClicks?: number;
+  timeLeft?: number;
 }
 
 export function AnimatedTelegramButton({
@@ -30,10 +31,17 @@ export function AnimatedTelegramButton({
   themeColor,
   onClick,
   onWhatsappClick,
-  totalClicks
+  totalClicks,
+  timeLeft
 }: AnimatedTelegramButtonProps) {
   const theme = themePresets[themeColor] || themePresets['red-emerald'];
   const directHref = getMetaDirectLink(telegramLink);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
 
   // Button Animation Variants
   const getAnimationProps = () => {
@@ -97,7 +105,7 @@ export function AnimatedTelegramButton({
   const animProps = getAnimationProps();
 
   return (
-    <div className="w-full space-y-2.5 my-3">
+    <div className="w-full space-y-3 my-3">
       {/* Main Telegram CTA Button Box with Radar Rings */}
       <div className="relative group w-full">
         {/* Glowing Radar Rings Background */}
@@ -144,11 +152,46 @@ export function AnimatedTelegramButton({
               <Send className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
             </motion.div>
             <span className="text-center font-black tracking-wide uppercase">
-              {buttonText || "JOIN TELEGRAM CHANNEL NOW"}
+              {buttonText || "JOIN NOW FAST"}
             </span>
           </div>
         </motion.a>
       </div>
+
+      {/* 1-Minute Round Circle Auto Redirect Countdown Timer (Matching Screenshot) */}
+      {timeLeft !== undefined && (
+        <div className="w-full flex flex-col items-center justify-center pt-1 pb-1">
+          <div className="relative flex items-center justify-center w-20 h-20 bg-[#0A1128]/95 rounded-full border border-amber-500/50 p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)] backdrop-blur-md">
+            <svg className="w-full h-full transform -rotate-90">
+              {/* Dark Circle Track */}
+              <circle
+                cx="34"
+                cy="34"
+                r="26"
+                className="stroke-slate-800/90"
+                strokeWidth="5"
+                fill="transparent"
+              />
+              {/* Active Animated Yellow Ring */}
+              <circle
+                cx="34"
+                cy="34"
+                r="26"
+                className="stroke-amber-400 transition-all duration-1000 ease-linear"
+                strokeWidth="5"
+                strokeDasharray={2 * Math.PI * 26}
+                strokeDashoffset={(2 * Math.PI * 26) - ((Math.max(0, Math.min(60, timeLeft)) / 60) * (2 * Math.PI * 26))}
+                strokeLinecap="round"
+                fill="transparent"
+              />
+            </svg>
+            {/* Time Text Inside Circle (e.g. 00:41) */}
+            <span className="absolute font-mono font-extrabold text-base sm:text-lg text-amber-300 tracking-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+              {formatTime(timeLeft)}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Secondary WhatsApp Button if enabled */}
       {showWhatsapp && (
