@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ShieldCheck } from 'lucide-react';
 import { AppConfig } from '../types';
 import { themePresets } from '../utils/themeStyles';
+import { PropertyNLogo } from './PropertyNLogo';
 
 interface HeaderCardProps {
   config: AppConfig;
@@ -25,18 +26,19 @@ export function HeaderCard({ config }: HeaderCardProps) {
         <div className="absolute -bottom-10 -right-10 w-20 h-20 bg-amber-400/20 rounded-full blur-xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center">
-          {/* Main Logo Badge Icon */}
+          {/* PropertyN Logo Badge */}
           <motion.div 
             whileHover={{ scale: 1.05 }}
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg ${theme.headerIconBg} shadow-md flex items-center justify-center mb-1 text-lg font-black ring-2 ring-white/30 shrink-0`}
+            whileTap={{ scale: 0.95 }}
+            className="mb-1.5 shrink-0 transition-transform duration-200"
           >
-            💰
+            <PropertyNLogo className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" />
           </motion.div>
 
           {/* Title with Verified Badge */}
           <div className="flex items-center justify-center space-x-1 flex-wrap">
             <h1 className={`text-lg sm:text-xl font-black tracking-tight ${theme.headerText} drop-shadow-sm`}>
-              {config.title || "Money Hub"}
+              {config.title || "PropertyN Official"}
             </h1>
             <span className="inline-flex items-center bg-sky-500/30 text-sky-200 px-1.5 py-0.2 rounded-full text-[9px] font-semibold border border-sky-400/40">
               <ShieldCheck className="w-2.5 h-2.5 mr-0.5 text-sky-300 fill-sky-500" />
@@ -46,7 +48,7 @@ export function HeaderCard({ config }: HeaderCardProps) {
 
           {/* Subtitle */}
           <p className="text-[10px] sm:text-[11px] text-white/90 max-w-xs mx-auto font-medium leading-tight mt-0.5">
-            {config.subtitle || "Join India's Most Trusted Telegram Channel for Daily Earnings"}
+            {config.subtitle || "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates"}
           </p>
         </div>
       </motion.div>
