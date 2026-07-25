@@ -15,12 +15,12 @@ const defaultConfig = {
   telegramLink: "",
   passcode: "admin123",
   title: "PropertyN Official",
-  subtitle: "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates",
+  subtitle: "Join the Official PropertyN Community for Updates & Announcements",
   badges: [
     { id: "1", text: "Telegram Group Join Karo", icon: "CheckCircle2", color: "emerald" },
-    { id: "2", text: "Daily ₹1000 - ₹5000 Earn", icon: "Banknote", color: "amber" },
-    { id: "3", text: "Limited Seats Available", icon: "Flame", color: "rose" },
-    { id: "4", text: "Instant Payment Proof & Signals", icon: "Zap", color: "blue" }
+    { id: "2", text: "Explore Available Plans & Platform Features", icon: "Banknote", color: "amber" },
+    { id: "3", text: "New Members Welcome", icon: "Flame", color: "rose" },
+    { id: "4", text: "Community Updates & Support", icon: "Zap", color: "blue" }
   ],
   buttonText: "JOIN NOW FAST",
   buttonSubtext: "Click to Open in Telegram • Free Access",

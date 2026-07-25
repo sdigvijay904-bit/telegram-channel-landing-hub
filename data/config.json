@@ -2,7 +2,7 @@
   "telegramLink": "https://t.me/propertyN_99",
   "passcode": "admin123",
   "title": "PropertyN Official",
-  "subtitle": "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates",
+  "subtitle": "Join the Official PropertyN Community for Updates & Announcements",
   "badges": [
     {
       "id": "1",
@@ -12,19 +12,19 @@
     },
     {
       "id": "2",
-      "text": "Daily ₹1000 - ₹5000 Earn",
+      "text": "Explore Available Plans & Platform Features",
       "icon": "Banknote",
       "color": "amber"
     },
     {
       "id": "3",
-      "text": "Limited Seats Available",
+      "text": "New Members Welcome",
       "icon": "Flame",
       "color": "rose"
     },
     {
       "id": "4",
-      "text": "Instant Payment Proof & Signals",
+      "text": "Community Updates & Support",
       "icon": "Zap",
       "color": "blue"
     }
@@ -38,8 +38,12 @@
   "themeColor": "frosted-glass",
   "memberCount": 48520,
   "timerMinutes": 1,
-  "totalClicks": 1250,
+  "totalClicks": 1251,
   "clickHistory": [
+    {
+      "timestamp": "2026-07-25T10:04:31.363Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
     {
       "timestamp": "2026-07-24T17:42:54.927Z",
       "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"

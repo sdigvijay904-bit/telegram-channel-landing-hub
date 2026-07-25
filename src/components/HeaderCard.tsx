@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck } from 'lucide-react';
 import { AppConfig } from '../types';
 import { themePresets } from '../utils/themeStyles';
 import { PropertyNLogo } from './PropertyNLogo';
@@ -35,20 +34,16 @@ export function HeaderCard({ config }: HeaderCardProps) {
             <PropertyNLogo className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" />
           </motion.div>
 
-          {/* Title with Verified Badge */}
+          {/* Title */}
           <div className="flex items-center justify-center space-x-1 flex-wrap">
             <h1 className={`text-lg sm:text-xl font-black tracking-tight ${theme.headerText} drop-shadow-sm`}>
               {config.title || "PropertyN Official"}
             </h1>
-            <span className="inline-flex items-center bg-sky-500/30 text-sky-200 px-1.5 py-0.2 rounded-full text-[9px] font-semibold border border-sky-400/40">
-              <ShieldCheck className="w-2.5 h-2.5 mr-0.5 text-sky-300 fill-sky-500" />
-              Verified
-            </span>
           </div>
 
           {/* Subtitle */}
           <p className="text-[10px] sm:text-[11px] text-white/90 max-w-xs mx-auto font-medium leading-tight mt-0.5">
-            {config.subtitle || "Join India's Most Trusted Telegram Channel for Daily Earnings & Instant Updates"}
+            {config.subtitle || "Join the Official PropertyN Community for Updates & Announcements"}
           </p>
         </div>
       </motion.div>

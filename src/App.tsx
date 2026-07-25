@@ -12,13 +12,13 @@ import { Settings, ExternalLink, ShieldCheck, Sparkles } from 'lucide-react';
 
 const defaultConfig: AppConfig = {
   telegramLink: "",
-  title: "Telegram Official",
-  subtitle: "Join India's Most Trusted Telegram Channel for Daily Earnings",
+  title: "PropertyN Official",
+  subtitle: "Join the Official PropertyN Community for Updates & Announcements",
   badges: [
     { id: "1", text: "Telegram Group Join Karo", icon: "CheckCircle2", color: "emerald" },
-    { id: "2", text: "Daily ₹1000 - ₹5000 Earn", icon: "Banknote", color: "amber" },
-    { id: "3", text: "Limited Seats Available", icon: "Flame", color: "rose" },
-    { id: "4", text: "Instant Payment Proof & Signals", icon: "Zap", color: "blue" }
+    { id: "2", text: "Explore Available Plans & Platform Features", icon: "Banknote", color: "amber" },
+    { id: "3", text: "New Members Welcome", icon: "Flame", color: "rose" },
+    { id: "4", text: "Community Updates & Support", icon: "Zap", color: "blue" }
   ],
   buttonText: "JOIN NOW FAST",
   buttonSubtext: "",
@@ -29,22 +29,47 @@ const defaultConfig: AppConfig = {
   totalClicks: 1240
 };
 
+function sanitizeConfig(cfg: any): any {
+  if (!cfg) return cfg;
+  const updated = { ...cfg };
+  if (!updated.title || updated.title === "Telegram Official") {
+    updated.title = "PropertyN Official";
+  }
+  if (!updated.subtitle || updated.subtitle.includes("Most Trusted Telegram")) {
+    updated.subtitle = "Join the Official PropertyN Community for Updates & Announcements";
+  }
+  if (updated.badges && Array.isArray(updated.badges)) {
+    updated.badges = updated.badges
+      .filter((b: any) => !b.text.includes("100% Free VIP"))
+      .map((b: any) => {
+        let text = b.text;
+        if (text.includes("Daily ₹") || text.includes("Daily 1000")) {
+          text = "Explore Available Plans & Platform Features";
+        } else if (text.includes("Limited Seats")) {
+          text = "New Members Welcome";
+        } else if (text.includes("Instant Payment")) {
+          text = "Community Updates & Support";
+        }
+        return { ...b, text };
+      });
+  }
+  if (updated.themeColor === 'red-emerald') {
+    updated.themeColor = 'frosted-glass';
+  }
+  if (!updated.buttonText || updated.buttonText === "JOIN TELEGRAM CHANNEL NOW") {
+    updated.buttonText = "JOIN NOW FAST";
+  }
+  return updated;
+}
+
 export default function App() {
   const [config, setConfig] = useState<AppConfig>(() => {
     const local = localStorage.getItem('tg_app_config');
     if (local) {
       try {
         const parsed = JSON.parse(local);
-        if (parsed.badges) {
-          parsed.badges = parsed.badges.filter((b: any) => !b.text.includes("100% Free VIP"));
-        }
-        if (parsed.themeColor === 'red-emerald') {
-          parsed.themeColor = 'frosted-glass';
-        }
-        if (!parsed.buttonText || parsed.buttonText === "JOIN TELEGRAM CHANNEL NOW") {
-          parsed.buttonText = "JOIN NOW FAST";
-        }
-        return { ...defaultConfig, ...parsed };
+        const sanitized = sanitizeConfig(parsed);
+        return { ...defaultConfig, ...sanitized };
       } catch (e) {
         console.error("Local config parse error", e);
       }
@@ -114,17 +139,9 @@ export default function App() {
         if (res.ok) {
           const data = await res.json();
           if (data.success && data.config) {
+            const cleanServerConfig = sanitizeConfig(data.config);
             setConfig(prev => {
-              if (data.config.badges) {
-                data.config.badges = data.config.badges.filter((b: any) => !b.text.includes("100% Free VIP"));
-              }
-              if (data.config.themeColor === 'red-emerald') {
-                data.config.themeColor = 'frosted-glass';
-              }
-              if (!data.config.buttonText || data.config.buttonText === "JOIN TELEGRAM CHANNEL NOW") {
-                data.config.buttonText = "JOIN NOW FAST";
-              }
-              const serverLink = data.config.telegramLink;
+              const serverLink = cleanServerConfig.telegramLink;
               
               // Determine active link: preference to valid server link, or fallback to local
               let activeLink = serverLink || '';
@@ -141,7 +158,7 @@ export default function App() {
                 }).catch(() => {});
               }
 
-              const updated = { ...prev, ...data.config, telegramLink: activeLink };
+              const updated = { ...prev, ...cleanServerConfig, telegramLink: activeLink };
               localStorage.setItem('tg_app_config', JSON.stringify(updated));
               return updated;
             });
