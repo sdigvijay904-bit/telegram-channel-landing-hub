@@ -48,24 +48,22 @@ export function PropertyNShowcase() {
       </div>
 
       {/* DLF Luxury Villas & Residencies Banner Card */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md group">
-        <div className="relative h-56 sm:h-64 w-full overflow-hidden">
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm group">
+        <div className="relative h-52 sm:h-60 w-full overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
             alt="DLF Luxury Villas & Residencies"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
           />
-          {/* Light gradient strictly at the bottom for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent" />
         </div>
 
-        <div className="p-3.5 sm:p-4 -mt-16 relative z-10 space-y-1 bg-slate-950/70 backdrop-blur-md border-t border-slate-800/60">
-          <h3 className="text-base sm:text-lg font-black text-white tracking-tight leading-tight flex items-center gap-1.5">
-            <Building2 className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="p-3.5 sm:p-4 bg-white border-t border-slate-100 space-y-1">
+          <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-tight flex items-center gap-1.5">
+            <Building2 className="w-4 h-4 text-emerald-600 shrink-0" />
             DLF Luxury Villas & Residencies
           </h3>
-          <p className="text-xs text-slate-200 font-medium leading-relaxed">
+          <p className="text-xs text-slate-600 font-medium leading-relaxed">
             Secure property crowdfunding plans fully compliant with real-estate and financial guidelines.
           </p>
         </div>

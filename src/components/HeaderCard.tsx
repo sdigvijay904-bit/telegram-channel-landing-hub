@@ -31,12 +31,12 @@ export function HeaderCard({ config }: HeaderCardProps) {
             whileTap={{ scale: 0.95 }}
             className="mb-1.5 shrink-0 transition-transform duration-200"
           >
-            <PropertyNLogo className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" />
+            <PropertyNLogo className="w-14 h-14 sm:w-16 sm:h-16" />
           </motion.div>
 
           {/* Title */}
           <div className="flex items-center justify-center space-x-1 flex-wrap">
-            <h1 className={`text-lg sm:text-xl font-black tracking-tight ${theme.headerText} drop-shadow-sm`}>
+            <h1 className={`text-lg sm:text-xl font-black tracking-tight ${theme.headerText}`}>
               {config.title || "PropertyN Official"}
             </h1>
           </div>

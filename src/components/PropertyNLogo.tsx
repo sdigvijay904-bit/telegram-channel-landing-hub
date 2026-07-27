@@ -6,7 +6,7 @@ interface PropertyNLogoProps {
 
 export function PropertyNLogo({ className = "w-16 h-16 sm:w-20 sm:h-20" }: PropertyNLogoProps) {
   return (
-    <div className={`relative rounded-full shadow-2xl shrink-0 ${className}`}>
+    <div className={`relative rounded-full shadow-md shadow-emerald-500/20 shrink-0 ${className}`}>
       <svg
         viewBox="0 0 500 500"
         className="w-full h-full rounded-full"
