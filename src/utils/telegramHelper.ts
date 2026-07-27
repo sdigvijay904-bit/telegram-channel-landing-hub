@@ -22,6 +22,18 @@ export function parseTelegramUrl(input: string): ParsedTelegramUrl {
     };
   }
 
+  // Handle HTTP/HTTPS URLs directly (e.g. WhatsApp chat.whatsapp.com links)
+  if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) {
+    return {
+      original: input,
+      formattedHttps: trimmed,
+      deepLinkTg: trimmed,
+      androidIntent: trimmed,
+      isInviteLink: true,
+      usernameOrHash: trimmed
+    };
+  }
+
   // Handle @username
   if (trimmed.startsWith('@')) {
     const username = trimmed.substring(1);

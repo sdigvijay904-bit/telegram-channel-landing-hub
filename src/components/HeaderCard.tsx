@@ -42,7 +42,7 @@ export function HeaderCard({ config }: HeaderCardProps) {
           </div>
 
           {/* Subtitle */}
-          <p className="text-[10px] sm:text-[11px] text-white/90 max-w-xs mx-auto font-medium leading-tight mt-0.5">
+          <p className="text-[10px] sm:text-[11px] text-slate-600 max-w-xs mx-auto font-medium leading-tight mt-0.5">
             {config.subtitle || "Join the Official PropertyN Community for Updates & Announcements"}
           </p>
         </div>

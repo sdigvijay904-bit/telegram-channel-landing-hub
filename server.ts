@@ -17,13 +17,13 @@ const defaultConfig = {
   title: "PropertyN Official",
   subtitle: "Join the Official PropertyN Community for Updates & Announcements",
   badges: [
-    { id: "1", text: "Telegram Group Join Karo", icon: "CheckCircle2", color: "emerald" },
+    { id: "1", text: "Join Official WhatsApp Group", icon: "CheckCircle2", color: "emerald" },
     { id: "2", text: "Explore Available Plans & Platform Features", icon: "Banknote", color: "amber" },
     { id: "3", text: "New Members Welcome", icon: "Flame", color: "rose" },
     { id: "4", text: "Community Updates & Support", icon: "Zap", color: "blue" }
   ],
-  buttonText: "JOIN NOW FAST",
-  buttonSubtext: "Click to Open in Telegram • Free Access",
+  buttonText: "JOIN GROUP",
+  buttonSubtext: "Click to Join WhatsApp Group • Free Access",
   secondaryButtonText: "DIRECT WHATSAPP SUPPORT",
   whatsappLink: "https://wa.me/",
   showWhatsapp: false,

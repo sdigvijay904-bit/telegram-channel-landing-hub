@@ -38,13 +38,13 @@ function formatTelegramUrl(input: string): string {
   if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) {
     return trimmed;
   }
-  if (trimmed.startsWith('t.me/') || trimmed.startsWith('telegram.me/')) {
+  if (trimmed.startsWith('t.me/') || trimmed.startsWith('telegram.me/') || trimmed.startsWith('chat.whatsapp.com/') || trimmed.startsWith('wa.me/')) {
     return `https://${trimmed}`;
   }
   if (trimmed.startsWith('@')) {
     return `https://t.me/${trimmed.substring(1)}`;
   }
-  return `https://t.me/${trimmed}`;
+  return `https://${trimmed}`;
 }
 
 export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: AdminPanelModalProps) {
@@ -189,27 +189,27 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="relative w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-3xl text-white shadow-2xl overflow-hidden my-6"
+          className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl text-slate-900 shadow-2xl overflow-hidden my-6"
         >
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-6 py-4 bg-slate-800/90 border-b border-slate-700">
+          <div className="flex items-center justify-between px-6 py-4 bg-slate-50 border-b border-slate-200">
             <div className="flex items-center space-x-2.5">
-              <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 border border-emerald-200">
                 <Settings className="w-5 h-5 animate-spin" style={{ animationDuration: '10s' }} />
               </div>
               <div>
-                <h2 className="text-lg font-black tracking-wide text-white">
+                <h2 className="text-lg font-black tracking-wide text-slate-900">
                   Admin Control Panel
                 </h2>
-                <p className="text-xs text-slate-400">
-                  Secure settings & Telegram channel link manager
+                <p className="text-xs text-slate-500">
+                  Secure settings & group link manager
                 </p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition"
+              className="p-2 rounded-full bg-slate-100 text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -223,14 +223,14 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
               </div>
 
               <div>
-                <h3 className="text-xl font-black text-white tracking-wide">Enter Admin Passcode</h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <h3 className="text-xl font-black text-slate-900 tracking-wide">Enter Admin Passcode</h3>
+                <p className="text-xs text-slate-500 mt-1">
                   Access is restricted to channel administrators only.
                 </p>
               </div>
 
               {errorMsg && (
-                <div className="p-3.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-bold flex items-center justify-center gap-2">
+                <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center justify-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{errorMsg}</span>
                 </div>
@@ -242,13 +242,13 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                   value={passcode}
                   onChange={(e) => setPasscode(e.target.value)}
                   placeholder="Passcode Enter Karein"
-                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 text-center font-mono text-xl tracking-widest"
+                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500 text-center font-mono text-xl tracking-widest"
                   autoFocus
                 />
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black text-sm shadow-lg shadow-sky-500/30 flex items-center justify-center space-x-2 transition"
+                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2 transition"
                 >
                   <Key className="w-4 h-4" />
                   <span>Unlock Admin Panel</span>
@@ -259,25 +259,25 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
             /* Authenticated Admin View */
             <div className="flex flex-col h-[75vh] max-h-[650px]">
               {/* Navigation Tabs */}
-              <div className="flex border-b border-slate-800 bg-slate-950/50 p-2 overflow-x-auto gap-1">
+              <div className="flex border-b border-slate-200 bg-slate-50 p-2 overflow-x-auto gap-1">
                 <button
                   onClick={() => setActiveTab('link')}
                   className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition ${
                     activeTab === 'link'
-                      ? 'bg-amber-500 text-slate-950 shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                   }`}
                 >
                   <Link className="w-4 h-4" />
-                  <span>Telegram Link</span>
+                  <span>Group Link</span>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('appearance')}
                   className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition ${
                     activeTab === 'appearance'
-                      ? 'bg-amber-500 text-slate-950 shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                   }`}
                 >
                   <Palette className="w-4 h-4" />
@@ -288,8 +288,8 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                   onClick={() => setActiveTab('badges')}
                   className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition ${
                     activeTab === 'badges'
-                      ? 'bg-amber-500 text-slate-950 shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                   }`}
                 >
                   <Sparkles className="w-4 h-4" />
@@ -300,8 +300,8 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                   onClick={() => setActiveTab('stats')}
                   className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition ${
                     activeTab === 'stats'
-                      ? 'bg-amber-500 text-slate-950 shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                   }`}
                 >
                   <BarChart2 className="w-4 h-4" />
@@ -312,8 +312,8 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                   onClick={() => setActiveTab('security')}
                   className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition ${
                     activeTab === 'security'
-                      ? 'bg-amber-500 text-slate-950 shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                   }`}
                 >
                   <Shield className="w-4 h-4" />
@@ -324,21 +324,21 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
               {/* Tab Content Body */}
               <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-5">
                 {successMsg && (
-                  <div className="p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-sm font-bold flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 shrink-0 text-emerald-400" />
+                  <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 shrink-0 text-emerald-600" />
                     <span>{successMsg}</span>
                   </div>
                 )}
 
-                {/* TAB 1: TELEGRAM LINK */}
+                {/* TAB 1: GROUP LINK */}
                 {activeTab === 'link' && (
                   <div className="space-y-4">
-                    <div className="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 space-y-3">
-                      <label className="block text-xs font-bold uppercase tracking-wider text-amber-400">
-                        ⚡ Main Telegram Channel / Group Link
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-emerald-700">
+                        ⚡ Main WhatsApp Group Link
                       </label>
-                      <p className="text-xs text-slate-300">
-                        Enter your public or invite link (e.g. <code className="text-emerald-400 font-mono">https://t.me/your_channel_name</code> or <code className="text-emerald-400 font-mono">https://t.me/+AbCdEfGh</code>)
+                      <p className="text-xs text-slate-600">
+                        Enter your group link (e.g. <code className="text-emerald-700 font-mono">https://chat.whatsapp.com/your_group_id</code> or wa.me)
                       </p>
 
                       <div className="relative">
@@ -346,21 +346,16 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                           type="text"
                           value={telegramLink}
                           onChange={(e) => setTelegramLink(e.target.value)}
-                          onBlur={(e) => {
-                            if (e.target.value) {
-                              setTelegramLink(formatTelegramUrl(e.target.value));
-                            }
-                          }}
-                          placeholder="https://t.me/your_channel_name or @username"
-                          className="w-full pl-10 pr-24 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm font-mono focus:outline-none focus:border-amber-400"
+                          placeholder="https://chat.whatsapp.com/your_group_id"
+                          className="w-full pl-10 pr-24 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm font-mono focus:outline-none focus:border-emerald-500"
                         />
-                        <Globe className="w-5 h-5 text-slate-500 absolute left-3 top-3.5" />
+                        <Globe className="w-5 h-5 text-slate-400 absolute left-3 top-3.5" />
 
                         <a
                           href={formatTelegramUrl(telegramLink) || '#'}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="absolute right-2 top-2 px-3 py-1.5 rounded-lg bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 border border-sky-500/40 text-xs font-bold flex items-center gap-1"
+                          className="absolute right-2 top-2 px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border border-emerald-300 text-xs font-bold flex items-center gap-1"
                         >
                           <span>Test</span>
                           <ExternalLink className="w-3 h-3" />
@@ -369,9 +364,9 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                     </div>
 
                     {/* Optional Secondary WhatsApp Link */}
-                    <div className="p-4 rounded-2xl bg-slate-800/40 border border-slate-800 space-y-3">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                       <div className="flex items-center justify-between">
-                        <label className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                        <label className="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
                           <MessageCircle className="w-4 h-4" />
                           <span>Secondary WhatsApp Link (Optional)</span>
                         </label>
@@ -379,7 +374,7 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                           type="checkbox"
                           checked={showWhatsapp}
                           onChange={(e) => setShowWhatsapp(e.target.checked)}
-                          className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                          className="w-4 h-4 accent-emerald-600 cursor-pointer"
                         />
                       </div>
 
@@ -389,7 +384,7 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                           value={whatsappLink}
                           onChange={(e) => setWhatsappLink(e.target.value)}
                           placeholder="https://wa.me/919876543210"
-                          className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm font-mono focus:outline-none focus:border-emerald-400"
+                          className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm font-mono focus:outline-none focus:border-emerald-500"
                         />
                       )}
                     </div>
@@ -402,45 +397,45 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                     {/* Titles */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                        <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
                           Channel Title
                         </label>
                         <input
                           type="text"
                           value={title}
                           onChange={(e) => setTitle(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-emerald-500"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                        <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
                           Button Text
                         </label>
                         <input
                           type="text"
                           value={buttonText}
                           onChange={(e) => setButtonText(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400 font-bold"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-emerald-500 font-bold"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                      <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
                         Subtitle Tagline
                       </label>
                       <input
                         type="text"
                         value={subtitle}
                         onChange={(e) => setSubtitle(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-emerald-500"
                       />
                     </div>
 
                     {/* Button Animation Selector */}
                     <div>
-                      <label className="block text-xs font-bold uppercase text-amber-400 mb-2">
+                      <label className="block text-xs font-bold uppercase text-emerald-800 mb-2">
                         🔥 Button Animation Style
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -457,8 +452,8 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                             onClick={() => setAnimationType(item.id as AnimationType)}
                             className={`p-3 rounded-xl border text-xs font-bold text-left transition ${
                               animationType === item.id
-                                ? 'bg-amber-500/20 border-amber-400 text-amber-300 shadow-md'
-                                : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:bg-slate-800'
+                                ? 'bg-emerald-50 border-emerald-500 text-emerald-900 shadow-sm'
+                                : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
                             }`}
                           >
                             {item.label}
@@ -469,7 +464,7 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
 
                     {/* Theme Selector */}
                     <div>
-                      <label className="block text-xs font-bold uppercase text-amber-400 mb-2">
+                      <label className="block text-xs font-bold uppercase text-emerald-800 mb-2">
                         🎨 Color Theme Preset
                       </label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -480,8 +475,8 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                             onClick={() => setThemeColor(key as ThemeColor)}
                             className={`p-3 rounded-xl border text-xs font-bold text-left flex items-center justify-between transition ${
                               themeColor === key
-                                ? 'bg-slate-800 border-amber-400 text-white ring-2 ring-amber-400/30'
-                                : 'bg-slate-800/40 border-slate-700 text-slate-300 hover:bg-slate-800'
+                                ? 'bg-slate-100 border-emerald-500 text-slate-900 ring-2 ring-emerald-500/20'
+                                : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
                             }`}
                           >
                             <span>{theme.name}</span>
@@ -496,8 +491,8 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                 {/* TAB 3: BADGES MANAGER */}
                 {activeTab === 'badges' && (
                   <div className="space-y-4">
-                    <div className="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 space-y-3">
-                      <label className="block text-xs font-bold uppercase text-amber-400">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                      <label className="block text-xs font-bold uppercase text-emerald-800">
                         Add New Badge / Highlight
                       </label>
 
@@ -507,13 +502,13 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                           value={newBadgeText}
                           onChange={(e) => setNewBadgeText(e.target.value)}
                           placeholder="e.g. Daily ₹2000 Earning Proofs"
-                          className="flex-1 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400"
+                          className="flex-1 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-emerald-500"
                         />
 
                         <select
                           value={newBadgeIcon}
                           onChange={(e) => setNewBadgeIcon(e.target.value)}
-                          className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs"
+                          className="px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs"
                         >
                           {availableIcons.map(ic => (
                             <option key={ic.name} value={ic.name}>{ic.label}</option>
@@ -523,7 +518,7 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                         <select
                           value={newBadgeColor}
                           onChange={(e) => setNewBadgeColor(e.target.value)}
-                          className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs"
+                          className="px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs"
                         >
                           <option value="emerald">Emerald</option>
                           <option value="amber">Amber Gold</option>
@@ -535,7 +530,7 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                         <button
                           type="button"
                           onClick={addBadge}
-                          className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1"
+                          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1"
                         >
                           <Plus className="w-4 h-4" />
                           <span>Add</span>
@@ -548,17 +543,17 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                       {badges.map((b, idx) => (
                         <div
                           key={b.id || idx}
-                          className="flex items-center justify-between p-3 rounded-xl bg-slate-800/80 border border-slate-700 text-sm"
+                          className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 text-sm"
                         >
                           <div className="flex items-center space-x-2">
-                            <span className="text-xs font-mono text-slate-500">#{idx + 1}</span>
-                            <span className="font-semibold text-white">{b.text}</span>
+                            <span className="text-xs font-mono text-slate-400">#{idx + 1}</span>
+                            <span className="font-semibold text-slate-900">{b.text}</span>
                           </div>
 
                           <button
                             type="button"
                             onClick={() => removeBadge(b.id)}
-                            className="p-1.5 rounded-lg text-rose-400 hover:bg-rose-500/20 transition"
+                            className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -572,22 +567,22 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                 {activeTab === 'stats' && (
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 text-center">
-                        <span className="text-xs text-slate-400 font-bold uppercase">Total Clicks</span>
-                        <div className="text-3xl font-black text-amber-400 mt-1">
+                      <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+                        <span className="text-xs text-slate-500 font-bold uppercase">Total Clicks</span>
+                        <div className="text-3xl font-black text-emerald-700 mt-1">
                           {(config.totalClicks || 0).toLocaleString()}
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 text-center">
-                        <label className="block text-xs text-slate-400 font-bold uppercase mb-1">
+                      <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+                        <label className="block text-xs text-slate-500 font-bold uppercase mb-1">
                           Display Member Count
                         </label>
                         <input
                           type="number"
                           value={memberCount}
                           onChange={(e) => setMemberCount(Number(e.target.value))}
-                          className="w-28 mx-auto px-2 py-1 rounded bg-slate-900 border border-slate-700 text-white font-mono text-center text-lg font-bold"
+                          className="w-28 mx-auto px-2 py-1 rounded bg-white border border-slate-200 text-slate-900 font-mono text-center text-lg font-bold"
                         />
                       </div>
                     </div>
@@ -596,24 +591,24 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
 
                 {/* TAB 5: SECURITY / PASSCODE */}
                 {activeTab === 'security' && (
-                  <div className="p-4 sm:p-5 rounded-2xl bg-slate-800/70 border border-slate-700 space-y-4">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
                     <div>
-                      <label className="block text-xs font-bold uppercase text-amber-400 tracking-wider">
+                      <label className="block text-xs font-bold uppercase text-emerald-800 tracking-wider">
                         🔐 Change Admin Passcode
                       </label>
-                      <p className="text-xs text-slate-300 mt-1">
+                      <p className="text-xs text-slate-600 mt-1">
                         Set a new secret passcode to secure your admin panel from unauthorized access.
                       </p>
                     </div>
 
                     <div>
-                      <label className="block text-xs text-slate-400 mb-1">New Passcode</label>
+                      <label className="block text-xs text-slate-500 mb-1">New Passcode</label>
                       <input
                         type="password"
                         value={newPasscode}
                         onChange={(e) => setNewPasscode(e.target.value)}
                         placeholder="Naya Passcode Type Karein"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm font-mono focus:outline-none focus:border-amber-400"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm font-mono focus:outline-none focus:border-emerald-500"
                       />
                     </div>
                   </div>
@@ -621,11 +616,11 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
               </div>
 
               {/* Footer Save Actions */}
-              <div className="px-6 py-4 bg-slate-800/90 border-t border-slate-700 flex items-center justify-between">
+              <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs"
+                  className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
                 >
                   Close
                 </button>
@@ -634,7 +629,7 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                   type="button"
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm shadow-lg flex items-center space-x-2"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm shadow-md flex items-center space-x-2"
                 >
                   {isSaving ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />

@@ -1,9 +1,17 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Send, Rocket, Shield, Sparkles, MessageCircle, ExternalLink, CheckCircle2, Clock } from 'lucide-react';
+import { Rocket, Shield, Sparkles, MessageCircle, ExternalLink, CheckCircle2, Clock } from 'lucide-react';
 import { AnimationType, ThemeColor } from '../types';
 import { themePresets } from '../utils/themeStyles';
 import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
+
+function WhatsAppIcon({ className = "w-6 h-6" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c-.001 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413" />
+    </svg>
+  );
+}
 
 interface AnimatedTelegramButtonProps {
   telegramLink?: string;
@@ -74,9 +82,9 @@ export function AnimatedTelegramButton({
         return {
           animate: {
             boxShadow: [
-              '0 0 15px rgba(16,185,129,0.3)',
-              '0 0 45px rgba(16,185,129,0.85)',
-              '0 0 15px rgba(16,185,129,0.3)'
+              '0 0 15px rgba(37,211,102,0.4)',
+              '0 0 45px rgba(37,211,102,0.9)',
+              '0 0 15px rgba(37,211,102,0.4)'
             ]
           },
           transition: {
@@ -106,11 +114,11 @@ export function AnimatedTelegramButton({
 
   return (
     <div className="w-full space-y-3 my-3">
-      {/* Main Telegram CTA Button Box with Radar Rings */}
+      {/* Main WhatsApp CTA Button Box with Green Radar Rings */}
       <div className="relative group w-full">
-        {/* Glowing Radar Rings Background */}
-        <span className="absolute -inset-1 rounded-2xl bg-sky-400/50 blur-md animate-pulse opacity-80 pointer-events-none" />
-        <span className="absolute -inset-2 rounded-2xl bg-cyan-400/20 animate-ping opacity-40 pointer-events-none" />
+        {/* Glowing Radar Rings Background in WhatsApp Green */}
+        <span className="absolute -inset-1 rounded-2xl bg-emerald-400/60 blur-md animate-pulse opacity-80 pointer-events-none" />
+        <span className="absolute -inset-2 rounded-2xl bg-green-400/30 animate-ping opacity-40 pointer-events-none" />
 
         <motion.a
           href={directHref}
@@ -127,7 +135,7 @@ export function AnimatedTelegramButton({
           {...animProps}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.96 }}
-          className="relative w-full overflow-hidden rounded-2xl py-3.5 sm:py-4 px-4 sm:px-6 bg-gradient-to-r from-[#0088cc] via-[#2AABEE] to-[#0088cc] hover:from-[#0077b5] hover:to-[#229ED9] text-white border-2 border-sky-200/60 font-black tracking-wide shadow-[0_10px_30px_rgba(0,136,204,0.7)] transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95 no-underline block"
+          className="relative w-full overflow-hidden rounded-2xl py-3.5 sm:py-4 px-4 sm:px-6 bg-gradient-to-r from-[#25D366] via-[#20ba5a] to-[#128C7E] hover:from-[#20ba5a] hover:to-[#0e7065] text-white border-2 border-emerald-200/80 font-black tracking-wide shadow-[0_10px_30px_rgba(37,211,102,0.65)] transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95 no-underline block"
         >
           {/* Shimmer Light Beam Effect */}
           <motion.div
@@ -142,56 +150,21 @@ export function AnimatedTelegramButton({
             className="absolute top-0 bottom-0 w-1/3 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12 pointer-events-none"
           />
 
-          {/* Main Action Text & Icon */}
+          {/* Main Action Text & WhatsApp Icon */}
           <div className="flex items-center justify-center space-x-2.5 text-base sm:text-lg md:text-xl font-black drop-shadow-md text-white">
             <motion.div
               animate={{ y: [0, -3, 0], rotate: [0, -8, 8, 0] }}
               transition={{ repeat: Infinity, duration: 1.2 }}
               className="shrink-0 text-white"
             >
-              <Send className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
+              <WhatsAppIcon className="w-6 h-6 sm:w-7 sm:h-7" />
             </motion.div>
             <span className="text-center font-black tracking-wide uppercase">
-              {buttonText || "JOIN NOW FAST"}
+              {buttonText || "JOIN GROUP"}
             </span>
           </div>
         </motion.a>
       </div>
-
-      {/* 1-Minute Round Circle Auto Redirect Countdown Timer (Matching Screenshot) */}
-      {timeLeft !== undefined && (
-        <div className="w-full flex flex-col items-center justify-center pt-1 pb-1">
-          <div className="relative flex items-center justify-center w-20 h-20 bg-[#0A1128]/95 rounded-full border border-amber-500/50 p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)] backdrop-blur-md">
-            <svg className="w-full h-full transform -rotate-90">
-              {/* Dark Circle Track */}
-              <circle
-                cx="34"
-                cy="34"
-                r="26"
-                className="stroke-slate-800/90"
-                strokeWidth="5"
-                fill="transparent"
-              />
-              {/* Active Animated Yellow Ring */}
-              <circle
-                cx="34"
-                cy="34"
-                r="26"
-                className="stroke-amber-400 transition-all duration-1000 ease-linear"
-                strokeWidth="5"
-                strokeDasharray={2 * Math.PI * 26}
-                strokeDashoffset={(2 * Math.PI * 26) - ((Math.max(0, Math.min(60, timeLeft)) / 60) * (2 * Math.PI * 26))}
-                strokeLinecap="round"
-                fill="transparent"
-              />
-            </svg>
-            {/* Time Text Inside Circle (e.g. 00:41) */}
-            <span className="absolute font-mono font-extrabold text-base sm:text-lg text-amber-300 tracking-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-              {formatTime(timeLeft)}
-            </span>
-          </div>
-        </div>
-      )}
 
       {/* Secondary WhatsApp Button if enabled */}
       {showWhatsapp && (
@@ -208,9 +181,9 @@ export function AnimatedTelegramButton({
 
       {/* Real-time Click Count or Trust Pill */}
       {totalClicks !== undefined && totalClicks > 0 && (
-        <div className="flex items-center justify-center text-[11px] font-semibold text-blue-200/80 gap-1.5 pt-0.5">
-          <Rocket className="w-3 h-3 text-cyan-400 animate-bounce" />
-          <span><strong className="text-cyan-300">{totalClicks.toLocaleString()}</strong> Telegram Redirects Completed Today</span>
+        <div className="flex items-center justify-center text-[11px] font-semibold text-slate-600 gap-1.5 pt-0.5">
+          <Rocket className="w-3 h-3 text-emerald-600 animate-bounce" />
+          <span><strong className="text-emerald-700 font-bold">{totalClicks.toLocaleString()}</strong> WhatsApp Group Redirects Completed Today</span>
         </div>
       )}
     </div>

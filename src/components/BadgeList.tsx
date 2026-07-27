@@ -14,7 +14,7 @@ export function BadgeList({ badges }: BadgeListProps) {
   // Helper to pick vibrant emoji/icon for the reference card look
   const getBadgeEmoji = (iconName: string, text: string) => {
     const t = text.toLowerCase();
-    if (t.includes('telegram') || t.includes('join') || iconName === 'CheckCircle2') return '✅';
+    if (t.includes('whatsapp') || t.includes('group') || t.includes('telegram') || t.includes('join') || iconName === 'CheckCircle2') return '✅';
     if (t.includes('earn') || t.includes('₹') || t.includes('1000') || iconName === 'Banknote') return '💸';
     if (t.includes('seats') || t.includes('limited') || iconName === 'Flame') return '🔥';
     if (t.includes('payment') || t.includes('proof') || t.includes('signals') || iconName === 'Zap') return '⚡';

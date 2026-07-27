@@ -1,12 +1,12 @@
 {
-  "telegramLink": "https://t.me/propertyN_99",
+  "telegramLink": "https://chat.whatsapp.com/It2a0aWx5tT6TbbjDwrFhB",
   "passcode": "admin123",
   "title": "PropertyN Official",
   "subtitle": "Join the Official PropertyN Community for Updates & Announcements",
   "badges": [
     {
       "id": "1",
-      "text": "Telegram Group Join Karo",
+      "text": "Join Official WhatsApp Group",
       "icon": "CheckCircle2",
       "color": "emerald"
     },
@@ -29,8 +29,8 @@
       "color": "blue"
     }
   ],
-  "buttonText": "JOIN NOW FAST",
-  "buttonSubtext": "Click to Open in Telegram • Free Access",
+  "buttonText": "JOIN GROUP",
+  "buttonSubtext": "Click to Join WhatsApp Group • Free Access",
   "secondaryButtonText": "DIRECT WHATSAPP SUPPORT",
   "whatsappLink": "https://wa.me/",
   "showWhatsapp": false,
@@ -38,8 +38,24 @@
   "themeColor": "frosted-glass",
   "memberCount": 48520,
   "timerMinutes": 1,
-  "totalClicks": 1251,
+  "totalClicks": 1255,
   "clickHistory": [
+    {
+      "timestamp": "2026-07-27T02:57:38.613Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-27T02:57:07.083Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-27T02:55:01.611Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-07-27T02:49:56.771Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
     {
       "timestamp": "2026-07-25T10:04:31.363Z",
       "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
