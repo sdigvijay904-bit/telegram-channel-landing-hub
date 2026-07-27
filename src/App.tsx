@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HeaderCard } from './components/HeaderCard';
 import { BadgeList } from './components/BadgeList';
-import { PropertyNShowcase } from './components/PropertyNShowcase';
 import { AnimatedTelegramButton } from './components/AnimatedTelegramButton';
 import { RedirectModal } from './components/RedirectModal';
 import { AdminPanelModal } from './components/AdminPanelModal';
@@ -217,9 +216,6 @@ export default function App() {
 
         {/* Highlight Badges */}
         <BadgeList badges={config.badges} themeColor={config.themeColor} />
-
-        {/* PropertyN Real Estate Showcase & Live Earnings Card */}
-        <PropertyNShowcase />
 
         {/* Animated Telegram Action Button */}
         <AnimatedTelegramButton
