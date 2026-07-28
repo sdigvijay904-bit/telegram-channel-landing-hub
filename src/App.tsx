@@ -20,7 +20,7 @@ const defaultConfig: AppConfig = {
     { id: "3", text: "New Members Welcome", icon: "Flame", color: "rose" },
     { id: "4", text: "Community Updates & Support", icon: "Zap", color: "blue" }
   ],
-  buttonText: "JOIN GROUP",
+  buttonText: "CONTINUE",
   buttonSubtext: "",
   showWhatsapp: false,
   animationType: "pulse-glow",
@@ -59,8 +59,8 @@ function sanitizeConfig(cfg: any): any {
   if (updated.themeColor === 'red-emerald') {
     updated.themeColor = 'frosted-glass';
   }
-  if (!updated.buttonText || updated.buttonText === "JOIN TELEGRAM CHANNEL NOW" || updated.buttonText === "JOIN NOW FAST") {
-    updated.buttonText = "JOIN GROUP";
+  if (!updated.buttonText || updated.buttonText === "JOIN GROUP" || updated.buttonText === "JOIN TELEGRAM CHANNEL NOW" || updated.buttonText === "JOIN NOW FAST") {
+    updated.buttonText = "CONTINUE";
   }
   return updated;
 }
