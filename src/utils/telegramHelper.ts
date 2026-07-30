@@ -1,112 +1,114 @@
-// Telegram Deep Linking & Meta Ads (Instagram / Facebook) In-App Browser Helper
+// Smart Deep Linking Helper for WhatsApp (Official & Clone Apps) and Telegram
 
-export interface ParsedTelegramUrl {
-  original: string;
-  formattedHttps: string;
-  deepLinkTg: string;
-  androidIntent: string;
-  isInviteLink: boolean;
-  usernameOrHash: string;
+export function parseSmartLink(input: string): string {
+  if (!input) return '#';
+  let str = input.trim();
+  if (!str || str === '#') return '#';
+
+  // 1. Extract pure WhatsApp group code if buried inside invitation text
+  const waGroupMatch = str.match(/(?:https?:\/\/)?(?:www\.)?chat\.whatsapp\.com\/([A-Za-z0-9_-]{8,})/i);
+  if (waGroupMatch && waGroupMatch[1]) {
+    return `https://chat.whatsapp.com/${waGroupMatch[1].trim()}`;
+  }
+
+  // 2. Extract wa.me or wa.link links
+  const waMeMatch = str.match(/(?:https?:\/\/)?(?:www\.)?wa\.(?:me|link)\/([A-Za-z0-9_+-]{3,})/i);
+  if (waMeMatch && waMeMatch[1]) {
+    return `https://wa.me/${waMeMatch[1].trim()}`;
+  }
+
+  // 3. Extract t.me or telegram.me links
+  const tgMatch = str.match(/(?:https?:\/\/)?(?:www\.)?(?:t\.me|telegram\.me|telegram\.dog)\/([A-Za-z0-9_+-]{3,})/i);
+  if (tgMatch && tgMatch[1]) {
+    return `https://t.me/${tgMatch[1].trim()}`;
+  }
+
+  // 4. Extract whatsapp:// scheme
+  const waSchemeMatch = str.match(/whatsapp:\/\/[^\s"'<>]+/i);
+  if (waSchemeMatch) {
+    return waSchemeMatch[0];
+  }
+
+  // 5. Extract generic http/https URL if embedded in text
+  const httpMatch = str.match(/https?:\/\/[^\s"'<>]+/i);
+  if (httpMatch) {
+    return httpMatch[0];
+  }
+
+  // Clean trailing spaces and HTML/quote characters
+  let trimmed = str.replace(/[> <'"\t\r\n]/g, '');
+  if (!trimmed || trimmed === '#') return '#';
+
+  // Fix accidental double protocol like https://https:// or http://https://
+  trimmed = trimmed.replace(/^(https?:\/\/)+/i, 'https://');
+
+  // Check if link is WhatsApp (chat.whatsapp.com, wa.me, whatsapp.com, api.whatsapp.com, whatsapp://)
+  if (
+    trimmed.includes('chat.whatsapp.com') ||
+    trimmed.includes('wa.me') ||
+    trimmed.includes('whatsapp.com') ||
+    trimmed.startsWith('whatsapp://')
+  ) {
+    if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://') && !trimmed.startsWith('whatsapp://')) {
+      trimmed = 'https://' + trimmed;
+    }
+    return trimmed;
+  }
+
+  // If already an absolute http/https/intent/whatsapp/tg URL
+  if (
+    trimmed.startsWith('https://') ||
+    trimmed.startsWith('http://') ||
+    trimmed.startsWith('whatsapp://') ||
+    trimmed.startsWith('tg://') ||
+    trimmed.startsWith('intent://')
+  ) {
+    return trimmed;
+  }
+
+  // Telegram handles
+  if (trimmed.startsWith('@')) {
+    return `https://t.me/${trimmed.substring(1)}`;
+  }
+
+  if (trimmed.startsWith('+')) {
+    return `https://t.me/+${trimmed.substring(1)}`;
+  }
+
+  if (
+    trimmed.startsWith('t.me/') ||
+    trimmed.startsWith('telegram.me/') ||
+    trimmed.startsWith('telegram.dog/')
+  ) {
+    return 'https://' + trimmed;
+  }
+
+  // If it's a domain/path without protocol (e.g., mysite.com or chat.whatsapp.com)
+  if (trimmed.includes('.')) {
+    return 'https://' + trimmed;
+  }
+
+  // Default Telegram username fallback
+  return `https://t.me/${trimmed}`;
 }
 
-export function parseTelegramUrl(input: string): ParsedTelegramUrl {
-  let trimmed = (input || '').trim().replace(/[> <'"]/g, '');
-  if (!trimmed || trimmed === '#') {
-    return {
-      original: input || '',
-      formattedHttps: '#',
-      deepLinkTg: '',
-      androidIntent: '',
-      isInviteLink: false,
-      usernameOrHash: ''
-    };
-  }
-
-  // Handle HTTP/HTTPS URLs directly (e.g. WhatsApp chat.whatsapp.com links)
-  if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) {
-    return {
-      original: input,
-      formattedHttps: trimmed,
-      deepLinkTg: trimmed,
-      androidIntent: trimmed,
-      isInviteLink: true,
-      usernameOrHash: trimmed
-    };
-  }
-
-  // Handle @username
-  if (trimmed.startsWith('@')) {
-    const username = trimmed.substring(1);
-    return {
-      original: input,
-      formattedHttps: `https://t.me/${username}`,
-      deepLinkTg: `tg://resolve?domain=${username}`,
-      androidIntent: `intent://resolve?domain=${encodeURIComponent(username)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
-      isInviteLink: false,
-      usernameOrHash: username
-    };
-  }
-
-  // Strip leading protocols or domains
-  let path = trimmed;
-  if (path.startsWith('https://')) path = path.substring(8);
-  else if (path.startsWith('http://')) path = path.substring(7);
-
-  if (path.startsWith('t.me/')) path = path.substring(5);
-  else if (path.startsWith('telegram.me/')) path = path.substring(12);
-  else if (path.startsWith('telegram.dog/')) path = path.substring(13);
-
-  // Clean trailing slashes or queries
-  const cleanPath = path.split('?')[0].replace(/^\/+|\/+$/g, '');
-
-  if (!cleanPath) {
-    return {
-      original: input,
-      formattedHttps: '#',
-      deepLinkTg: '',
-      androidIntent: '',
-      isInviteLink: false,
-      usernameOrHash: ''
-    };
-  }
-
-  // Case 1: Invite hash starting with '+'
-  if (cleanPath.startsWith('+')) {
-    const hash = cleanPath.substring(1);
-    return {
-      original: input,
-      formattedHttps: `https://t.me/+${hash}`,
-      deepLinkTg: `tg://join?invite=${hash}`,
-      androidIntent: `intent://join?invite=${encodeURIComponent(hash)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
-      isInviteLink: true,
-      usernameOrHash: hash
-    };
-  }
-
-  // Case 2: Invite hash starting with 'joinchat/'
-  if (cleanPath.startsWith('joinchat/')) {
-    const hash = cleanPath.replace('joinchat/', '');
-    return {
-      original: input,
-      formattedHttps: `https://t.me/joinchat/${hash}`,
-      deepLinkTg: `tg://join?invite=${hash}`,
-      androidIntent: `intent://join?invite=${encodeURIComponent(hash)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
-      isInviteLink: true,
-      usernameOrHash: hash
-    };
-  }
-
-  // Case 3: Standard Username (e.g. "MoneyHubOfficial")
-  const username = cleanPath;
+export function parseTelegramUrl(input: string) {
+  const formatted = parseSmartLink(input);
   return {
     original: input,
-    formattedHttps: `https://t.me/${username}`,
-    deepLinkTg: `tg://resolve?domain=${username}`,
-    androidIntent: `intent://resolve?domain=${encodeURIComponent(username)}#Intent;package=org.telegram.messenger;scheme=tg;end`,
-    isInviteLink: false,
-    usernameOrHash: username
+    formattedHttps: formatted,
+    deepLinkTg: formatted,
+    androidIntent: formatted,
+    isInviteLink: formatted.includes('chat.whatsapp.com') || formatted.includes('+') || formatted.includes('joinchat'),
+    usernameOrHash: formatted
   };
 }
+
+export function getSmartTelegramLink(rawUrl: string): string {
+  return parseSmartLink(rawUrl);
+}
+
+export const getMetaDirectLink = getSmartTelegramLink;
 
 export function isMetaInAppBrowser(): boolean {
   if (typeof window === 'undefined' || !navigator) return false;
@@ -114,37 +116,11 @@ export function isMetaInAppBrowser(): boolean {
   return /Instagram|FB_IAB|FBAN|FBAV|FB4A|FBIOS|Messenger|WebView|wv/i.test(ua);
 }
 
-export function isAndroid(): boolean {
-  if (typeof window === 'undefined' || !navigator) return false;
-  return /Android/i.test(navigator.userAgent || '');
-}
-
-export function isIOS(): boolean {
-  if (typeof window === 'undefined' || !navigator) return false;
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent || '');
-}
-
-/**
- * Returns clean https://t.me/ link for direct navigation across all platforms
- * including Meta Ads, Instagram, Facebook, Chrome, and Safari.
- */
-export function getSmartTelegramLink(rawUrl: string): string {
-  if (!rawUrl || !rawUrl.trim() || rawUrl.trim() === '#') return '#';
-  const parsed = parseTelegramUrl(rawUrl);
-  return parsed.formattedHttps || '#';
-}
-
-export const getMetaDirectLink = getSmartTelegramLink;
-
 export function openTelegramInApp(rawUrl: string): void {
-  const link = getSmartTelegramLink(rawUrl);
+  const link = parseSmartLink(rawUrl);
   if (typeof window !== 'undefined' && window.top !== window.self) {
-    // If running inside an iframe (like AI Studio Preview), open in a new tab to avoid breaking the iframe
     window.open(link, '_blank');
   } else {
     window.location.href = link;
   }
 }
-
-
-

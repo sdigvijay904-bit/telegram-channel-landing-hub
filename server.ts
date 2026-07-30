@@ -25,7 +25,7 @@ const defaultConfig = {
   buttonText: "JOIN GROUP",
   buttonSubtext: "Click to Join WhatsApp Group • Free Access",
   secondaryButtonText: "DIRECT WHATSAPP SUPPORT",
-  whatsappLink: "https://wa.me/",
+  whatsappLink: "",
   showWhatsapp: false,
   animationType: "pulse-glow", // 'pulse-glow' | 'shimmer' | 'bounce' | 'ripple-ring' | 'neon-breath'
   themeColor: "frosted-glass", // 'frosted-glass' | 'red-emerald' | 'cyan-blue' | 'purple-gold' | 'neon-dark' | 'sunset-fire'
@@ -48,7 +48,11 @@ function loadConfig() {
   ensureDataFile();
   try {
     const data = fs.readFileSync(CONFIG_FILE, "utf-8");
-    return { ...defaultConfig, ...JSON.parse(data) };
+    const parsed = JSON.parse(data);
+    if (parsed.whatsappLink === "https://wa.me/" || parsed.whatsappLink === "https://wa.me") {
+      parsed.whatsappLink = "";
+    }
+    return { ...defaultConfig, ...parsed };
   } catch (err) {
     console.error("Error reading config.json, returning default:", err);
     return defaultConfig;

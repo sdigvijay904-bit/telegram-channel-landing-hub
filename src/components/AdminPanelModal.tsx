@@ -32,9 +32,38 @@ interface AdminPanelModalProps {
 }
 
 function formatTelegramUrl(input: string): string {
-  let trimmed = input.trim();
+  if (!input) return '';
+  let str = input.trim();
+  if (!str) return '';
+
+  // 1. Extract chat.whatsapp.com URL if embedded in text
+  const waMatch = str.match(/(?:https?:\/\/)?(?:www\.)?chat\.whatsapp\.com\/([A-Za-z0-9_-]{8,})/i);
+  if (waMatch && waMatch[1]) {
+    return `https://chat.whatsapp.com/${waMatch[1].trim()}`;
+  }
+
+  // 2. Extract wa.me or wa.link URL
+  const waMeMatch = str.match(/(?:https?:\/\/)?(?:www\.)?wa\.(?:me|link)\/([A-Za-z0-9_+-]{3,})/i);
+  if (waMeMatch && waMeMatch[1]) {
+    return `https://wa.me/${waMeMatch[1].trim()}`;
+  }
+
+  // 3. Extract t.me or telegram.me URL
+  const tgMatch = str.match(/(?:https?:\/\/)?(?:www\.)?(?:t\.me|telegram\.me|telegram\.dog)\/([A-Za-z0-9_+-]{3,})/i);
+  if (tgMatch && tgMatch[1]) {
+    return `https://t.me/${tgMatch[1].trim()}`;
+  }
+
+  // 4. Extract generic http/https URL if embedded in text
+  const httpMatch = str.match(/https?:\/\/[^\s"'<>]+/i);
+  if (httpMatch) {
+    return httpMatch[0];
+  }
+
+  // Clean trailing spaces and HTML/quote characters
+  let trimmed = str.replace(/[> <'"\t\r\n]/g, '');
   if (!trimmed) return '';
-  trimmed = trimmed.replace(/[> <'"]/g, '');
+
   if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) {
     return trimmed;
   }
@@ -138,9 +167,11 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
     const formattedLink = formatTelegramUrl(telegramLink);
     setTelegramLink(formattedLink);
 
+    const cleanWaLink = (showWhatsapp && whatsappLink.trim() && whatsappLink !== 'https://wa.me/') ? whatsappLink.trim() : formattedLink;
+
     const updatedData: Partial<AppConfig> = {
       telegramLink: formattedLink,
-      whatsappLink,
+      whatsappLink: cleanWaLink,
       showWhatsapp,
       title,
       subtitle,
@@ -360,6 +391,17 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                           <span>Test</span>
                           <ExternalLink className="w-3 h-3" />
                         </a>
+                      </div>
+
+                      {/* WhatsApp Reset Link Tip Notice */}
+                      <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1 mt-2">
+                        <div className="font-bold flex items-center gap-1.5 text-amber-800">
+                          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                          <span>"Invite link was reset" Error ka Hal:</span>
+                        </div>
+                        <p className="leading-relaxed">
+                          Jab WhatsApp group me link reset ho jata hai, tab purana link kaam nahi karta. Aap apne WhatsApp / WhatsApp Clone App me group info &gt; <b>Invite via link</b> par jayein, naya active invite link copy karein aur yahan paste karke <b>Save</b> kar dein.
+                        </p>
                       </div>
                     </div>
 

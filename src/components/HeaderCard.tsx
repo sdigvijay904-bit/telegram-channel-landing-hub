@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { AppConfig } from '../types';
-import { themePresets } from '../utils/themeStyles';
 import { PropertyNLogo } from './PropertyNLogo';
 
 interface HeaderCardProps {
@@ -9,42 +8,71 @@ interface HeaderCardProps {
 }
 
 export function HeaderCard({ config }: HeaderCardProps) {
-  const theme = themePresets[config.themeColor] || themePresets['frosted-glass'];
-
   return (
-    <div className="w-full">
-      {/* Main Compact Header Card Box */}
-      <motion.div 
-        initial={{ scale: 0.95, opacity: 0 }}
+    <div className="w-full flex flex-col items-center text-center space-y-4 py-2">
+      {/* Top Best Application Crown Emblem Logo */}
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className={`relative overflow-hidden rounded-2xl p-2.5 sm:p-3 text-center shadow-lg border ${theme.headerBg} ${theme.cardBorder}`}
+        transition={{ duration: 0.4 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="cursor-pointer drop-shadow-[0_0_20px_rgba(255,215,0,0.3)]"
       >
-        {/* Background glow effects */}
-        <div className="absolute -top-10 -left-10 w-20 h-20 bg-white/20 rounded-full blur-xl pointer-events-none" />
-        <div className="absolute -bottom-10 -right-10 w-20 h-20 bg-amber-400/20 rounded-full blur-xl pointer-events-none" />
+        <PropertyNLogo className="w-32 h-32 sm:w-40 sm:h-40" />
+      </motion.div>
 
-        <div className="relative z-10 flex flex-col items-center">
-          {/* PropertyN Logo Badge */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mb-1.5 shrink-0 transition-transform duration-200"
-          >
-            <PropertyNLogo className="w-14 h-14 sm:w-16 sm:h-16" />
-          </motion.div>
+      {/* Neon Green Border Capsule Pill: "Best Online Earning" */}
+      <motion.div
+        initial={{ y: 10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+        className="w-full max-w-xs sm:max-w-sm rounded-full bg-black/80 border-2 border-[#00ff66] shadow-[0_0_20px_rgba(0,255,102,0.4)] py-2.5 px-6 sm:py-3.5 sm:px-8 text-center"
+      >
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center justify-center gap-2">
+          <span className="text-[#00ff66] drop-shadow-[0_0_8px_rgba(0,255,102,0.8)]">Best</span>
+          <span className="text-white">Online Earning</span>
+        </h1>
+      </motion.div>
 
-          {/* Title */}
-          <div className="flex items-center justify-center space-x-1 flex-wrap">
-            <h1 className={`text-lg sm:text-xl font-black tracking-tight ${theme.headerText}`}>
-              {config.title || "PropertyN Official"}
-            </h1>
-          </div>
+      {/* Subheading: "BEST EARNING Platform" */}
+      <motion.div
+        initial={{ y: 10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+      >
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#00ff66] tracking-wide drop-shadow-[0_0_12px_rgba(0,255,102,0.6)]">
+          {config.title && config.title !== "PropertyN Official" ? config.title : "BEST EARNING Platform"}
+        </h2>
+      </motion.div>
 
-          {/* Subtitle */}
-          <p className="text-[10px] sm:text-[11px] text-slate-600 max-w-xs mx-auto font-medium leading-tight mt-0.5">
-            {config.subtitle || "Join the Official PropertyN Community for Updates & Announcements"}
-          </p>
+      {/* Platform Features Section */}
+      <motion.div
+        initial={{ y: 10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.4 }}
+        className="w-full max-w-md mx-auto space-y-2.5 pt-1 px-2"
+      >
+        <h3 className="text-lg sm:text-xl font-extrabold text-white tracking-wide">
+          Why Download Our Earning Platform?
+        </h3>
+
+        <div className="text-white font-extrabold text-base sm:text-lg leading-relaxed flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 px-2">
+          <span className="flex items-center gap-1">
+            <span className="text-white text-xs">●</span> Easy Daily Tasks
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="text-white text-xs">●</span> Instant Profit
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="text-white text-xs">●</span> 100% Secure Platform
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="text-white text-xs">●</span> Zero Investment Needed
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="text-white text-xs">●</span> Start Earning From Day One
+          </span>
         </div>
       </motion.div>
     </div>
