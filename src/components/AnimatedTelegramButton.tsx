@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { AnimationType } from '../types';
 import { getMetaDirectLink } from '../utils/telegramHelper';
 
@@ -27,8 +27,6 @@ export function AnimatedTelegramButton({
   animationType = 'pulse-glow',
   onClick
 }: AnimatedTelegramButtonProps) {
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-
   // Direct Link priority: Only use whatsappLink if it's a valid link and not default 'https://wa.me/'
   const cleanWhatsapp = (whatsappLink || '').trim();
   const isValidWhatsapp = cleanWhatsapp && cleanWhatsapp !== 'https://wa.me/' && cleanWhatsapp !== 'https://wa.me';
@@ -55,15 +53,7 @@ export function AnimatedTelegramButton({
       return;
     }
 
-    // Intercept click to show the "You're leaving our app" popup on the same page
-    e.preventDefault();
-    setShowConfirmModal(true);
-  };
-
-  const handleConfirmRedirect = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    setShowConfirmModal(false);
-
-    // Ensure iframe compatibility
+    // In iframe environments (like AI Studio preview), handle direct window open
     if (typeof window !== 'undefined' && window.top !== window.self) {
       e.preventDefault();
       window.open(directHref, '_blank', 'noopener,noreferrer');
@@ -110,7 +100,7 @@ export function AnimatedTelegramButton({
       case 'ripple-ring':
         return {
           animate: {
-            scale: [1, 1.02, 1],
+            scale: [1, 1.35],
             boxShadow: [
               '0 0 15px rgba(0, 255, 102, 0.5)',
               '0 0 35px rgba(0, 255, 102, 0.95)',
@@ -218,49 +208,6 @@ export function AnimatedTelegramButton({
           {String(secondsLeft).padStart(2, '0')}
         </motion.div>
       </div>
-
-      {/* Confirmation Modal: "You're leaving our app" */}
-      <AnimatePresence>
-        {showConfirmModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="relative w-full max-w-sm bg-white rounded-2xl p-6 shadow-2xl text-left border border-slate-100 overflow-hidden"
-            >
-              <h3 className="text-slate-900 font-extrabold text-xl leading-snug mb-3">
-                You're leaving our app
-              </h3>
-
-              <p className="text-slate-700 text-sm sm:text-base leading-relaxed mb-6 font-medium">
-                The website you're viewing is attempting to open an external app. Would you like to continue?
-              </p>
-
-              <div className="flex items-center justify-end gap-3 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmModal(false)}
-                  className="px-4 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 text-xs sm:text-sm font-extrabold tracking-wider uppercase transition cursor-pointer"
-                >
-                  GO BACK
-                </button>
-
-                <a
-                  href={directHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleConfirmRedirect}
-                  className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs sm:text-sm font-black tracking-wider uppercase shadow-md transition cursor-pointer no-underline inline-block text-center"
-                >
-                  CONTINUE
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
