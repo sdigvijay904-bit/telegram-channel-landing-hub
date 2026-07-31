@@ -1,4 +1,4 @@
-// Smart Deep Linking Helper for WhatsApp (Official & Clone Apps) and Telegram
+// Smart Deep Linking Helper for WhatsApp (Group & Direct Number) and Telegram
 
 export function parseSmartLink(input: string): string {
   if (!input) return '#';
@@ -17,19 +17,33 @@ export function parseSmartLink(input: string): string {
     return `https://wa.me/${waMeMatch[1].trim()}`;
   }
 
-  // 3. Extract t.me or telegram.me links
+  // 3. Extract pure phone numbers (e.g. +91 9876543210, 9876543210, 919876543210)
+  // Check if string contains no letters and has at least 8 digits
+  const hasLetters = /[a-zA-Z]/.test(str);
+  if (!hasLetters) {
+    const digitsOnly = str.replace(/\D/g, '');
+    if (digitsOnly.length >= 8 && digitsOnly.length <= 13) {
+      // If 10 digits (e.g. 9876543210), default to India 91 prefix
+      if (digitsOnly.length === 10) {
+        return `https://wa.me/91${digitsOnly}`;
+      }
+      return `https://wa.me/${digitsOnly}`;
+    }
+  }
+
+  // 4. Extract t.me or telegram.me links
   const tgMatch = str.match(/(?:https?:\/\/)?(?:www\.)?(?:t\.me|telegram\.me|telegram\.dog)\/([A-Za-z0-9_+-]{3,})/i);
   if (tgMatch && tgMatch[1]) {
     return `https://t.me/${tgMatch[1].trim()}`;
   }
 
-  // 4. Extract whatsapp:// scheme
+  // 5. Extract whatsapp:// scheme
   const waSchemeMatch = str.match(/whatsapp:\/\/[^\s"'<>]+/i);
   if (waSchemeMatch) {
     return waSchemeMatch[0];
   }
 
-  // 5. Extract generic http/https URL if embedded in text
+  // 6. Extract generic http/https URL if embedded in text
   const httpMatch = str.match(/https?:\/\/[^\s"'<>]+/i);
   if (httpMatch) {
     return httpMatch[0];
@@ -72,6 +86,11 @@ export function parseSmartLink(input: string): string {
   }
 
   if (trimmed.startsWith('+')) {
+    // Check if phone number or telegram handle
+    const cleanNum = trimmed.replace(/\D/g, '');
+    if (cleanNum.length >= 10 && cleanNum.length <= 13) {
+      return `https://wa.me/${cleanNum}`;
+    }
     return `https://t.me/+${trimmed.substring(1)}`;
   }
 
@@ -88,6 +107,15 @@ export function parseSmartLink(input: string): string {
     return 'https://' + trimmed;
   }
 
+  // If pure digits remain, format as wa.me phone number
+  const finalDigits = trimmed.replace(/\D/g, '');
+  if (finalDigits.length >= 8) {
+    if (finalDigits.length === 10) {
+      return `https://wa.me/91${finalDigits}`;
+    }
+    return `https://wa.me/${finalDigits}`;
+  }
+
   // Default Telegram username fallback
   return `https://t.me/${trimmed}`;
 }
@@ -99,7 +127,7 @@ export function parseTelegramUrl(input: string) {
     formattedHttps: formatted,
     deepLinkTg: formatted,
     androidIntent: formatted,
-    isInviteLink: formatted.includes('chat.whatsapp.com') || formatted.includes('+') || formatted.includes('joinchat'),
+    isInviteLink: formatted.includes('chat.whatsapp.com') || formatted.includes('wa.me') || formatted.includes('+') || formatted.includes('joinchat'),
     usernameOrHash: formatted
   };
 }

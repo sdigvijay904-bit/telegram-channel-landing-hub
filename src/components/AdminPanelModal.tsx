@@ -361,15 +361,15 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                   </div>
                 )}
 
-                {/* TAB 1: GROUP LINK */}
+                {/* TAB 1: GROUP LINK OR WHATSAPP NUMBER */}
                 {activeTab === 'link' && (
                   <div className="space-y-4">
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                       <label className="block text-xs font-bold uppercase tracking-wider text-emerald-700">
-                        ⚡ Main WhatsApp Group Link
+                        ⚡ WhatsApp Link / Mobile Number
                       </label>
                       <p className="text-xs text-slate-600">
-                        Enter your group link (e.g. <code className="text-emerald-700 font-mono">https://chat.whatsapp.com/your_group_id</code> or wa.me)
+                        Aap yahan <b>WhatsApp Group Link</b> (e.g. <code className="text-emerald-700 font-mono">https://chat.whatsapp.com/...</code>) YA apna <b>WhatsApp Mobile Number</b> (e.g. <code className="text-emerald-700 font-mono">9876543210</code> ya <code className="text-emerald-700 font-mono">+919876543210</code>) daal sakte hain:
                       </p>
 
                       <div className="relative">
@@ -377,7 +377,7 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                           type="text"
                           value={telegramLink}
                           onChange={(e) => setTelegramLink(e.target.value)}
-                          placeholder="https://chat.whatsapp.com/your_group_id"
+                          placeholder="9876543210 ya https://chat.whatsapp.com/..."
                           className="w-full pl-10 pr-24 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm font-mono focus:outline-none focus:border-emerald-500"
                         />
                         <Globe className="w-5 h-5 text-slate-400 absolute left-3 top-3.5" />
@@ -393,14 +393,15 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                         </a>
                       </div>
 
-                      {/* WhatsApp Reset Link Tip Notice */}
-                      <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1 mt-2">
-                        <div className="font-bold flex items-center gap-1.5 text-amber-800">
-                          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                          <span>"Invite link was reset" Error ka Hal:</span>
+                      {/* Helpful guidance info */}
+                      <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs space-y-1 mt-2">
+                        <div className="font-bold flex items-center gap-1.5 text-emerald-800">
+                          <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>Mobile Number or Group Link Feature:</span>
                         </div>
                         <p className="leading-relaxed">
-                          Jab WhatsApp group me link reset ho jata hai, tab purana link kaam nahi karta. Aap apne WhatsApp / WhatsApp Clone App me group info &gt; <b>Invite via link</b> par jayein, naya active invite link copy karein aur yahan paste karke <b>Save</b> kar dein.
+                          - Agar aap <b>Mobile Number</b> daalenge (jaise <b>9876543210</b>), toh user click karte hi aapko direct WhatsApp par message karega.<br/>
+                          - Agar aap <b>Group Link</b> daalenge (jaise <b>chat.whatsapp.com/...</b>), toh user direct WhatsApp Group join karega.
                         </p>
                       </div>
                     </div>

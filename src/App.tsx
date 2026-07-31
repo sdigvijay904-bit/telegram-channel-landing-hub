@@ -135,7 +135,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full bg-black text-white flex flex-col items-center justify-between p-4 sm:p-6 font-sans overflow-x-hidden selection:bg-[#00ff66] selection:text-black">
+    <div className="relative h-[100dvh] max-h-[100dvh] w-full bg-black text-white flex flex-col justify-between items-center p-2 sm:p-4 font-sans overflow-hidden selection:bg-[#00ff66] selection:text-black">
       
       {/* Floating Neon Green Particles in Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -148,7 +148,7 @@ export default function App() {
       </div>
 
       {/* Main Center Layout Container */}
-      <main className="relative z-10 w-full max-w-lg mx-auto flex flex-col items-center text-center my-auto space-y-3">
+      <main className="relative z-10 w-full max-w-lg mx-auto flex flex-col items-center text-center my-auto justify-center space-y-1.5 sm:space-y-3">
         {/* Header Section (Red Emblem, Best Online Earning Badge, Platform Title & Bullets) */}
         <HeaderCard config={config} />
 
@@ -163,7 +163,7 @@ export default function App() {
 
       {/* Footer without visible Admin button (Hidden secret access via Ctrl+Shift+A or ?admin=1 or 3-taps) */}
       <footer
-        className="relative z-20 w-full py-2 flex justify-center items-center text-xs text-zinc-700 select-none cursor-default"
+        className="relative z-20 w-full py-1 flex justify-center items-center text-xs text-zinc-700 select-none cursor-default shrink-0"
         onClick={() => {
           // Secret triple click detection for mobile admin access
           const now = Date.now();
@@ -179,7 +179,7 @@ export default function App() {
           (window as any)._lastTap = now;
         }}
       >
-        <span className="text-[11px] text-zinc-600/80 font-medium">© 2026 Best Earning Platform</span>
+        <span className="text-[10px] text-zinc-600/80 font-medium">© 2026 Best Earning Platform</span>
       </footer>
 
       {/* Admin Panel Modal */}

@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { AnimationType } from '../types';
 import { getMetaDirectLink } from '../utils/telegramHelper';
 
-function WhatsAppLogoIcon({ className = "w-7 h-7" }: { className?: string }) {
+function WhatsAppLogoIcon({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c-.001 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413" />
@@ -26,7 +26,7 @@ export function AnimatedTelegramButton({
   whatsappLink = '',
   onClick
 }: AnimatedTelegramButtonProps) {
-  // Direct Link priority: Only use whatsappLink if it's a valid link and not default 'https://wa.me/', otherwise use main group link (telegramLink)
+  // Direct Link priority: Only use whatsappLink if it's a valid link and not default 'https://wa.me/'
   const cleanWhatsapp = (whatsappLink || '').trim();
   const isValidWhatsapp = cleanWhatsapp && cleanWhatsapp !== 'https://wa.me/' && cleanWhatsapp !== 'https://wa.me';
 
@@ -48,24 +48,25 @@ export function AnimatedTelegramButton({
 
     if (!targetUrl || targetUrl === '#' || directHref === '#') {
       e.preventDefault();
-      alert("Aapne WhatsApp group link set nahi kiya hai. Secret Admin Panel kholne ke liye bottom text par 3 baar tap karein.");
+      alert("Please configure your WhatsApp link or mobile number in Admin Panel.");
       return;
     }
 
-    // Direct browser navigation if in iframe
-    if (typeof window !== 'undefined' && window.top !== window.self) {
-      e.preventDefault();
-      window.open(directHref, '_blank');
-    }
+    // Standard native <a href={directHref} target="_blank"> handles navigation smoothly
+    // without triggering mobile browser popup blockers (about:blank#blocked)
   };
 
+  // Determine display label
+  const isPhoneNumber = directHref.includes('wa.me/91') || directHref.includes('wa.me/');
+  let label = buttonText && buttonText !== "CONTINUE" ? buttonText : (isPhoneNumber ? "Chat On WhatsApp" : "Join Whatsapp Group");
+
   return (
-    <div className="w-full flex flex-col items-center text-center space-y-4 my-2">
+    <div className="w-full flex flex-col items-center text-center space-y-2 my-1 shrink-0">
       {/* Red Urgency Text with Arrows */}
       <motion.div
         animate={{ scale: [1, 1.03, 1] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-        className="text-red-500 font-extrabold text-xl sm:text-2xl tracking-wide flex items-center justify-center gap-1.5 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]"
+        className="text-red-500 font-extrabold text-sm sm:text-base tracking-wide flex items-center justify-center gap-1 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
       >
         <span className="text-red-500 font-bold">⇊</span>
         <span>Hurry Up, Limited Seats Join Now</span>
@@ -73,37 +74,37 @@ export function AnimatedTelegramButton({
       </motion.div>
 
       {/* Main Big Neon Green Pill WhatsApp Button */}
-      <div className="w-full max-w-sm sm:max-w-md px-2">
+      <div className="w-full max-w-[290px] sm:max-w-md px-1">
         <motion.a
           href={directHref}
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleJoinClick}
-          whileHover={{ scale: 1.04 }}
+          whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.96 }}
           animate={{
             boxShadow: [
-              '0 0 15px rgba(0, 255, 102, 0.4)',
-              '0 0 35px rgba(0, 255, 102, 0.8)',
-              '0 0 15px rgba(0, 255, 102, 0.4)'
+              '0 0 12px rgba(0, 255, 102, 0.4)',
+              '0 0 28px rgba(0, 255, 102, 0.8)',
+              '0 0 12px rgba(0, 255, 102, 0.4)'
             ]
           }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="w-full py-3.5 sm:py-4 px-6 rounded-full bg-[#00ff66] hover:bg-[#00e65c] text-black font-extrabold text-xl sm:text-2xl tracking-wide flex items-center justify-center gap-3 shadow-[0_0_25px_rgba(0,255,102,0.6)] cursor-pointer transition-transform no-underline block"
+          className="w-full py-3 px-4 sm:py-3.5 sm:px-6 rounded-full bg-[#00ff66] hover:bg-[#00e65c] text-black font-extrabold text-base sm:text-xl tracking-tight flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(0,255,102,0.6)] cursor-pointer transition-transform no-underline block"
         >
-          <WhatsAppLogoIcon className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 text-black fill-current" />
-          <span className="font-extrabold text-black uppercase tracking-tight">
-            {buttonText && buttonText !== "CONTINUE" ? buttonText : "Join Whatsapp Group"}
+          <WhatsAppLogoIcon className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 text-black fill-current" />
+          <span className="font-extrabold text-black uppercase tracking-tight truncate">
+            {label}
           </span>
         </motion.a>
       </div>
 
       {/* Red Countdown Timer Circle Badge "00" */}
-      <div className="pt-2">
+      <div className="pt-0.5">
         <motion.div
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-red-600 border-2 border-red-400 text-white font-extrabold text-3xl sm:text-4xl flex items-center justify-center shadow-[0_0_25px_rgba(239,68,68,0.7)] mx-auto font-mono tracking-tighter"
+          className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-red-600 border-2 border-red-400 text-white font-extrabold text-2xl sm:text-3xl flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.7)] mx-auto font-mono tracking-tighter"
         >
           {String(secondsLeft).padStart(2, '0')}
         </motion.div>
