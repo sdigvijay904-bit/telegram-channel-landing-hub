@@ -1,20 +1,45 @@
 // Smart Deep Linking Helper for WhatsApp (Group & Direct Number) and Telegram
 
-export function parseSmartLink(input: string): string {
+// Helper to append default 'I am interested' prefilled text for direct WhatsApp links
+function appendWhatsappMessage(url: string, defaultText: string = "I am interested"): string {
+  if (!url || url === '#') return url;
+  // Group invite links (chat.whatsapp.com) do not support ?text=
+  if (url.includes('chat.whatsapp.com')) return url;
+
+  // Direct WhatsApp links (wa.me, api.whatsapp.com, whatsapp://)
+  if (
+    url.includes('wa.me') ||
+    url.includes('api.whatsapp.com') ||
+    url.startsWith('whatsapp://')
+  ) {
+    if (!url.toLowerCase().includes('text=')) {
+      const encodedMsg = encodeURIComponent(defaultText);
+      const separator = url.includes('?') ? '&' : '?';
+      return `${url}${separator}text=${encodedMsg}`;
+    }
+  }
+  return url;
+}
+
+export function parseSmartLink(input: string, customMessage: string = "I am interested"): string {
   if (!input) return '#';
   let str = input.trim();
   if (!str || str === '#') return '#';
 
+  let rawResult = '#';
+
   // 1. Extract pure WhatsApp group code if buried inside invitation text
   const waGroupMatch = str.match(/(?:https?:\/\/)?(?:www\.)?chat\.whatsapp\.com\/([A-Za-z0-9_-]{8,})/i);
   if (waGroupMatch && waGroupMatch[1]) {
-    return `https://chat.whatsapp.com/${waGroupMatch[1].trim()}`;
+    rawResult = `https://chat.whatsapp.com/${waGroupMatch[1].trim()}`;
+    return rawResult;
   }
 
   // 2. Extract wa.me or wa.link links
   const waMeMatch = str.match(/(?:https?:\/\/)?(?:www\.)?wa\.(?:me|link)\/([A-Za-z0-9_+-]{3,})/i);
   if (waMeMatch && waMeMatch[1]) {
-    return `https://wa.me/${waMeMatch[1].trim()}`;
+    rawResult = `https://wa.me/${waMeMatch[1].trim()}`;
+    return appendWhatsappMessage(rawResult, customMessage);
   }
 
   // 3. Extract pure phone numbers (e.g. +91 9876543210, 9876543210, 919876543210)
@@ -25,9 +50,11 @@ export function parseSmartLink(input: string): string {
     if (digitsOnly.length >= 8 && digitsOnly.length <= 13) {
       // If 10 digits (e.g. 9876543210), default to India 91 prefix
       if (digitsOnly.length === 10) {
-        return `https://wa.me/91${digitsOnly}`;
+        rawResult = `https://wa.me/91${digitsOnly}`;
+      } else {
+        rawResult = `https://wa.me/${digitsOnly}`;
       }
-      return `https://wa.me/${digitsOnly}`;
+      return appendWhatsappMessage(rawResult, customMessage);
     }
   }
 
@@ -40,13 +67,13 @@ export function parseSmartLink(input: string): string {
   // 5. Extract whatsapp:// scheme
   const waSchemeMatch = str.match(/whatsapp:\/\/[^\s"'<>]+/i);
   if (waSchemeMatch) {
-    return waSchemeMatch[0];
+    return appendWhatsappMessage(waSchemeMatch[0], customMessage);
   }
 
   // 6. Extract generic http/https URL if embedded in text
   const httpMatch = str.match(/https?:\/\/[^\s"'<>]+/i);
   if (httpMatch) {
-    return httpMatch[0];
+    return appendWhatsappMessage(httpMatch[0], customMessage);
   }
 
   // Clean trailing spaces and HTML/quote characters
@@ -66,7 +93,7 @@ export function parseSmartLink(input: string): string {
     if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://') && !trimmed.startsWith('whatsapp://')) {
       trimmed = 'https://' + trimmed;
     }
-    return trimmed;
+    return appendWhatsappMessage(trimmed, customMessage);
   }
 
   // If already an absolute http/https/intent/whatsapp/tg URL
@@ -77,7 +104,7 @@ export function parseSmartLink(input: string): string {
     trimmed.startsWith('tg://') ||
     trimmed.startsWith('intent://')
   ) {
-    return trimmed;
+    return appendWhatsappMessage(trimmed, customMessage);
   }
 
   // Telegram handles
@@ -89,7 +116,8 @@ export function parseSmartLink(input: string): string {
     // Check if phone number or telegram handle
     const cleanNum = trimmed.replace(/\D/g, '');
     if (cleanNum.length >= 10 && cleanNum.length <= 13) {
-      return `https://wa.me/${cleanNum}`;
+      rawResult = `https://wa.me/${cleanNum}`;
+      return appendWhatsappMessage(rawResult, customMessage);
     }
     return `https://t.me/+${trimmed.substring(1)}`;
   }
@@ -111,9 +139,11 @@ export function parseSmartLink(input: string): string {
   const finalDigits = trimmed.replace(/\D/g, '');
   if (finalDigits.length >= 8) {
     if (finalDigits.length === 10) {
-      return `https://wa.me/91${finalDigits}`;
+      rawResult = `https://wa.me/91${finalDigits}`;
+    } else {
+      rawResult = `https://wa.me/${finalDigits}`;
     }
-    return `https://wa.me/${finalDigits}`;
+    return appendWhatsappMessage(rawResult, customMessage);
   }
 
   // Default Telegram username fallback
@@ -132,8 +162,8 @@ export function parseTelegramUrl(input: string) {
   };
 }
 
-export function getSmartTelegramLink(rawUrl: string): string {
-  return parseSmartLink(rawUrl);
+export function getSmartTelegramLink(rawUrl: string, customMessage: string = "I am interested"): string {
+  return parseSmartLink(rawUrl, customMessage);
 }
 
 export const getMetaDirectLink = getSmartTelegramLink;
