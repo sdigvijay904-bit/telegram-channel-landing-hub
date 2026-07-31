@@ -24,6 +24,7 @@ export function AnimatedTelegramButton({
   telegramLink = '',
   buttonText = 'Join Whatsapp Group',
   whatsappLink = '',
+  animationType = 'pulse-glow',
   onClick
 }: AnimatedTelegramButtonProps) {
   // Direct Link priority: Only use whatsappLink if it's a valid link and not default 'https://wa.me/'
@@ -51,60 +52,152 @@ export function AnimatedTelegramButton({
       alert("Please configure your WhatsApp link or mobile number in Admin Panel.");
       return;
     }
-
-    // Standard native <a href={directHref} target="_blank"> handles navigation smoothly
-    // without triggering mobile browser popup blockers (about:blank#blocked)
   };
 
   // Determine display label
   const isPhoneNumber = directHref.includes('wa.me/91') || directHref.includes('wa.me/');
   let label = buttonText && buttonText !== "CONTINUE" ? buttonText : (isPhoneNumber ? "Chat On WhatsApp" : "Join Whatsapp Group");
 
+  // Dynamic Motion Animation variants based on animationType
+  const getButtonMotionProps = () => {
+    switch (animationType) {
+      case 'bounce':
+        return {
+          animate: {
+            y: [0, -10, 0, -4, 0],
+            boxShadow: [
+              '0 0 15px rgba(0, 255, 102, 0.5)',
+              '0 0 30px rgba(0, 255, 102, 0.9)',
+              '0 0 15px rgba(0, 255, 102, 0.5)'
+            ]
+          },
+          transition: {
+            duration: 1.5,
+            repeat: Infinity,
+            repeatDelay: 0.3,
+            ease: "easeInOut"
+          }
+        };
+
+      case 'shimmer':
+        return {
+          animate: {
+            boxShadow: [
+              '0 0 15px rgba(0, 255, 102, 0.5)',
+              '0 0 25px rgba(0, 255, 102, 0.8)',
+              '0 0 15px rgba(0, 255, 102, 0.5)'
+            ]
+          },
+          transition: { duration: 2, repeat: Infinity }
+        };
+
+      case 'ripple-ring':
+        return {
+          animate: {
+            scale: [1, 1.02, 1],
+            boxShadow: [
+              '0 0 15px rgba(0, 255, 102, 0.5)',
+              '0 0 35px rgba(0, 255, 102, 0.95)',
+              '0 0 15px rgba(0, 255, 102, 0.5)'
+            ]
+          },
+          transition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }
+        };
+
+      case 'neon-breath':
+        return {
+          animate: {
+            scale: [1, 1.05, 1],
+            filter: [
+              'brightness(1) drop-shadow(0 0 10px rgba(0,255,102,0.5))',
+              'brightness(1.25) drop-shadow(0 0 25px rgba(0,255,102,0.95))',
+              'brightness(1) drop-shadow(0 0 10px rgba(0,255,102,0.5))'
+            ]
+          },
+          transition: { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }
+        };
+
+      case 'pulse-glow':
+      default:
+        return {
+          animate: {
+            scale: [1, 1.03, 1],
+            boxShadow: [
+              '0 0 12px rgba(0, 255, 102, 0.4)',
+              '0 0 32px rgba(0, 255, 102, 0.95)',
+              '0 0 12px rgba(0, 255, 102, 0.4)'
+            ]
+          },
+          transition: { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }
+        };
+    }
+  };
+
+  const motionProps = getButtonMotionProps();
+
   return (
-    <div className="w-full flex flex-col items-center text-center space-y-2 my-1 shrink-0">
+    <div className="w-full flex flex-col items-center text-center space-y-3 sm:space-y-4 my-2 shrink-0">
       {/* Red Urgency Text with Arrows */}
       <motion.div
-        animate={{ scale: [1, 1.03, 1] }}
+        animate={{ scale: [1, 1.04, 1] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-        className="text-red-500 font-extrabold text-sm sm:text-base tracking-wide flex items-center justify-center gap-1 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+        className="text-red-500 font-extrabold text-base sm:text-lg tracking-wide flex items-center justify-center gap-1.5 drop-shadow-[0_0_10px_rgba(239,68,68,0.6)]"
       >
-        <span className="text-red-500 font-bold">⇊</span>
+        <span className="text-red-500 font-bold text-lg sm:text-xl">⇊</span>
         <span>Hurry Up, Limited Seats Join Now</span>
-        <span className="text-red-500 font-bold">⇊</span>
+        <span className="text-red-500 font-bold text-lg sm:text-xl">⇊</span>
       </motion.div>
 
       {/* Main Big Neon Green Pill WhatsApp Button */}
-      <div className="w-full max-w-[290px] sm:max-w-md px-1">
+      <div className="relative w-full max-w-[320px] sm:max-w-md px-1 flex justify-center items-center">
+        {/* Ripple Ring Radar effect if selected */}
+        {animationType === 'ripple-ring' && (
+          <>
+            <motion.div
+              animate={{ scale: [1, 1.35], opacity: [0.8, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
+              className="absolute inset-0 rounded-full border-2 border-[#00ff66] pointer-events-none"
+            />
+            <motion.div
+              animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, delay: 0.4, ease: 'easeOut' }}
+              className="absolute inset-0 rounded-full border border-[#00ff66] pointer-events-none"
+            />
+          </>
+        )}
+
         <motion.a
           href={directHref}
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleJoinClick}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.96 }}
-          animate={{
-            boxShadow: [
-              '0 0 12px rgba(0, 255, 102, 0.4)',
-              '0 0 28px rgba(0, 255, 102, 0.8)',
-              '0 0 12px rgba(0, 255, 102, 0.4)'
-            ]
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-full py-3 px-4 sm:py-3.5 sm:px-6 rounded-full bg-[#00ff66] hover:bg-[#00e65c] text-black font-extrabold text-base sm:text-xl tracking-tight flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(0,255,102,0.6)] cursor-pointer transition-transform no-underline block"
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.95 }}
+          {...motionProps}
+          className="relative overflow-hidden w-full py-3.5 px-5 sm:py-4 sm:px-8 rounded-full bg-[#00ff66] hover:bg-[#00e65c] text-black font-extrabold text-lg sm:text-2xl tracking-tight flex items-center justify-center gap-3 shadow-[0_0_25px_rgba(0,255,102,0.7)] cursor-pointer transition-transform no-underline block z-10"
         >
-          <WhatsAppLogoIcon className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 text-black fill-current" />
-          <span className="font-extrabold text-black uppercase tracking-tight truncate">
+          {/* Shimmer Light Beam Effect */}
+          {animationType === 'shimmer' && (
+            <motion.div
+              animate={{ x: ['-100%', '250%'] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/70 to-transparent skew-x-12 pointer-events-none"
+            />
+          )}
+
+          <WhatsAppLogoIcon className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 text-black fill-current relative z-10" />
+          <span className="font-extrabold text-black uppercase tracking-tight truncate relative z-10">
             {label}
           </span>
         </motion.a>
       </div>
 
       {/* Red Countdown Timer Circle Badge "00" */}
-      <div className="pt-0.5">
+      <div className="pt-1">
         <motion.div
-          animate={{ scale: [1, 1.05, 1] }}
+          animate={{ scale: [1, 1.06, 1] }}
           transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-red-600 border-2 border-red-400 text-white font-extrabold text-2xl sm:text-3xl flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.7)] mx-auto font-mono tracking-tighter"
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-600 border-2 border-red-400 text-white font-extrabold text-3xl sm:text-4xl flex items-center justify-center shadow-[0_0_25px_rgba(239,68,68,0.8)] mx-auto font-mono tracking-tighter"
         >
           {String(secondsLeft).padStart(2, '0')}
         </motion.div>

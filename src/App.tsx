@@ -148,7 +148,7 @@ export default function App() {
       </div>
 
       {/* Main Center Layout Container */}
-      <main className="relative z-10 w-full max-w-lg mx-auto flex flex-col items-center text-center my-auto justify-center space-y-1.5 sm:space-y-3">
+      <main className="relative z-10 w-full max-w-xl mx-auto flex flex-col items-center text-center my-auto justify-center space-y-2.5 sm:space-y-5">
         {/* Header Section (Red Emblem, Best Online Earning Badge, Platform Title & Bullets) */}
         <HeaderCard config={config} />
 
@@ -157,6 +157,7 @@ export default function App() {
           telegramLink={config.telegramLink}
           buttonText={config.buttonText}
           whatsappLink={config.whatsappLink}
+          animationType={config.animationType}
           onClick={handleButtonClick}
         />
       </main>
