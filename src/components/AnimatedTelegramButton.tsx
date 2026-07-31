@@ -52,6 +52,12 @@ export function AnimatedTelegramButton({
       alert("Please configure your WhatsApp link or mobile number in Admin Panel.");
       return;
     }
+
+    // In iframe environments (like AI Studio preview), handle direct window open
+    if (typeof window !== 'undefined' && window.top !== window.self) {
+      e.preventDefault();
+      window.open(directHref, '_blank', 'noopener,noreferrer');
+    }
   };
 
   // Determine display label

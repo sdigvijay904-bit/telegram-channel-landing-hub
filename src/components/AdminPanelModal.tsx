@@ -397,11 +397,12 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                       <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs space-y-1 mt-2">
                         <div className="font-bold flex items-center gap-1.5 text-emerald-800">
                           <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                          <span>Mobile Number or Group Link Feature:</span>
+                          <span>Mobile Number, Group Link & Dual/Clone WhatsApp Support:</span>
                         </div>
                         <p className="leading-relaxed">
-                          - Agar aap <b>Mobile Number</b> daalenge (jaise <b>9876543210</b>), toh user click karte hi aapko direct WhatsApp par message karega.<br/>
-                          - Agar aap <b>Group Link</b> daalenge (jaise <b>chat.whatsapp.com/...</b>), toh user direct WhatsApp Group join karega.
+                          • <b>Mobile Number:</b> 9876543210 ya +919876543210 daalene par direct chat open hogi.<br/>
+                          • <b>Group Link:</b> chat.whatsapp.com/... daalne par WhatsApp Group join hoga.<br/>
+                          • <b>Clone / Dual WhatsApp:</b> Yeh sabhi Dual/Cloned WhatsApp apps (Samsung Dual, Xiaomi Dual, Parallel Space, GB WhatsApp) ke saath 100% properly kaam karta hai. Android automatic app-selector menu show karega.
                         </p>
                       </div>
                     </div>
