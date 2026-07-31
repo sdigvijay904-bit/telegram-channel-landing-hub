@@ -2,8 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- DNS Prefetch & Preconnect for Instant Direct Redirects (Meta Ads Fast Redirect) -->
+    <link rel="dns-prefetch" href="https://wa.me" />
+    <link rel="dns-prefetch" href="https://api.whatsapp.com" />
+    <link rel="dns-prefetch" href="https://chat.whatsapp.com" />
+    <link rel="dns-prefetch" href="https://t.me" />
+    <link rel="preconnect" href="https://wa.me" crossorigin />
+    <link rel="preconnect" href="https://chat.whatsapp.com" crossorigin />
+
+    <!-- Open Graph for Meta / Facebook / Instagram Ads preview -->
+    <meta property="og:title" content="Official Access Platform" />
+    <meta property="og:description" content="Instant official community access platform." />
+    <meta property="og:type" content="website" />
+
+    <title>Official Access Platform</title>
+
+    <style>
+      /* Prevent FOIT/CLS for fast mobile load */
+      html, body {
+        background-color: #000000;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import fs from "fs";
 import path from "path";
 import { createServer as createViteServer } from "vite";
@@ -6,6 +7,8 @@ import { createServer as createViteServer } from "vite";
 const app = express();
 const PORT = 3000;
 
+// Enable gzip compression for ultra-fast asset transfers
+app.use(compression());
 app.use(express.json());
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -131,8 +134,12 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
+    app.use(express.static(distPath, {
+      maxAge: '1d',
+      etag: true,
+    }));
     app.get("*", (req, res) => {
+      res.setHeader('Cache-Control', 'public, max-age=300');
       res.sendFile(path.join(distPath, "index.html"));
     });
   }

@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { HeaderCard } from './components/HeaderCard';
 import { AnimatedTelegramButton } from './components/AnimatedTelegramButton';
-import { AdminPanelModal } from './components/AdminPanelModal';
 import { AppConfig } from './types';
+
+// Lazy load AdminPanelModal to keep main bundle tiny & ultra-fast for ad traffic
+const AdminPanelModal = lazy(() =>
+  import('./components/AdminPanelModal').then(m => ({ default: m.AdminPanelModal }))
+);
 
 const defaultConfig: AppConfig = {
   telegramLink: "",
@@ -15,7 +19,7 @@ const defaultConfig: AppConfig = {
     { id: "4", text: "Zero Investment Needed", icon: "Zap", color: "blue" },
     { id: "5", text: "Start Earning From Day One", icon: "Flame", color: "emerald" }
   ],
-  buttonText: "Join Whatsapp Group",
+  buttonText: "CONTINUE",
   buttonSubtext: "",
   showWhatsapp: false,
   animationType: "pulse-glow",
@@ -183,13 +187,17 @@ export default function App() {
         <span className="text-[10px] text-zinc-600/80 font-medium">© 2026 Best Earning Platform</span>
       </footer>
 
-      {/* Admin Panel Modal */}
-      <AdminPanelModal
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        config={config}
-        onSaveConfig={handleSaveConfig}
-      />
+      {/* Admin Panel Modal (Loaded on demand only) */}
+      {isAdminOpen && (
+        <Suspense fallback={null}>
+          <AdminPanelModal
+            isOpen={isAdminOpen}
+            onClose={() => setIsAdminOpen(false)}
+            config={config}
+            onSaveConfig={handleSaveConfig}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

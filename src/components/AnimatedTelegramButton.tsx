@@ -22,7 +22,7 @@ interface AnimatedTelegramButtonProps {
 
 export function AnimatedTelegramButton({
   telegramLink = '',
-  buttonText = 'Join Whatsapp Group',
+  buttonText = 'CONTINUE',
   whatsappLink = '',
   animationType = 'pulse-glow',
   onClick
@@ -61,8 +61,7 @@ export function AnimatedTelegramButton({
   };
 
   // Determine display label
-  const isPhoneNumber = directHref.includes('wa.me/91') || directHref.includes('wa.me/');
-  let label = buttonText && buttonText !== "CONTINUE" ? buttonText : (isPhoneNumber ? "Chat On WhatsApp" : "Join Whatsapp Group");
+  const label = buttonText || "CONTINUE";
 
   // Dynamic Motion Animation variants based on animationType
   const getButtonMotionProps = () => {
@@ -191,7 +190,13 @@ export function AnimatedTelegramButton({
             />
           )}
 
-          <WhatsAppLogoIcon className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 text-black fill-current relative z-10" />
+          {label.toUpperCase().includes('WHATSAPP') ? (
+            <WhatsAppLogoIcon className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 text-black fill-current relative z-10" />
+          ) : (
+            <svg className="w-7 h-7 sm:w-8 sm:h-8 shrink-0 text-black fill-none stroke-current stroke-[3] relative z-10" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          )}
           <span className="font-extrabold text-black uppercase tracking-tight truncate relative z-10">
             {label}
           </span>
