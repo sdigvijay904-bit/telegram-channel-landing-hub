@@ -72,7 +72,28 @@ export default function App() {
           const data = await res.json();
           if (data.success && data.config) {
             setConfig(prev => {
-              const updated = { ...prev, ...data.config };
+              const serverConfig = data.config;
+              // Smart merge: Do not overwrite non-empty local link with empty server link
+              const mergedTelegramLink = (serverConfig.telegramLink && serverConfig.telegramLink.trim())
+                ? serverConfig.telegramLink.trim()
+                : (prev.telegramLink && prev.telegramLink.trim())
+                  ? prev.telegramLink.trim()
+                  : "";
+
+              const mergedWhatsappLink = (serverConfig.whatsappLink && serverConfig.whatsappLink.trim())
+                ? serverConfig.whatsappLink.trim()
+                : (prev.whatsappLink && prev.whatsappLink.trim())
+                  ? prev.whatsappLink.trim()
+                  : "";
+
+              const updated: AppConfig = {
+                ...prev,
+                ...serverConfig,
+                telegramLink: mergedTelegramLink,
+                whatsappLink: mergedWhatsappLink,
+                buttonText: serverConfig.buttonText || prev.buttonText || "CONTINUE"
+              };
+
               localStorage.setItem('tg_app_config', JSON.stringify(updated));
               return updated;
             });
@@ -107,11 +128,15 @@ export default function App() {
 
       if (res.ok) {
         const data = await res.json();
-        if (data.config) {
+        if (data.success && data.config) {
           const merged = { ...updatedFullConfig, ...data.config };
           setConfig(merged);
           localStorage.setItem('tg_app_config', JSON.stringify(merged));
+          return true;
         }
+      } else {
+        console.error('Server update failed response');
+        return false;
       }
     } catch (err) {
       console.warn('Server sync failed, saved locally:', err);

@@ -55,23 +55,15 @@ export function AnimatedTelegramButton({
       return;
     }
 
-    // 1. Meta / Instagram Ads In-App Browser (Instagram WebView)
-    if (isMetaBrowser) {
-      e.preventDefault();
-      window.location.href = directHref;
-      return;
-    }
-
-    // 2. AI Studio Preview Environment (embedded iframe)
+    // AI Studio Preview Environment (embedded iframe)
     if (typeof window !== 'undefined' && window.top !== window.self) {
       e.preventDefault();
       window.open(directHref, '_blank', 'noopener,noreferrer');
       return;
     }
 
-    // 3. Standard Mobile/Desktop Browser
-    e.preventDefault();
-    window.location.href = directHref;
+    // For standard browsers & Instagram/Meta In-App Browser:
+    // Do not prevent default! Allow native <a> tag to navigate smoothly.
   };
 
   // Determine display label
@@ -211,7 +203,7 @@ export function AnimatedTelegramButton({
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
           )}
-          <span className="font-extrabold text-black uppercase tracking-tight truncate relative z-10">
+          <span className="font-extrabold text-black tracking-tight truncate relative z-10">
             {label}
           </span>
         </motion.a>

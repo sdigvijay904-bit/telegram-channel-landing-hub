@@ -407,6 +407,23 @@ export function AdminPanelModal({ isOpen, onClose, config, onSaveConfig }: Admin
                       </div>
                     </div>
 
+                    {/* Main Button Text Setting in Tab 1 */}
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-emerald-700">
+                        🔘 Button Text Name
+                      </label>
+                      <p className="text-xs text-slate-600">
+                        Main button par dikhne wala name yahan badlein (e.g. <b>Continue</b>, <b>Join WhatsApp Group</b>, <b>Claim Now</b>):
+                      </p>
+                      <input
+                        type="text"
+                        value={buttonText}
+                        onChange={(e) => setButtonText(e.target.value)}
+                        placeholder="Continue"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm font-bold focus:outline-none focus:border-emerald-500"
+                      />
+                    </div>
+
                     {/* Optional Secondary WhatsApp Link */}
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                       <div className="flex items-center justify-between">
