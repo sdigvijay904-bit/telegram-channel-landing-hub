@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { AnimationType } from '../types';
-import { getMetaDirectLink } from '../utils/telegramHelper';
+import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
 
 function WhatsAppLogoIcon({ className = "w-6 h-6" }: { className?: string }) {
   return (
@@ -27,12 +27,14 @@ export function AnimatedTelegramButton({
   animationType = 'pulse-glow',
   onClick
 }: AnimatedTelegramButtonProps) {
-  // Direct Link priority: Only use whatsappLink if it's a valid link and not default 'https://wa.me/'
+  // Target Link resolution: Priority to telegramLink (primary input in admin panel), fallback to whatsappLink
+  const cleanTelegram = (telegramLink || '').trim();
   const cleanWhatsapp = (whatsappLink || '').trim();
-  const isValidWhatsapp = cleanWhatsapp && cleanWhatsapp !== 'https://wa.me/' && cleanWhatsapp !== 'https://wa.me';
 
-  const targetUrl = isValidWhatsapp ? cleanWhatsapp : (telegramLink || cleanWhatsapp || '');
+  const targetUrl = cleanTelegram || cleanWhatsapp || '';
   const directHref = getMetaDirectLink(targetUrl);
+
+  const isMetaBrowser = isMetaInAppBrowser();
 
   // Live Timer state
   const [secondsLeft, setSecondsLeft] = useState(0);
@@ -49,15 +51,27 @@ export function AnimatedTelegramButton({
 
     if (!targetUrl || targetUrl === '#' || directHref === '#') {
       e.preventDefault();
-      alert("Please configure your WhatsApp link or mobile number in Admin Panel.");
+      alert("Please configure your link in Admin Panel.");
       return;
     }
 
-    // In iframe environments (like AI Studio preview), handle direct window open
+    // 1. Meta / Instagram Ads In-App Browser (Instagram WebView)
+    if (isMetaBrowser) {
+      e.preventDefault();
+      window.location.href = directHref;
+      return;
+    }
+
+    // 2. AI Studio Preview Environment (embedded iframe)
     if (typeof window !== 'undefined' && window.top !== window.self) {
       e.preventDefault();
       window.open(directHref, '_blank', 'noopener,noreferrer');
+      return;
     }
+
+    // 3. Standard Mobile/Desktop Browser
+    e.preventDefault();
+    window.location.href = directHref;
   };
 
   // Determine display label
@@ -153,7 +167,7 @@ export function AnimatedTelegramButton({
         <span className="text-red-500 font-bold text-lg sm:text-xl">⇊</span>
       </motion.div>
 
-      {/* Main Big Neon Green Pill WhatsApp Button */}
+      {/* Main Big Neon Green Pill WhatsApp/Continue Button */}
       <div className="relative w-full max-w-[320px] sm:max-w-md px-1 flex justify-center items-center">
         {/* Ripple Ring Radar effect if selected */}
         {animationType === 'ripple-ring' && (
@@ -173,7 +187,7 @@ export function AnimatedTelegramButton({
 
         <motion.a
           href={directHref}
-          target="_blank"
+          target={isMetaBrowser ? "_self" : "_blank"}
           rel="noopener noreferrer"
           onClick={handleJoinClick}
           whileHover={{ scale: 1.04 }}
@@ -216,3 +230,4 @@ export function AnimatedTelegramButton({
     </div>
   );
 }
+
