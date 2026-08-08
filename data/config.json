@@ -1,5 +1,5 @@
 {
-  "telegramLink": "https://chat.whatsapp.com/It2a0aWx5tT6TbbjDwrFhB",
+  "telegramLink": "https://t.me/+BIHzLUxxu2swNDk1",
   "passcode": "admin123",
   "title": "Official Community Access",
   "subtitle": "Secure verification is required before continuing. Please click the button below to proceed.",
@@ -32,14 +32,18 @@
   "buttonText": "JOIN GROUP",
   "buttonSubtext": "Click to Join WhatsApp Group • Free Access",
   "secondaryButtonText": "DIRECT WHATSAPP SUPPORT",
-  "whatsappLink": "https://wa.me/",
+  "whatsappLink": "",
   "showWhatsapp": false,
   "animationType": "pulse-glow",
   "themeColor": "frosted-glass",
   "memberCount": 48520,
   "timerMinutes": 1,
-  "totalClicks": 1255,
+  "totalClicks": 1256,
   "clickHistory": [
+    {
+      "timestamp": "2026-08-08T13:38:34.460Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
     {
       "timestamp": "2026-07-27T02:57:38.613Z",
       "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"

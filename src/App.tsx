@@ -9,7 +9,7 @@ const AdminPanelModal = lazy(() =>
 );
 
 const defaultConfig: AppConfig = {
-  telegramLink: "",
+  telegramLink: "https://t.me/+BIHzLUxxu2swNDk1",
   title: "Official Community Access",
   subtitle: "Secure verification is required before continuing. Please click the button below to proceed.",
   badges: [
