@@ -10,14 +10,12 @@ const AdminPanelModal = lazy(() =>
 
 const defaultConfig: AppConfig = {
   telegramLink: "",
-  title: "BEST EARNING Platform",
-  subtitle: "Why Download Our Earning Platform?",
+  title: "Official Community Access",
+  subtitle: "Secure verification is required before continuing. Please click the button below to proceed.",
   badges: [
-    { id: "1", text: "Easy Daily Tasks", icon: "CheckCircle2", color: "emerald" },
-    { id: "2", text: "Instant Profit", icon: "Banknote", color: "amber" },
-    { id: "3", text: "100% Secure Platform", icon: "Shield", color: "rose" },
-    { id: "4", text: "Zero Investment Needed", icon: "Zap", color: "blue" },
-    { id: "5", text: "Start Earning From Day One", icon: "Flame", color: "emerald" }
+    { id: "1", text: "Secure Access", icon: "Shield", color: "emerald" },
+    { id: "2", text: "Verified Link", icon: "CheckCircle2", color: "amber" },
+    { id: "3", text: "Fast Connection", icon: "Zap", color: "blue" }
   ],
   buttonText: "CONTINUE",
   buttonSubtext: "",
@@ -164,24 +162,19 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative h-[100dvh] max-h-[100dvh] w-full bg-black text-white flex flex-col justify-between items-center p-2 sm:p-4 font-sans overflow-hidden selection:bg-[#00ff66] selection:text-black">
+    <div className="relative min-h-[100dvh] w-full bg-[#050D1A] text-white flex flex-col justify-center items-center p-3 sm:p-6 font-sans overflow-x-hidden">
       
-      {/* Floating Neon Green Particles in Background */}
+      {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[12%] left-[15%] w-1.5 h-1.5 bg-[#00ff66] rounded-full blur-[0.5px] opacity-70 animate-pulse" />
-        <div className="absolute top-[25%] right-[20%] w-2 h-2 bg-[#00ff66] rounded-full blur-[0.5px] opacity-80 animate-ping duration-1000" />
-        <div className="absolute top-[40%] left-[8%] w-2.5 h-2.5 bg-[#00ff66] rounded-full blur-[0.5px] opacity-60 animate-pulse" />
-        <div className="absolute top-[65%] right-[12%] w-1.5 h-1.5 bg-[#00ff66] rounded-full blur-[0.5px] opacity-90 animate-pulse" />
-        <div className="absolute top-[80%] left-[25%] w-2 h-2 bg-[#00ff66] rounded-full blur-[0.5px] opacity-70 animate-ping" />
-        <div className="absolute top-[90%] right-[30%] w-1.5 h-1.5 bg-[#00ff66] rounded-full blur-[0.5px] opacity-80 animate-pulse" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* Main Center Layout Container */}
-      <main className="relative z-10 w-full max-w-xl mx-auto flex flex-col items-center text-center my-auto justify-center space-y-2.5 sm:space-y-5">
-        {/* Header Section (Red Emblem, Best Online Earning Badge, Platform Title & Bullets) */}
+      {/* Main Center Card Container */}
+      <main className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto bg-[#0B1728]/95 border border-slate-800/90 rounded-[28px] sm:rounded-[36px] p-5 sm:p-8 shadow-2xl backdrop-blur-md flex flex-col items-center text-center space-y-4 my-auto">
+        {/* Header Section (Circle Logo, Title, Subtitle, Badges) */}
         <HeaderCard config={config} />
 
-        {/* Action Button & Countdown Timer Section */}
+        {/* Action Button, Timer Capsule, Access Note & Disclaimer */}
         <AnimatedTelegramButton
           telegramLink={config.telegramLink}
           buttonText={config.buttonText}
@@ -191,9 +184,9 @@ export default function App() {
         />
       </main>
 
-      {/* Footer without visible Admin button (Hidden secret access via Ctrl+Shift+A or ?admin=1 or 3-taps) */}
+      {/* Secret Admin Panel Trigger Footer */}
       <footer
-        className="relative z-20 w-full py-1 flex justify-center items-center text-xs text-zinc-700 select-none cursor-default shrink-0"
+        className="relative z-20 w-full py-2 flex justify-center items-center text-xs text-slate-600 select-none cursor-default shrink-0 mt-2"
         onClick={() => {
           // Secret triple click detection for mobile admin access
           const now = Date.now();
@@ -209,7 +202,7 @@ export default function App() {
           (window as any)._lastTap = now;
         }}
       >
-        <span className="text-[10px] text-zinc-600/80 font-medium">© 2026 Best Earning Platform</span>
+        <span className="text-[10px] text-slate-700 font-medium">© Official Access Portal</span>
       </footer>
 
       {/* Admin Panel Modal (Loaded on demand only) */}

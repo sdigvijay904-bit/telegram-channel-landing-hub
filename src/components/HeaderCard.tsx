@@ -8,74 +8,72 @@ interface HeaderCardProps {
 }
 
 export function HeaderCard({ config }: HeaderCardProps) {
+  const displayTitle = config.title && !config.title.toLowerCase().includes('earning') && config.title !== "PropertyN Official"
+    ? config.title
+    : "Official Community Access";
+
+  const displaySubtitle = config.subtitle && !config.subtitle.toLowerCase().includes('earning')
+    ? config.subtitle
+    : "Secure verification is required before continuing.\nPlease click the button below to proceed.";
+
   return (
-    <div className="w-full flex flex-col items-center text-center space-y-2.5 sm:space-y-3.5 py-1">
-      {/* Top Best Application Crown Emblem Logo */}
+    <div className="w-full flex flex-col items-center text-center space-y-3.5">
+      {/* Top Gold Ring Circle Logo Container */}
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
+        initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="cursor-pointer drop-shadow-[0_0_20px_rgba(255,215,0,0.4)] shrink-0"
+        whileHover={{ scale: 1.03 }}
+        className="cursor-pointer w-28 h-28 sm:w-32 sm:h-32 rounded-full border-2 border-yellow-400/90 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-[#091322] flex items-center justify-center relative overflow-hidden shrink-0 mx-auto p-1"
       >
-        <PropertyNLogo className="w-28 h-28 sm:w-36 sm:h-36" />
+        <PropertyNLogo className="w-full h-full rounded-full" />
       </motion.div>
 
-      {/* Neon Green Border Capsule Pill: "Best Online Earning" */}
+      {/* Main Title */}
       <motion.div
         initial={{ y: 5, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1, duration: 0.3 }}
-        className="w-full max-w-[310px] sm:max-w-sm rounded-full bg-black/90 border-2 border-[#00ff66] shadow-[0_0_18px_rgba(0,255,102,0.5)] py-2 px-5 text-center shrink-0"
+        className="shrink-0 px-2"
       >
-        <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center justify-center gap-2">
-          <span className="text-[#00ff66] drop-shadow-[0_0_8px_rgba(0,255,102,0.9)]">Best</span>
-          <span className="text-white">Online Earning</span>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+          {displayTitle}
         </h1>
       </motion.div>
 
-      {/* Subheading: "BEST EARNING Platform" */}
+      {/* Subtitle */}
       <motion.div
         initial={{ y: 5, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.15, duration: 0.3 }}
-        className="shrink-0"
+        className="w-full max-w-xs sm:max-w-sm mx-auto shrink-0 px-1"
       >
-        <h2 className="text-xl sm:text-3xl font-black text-[#00ff66] tracking-wide drop-shadow-[0_0_12px_rgba(0,255,102,0.7)] uppercase">
-          {config.title && config.title !== "PropertyN Official" ? config.title : "BEST EARNING PLATFORM"}
-        </h2>
+        <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed whitespace-pre-line">
+          {displaySubtitle}
+        </p>
       </motion.div>
 
-      {/* Platform Features Section */}
+      {/* Badges Pill Row */}
       <motion.div
         initial={{ y: 5, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.3 }}
-        className="w-full max-w-md mx-auto space-y-1.5 pt-1 px-1 shrink-0"
+        className="flex items-center justify-center gap-2 pt-1 shrink-0 flex-wrap"
       >
-        <h3 className="text-base sm:text-lg font-extrabold text-white tracking-wide">
-          Why Download Our Earning Platform?
-        </h3>
-
-        <div className="text-white font-bold text-sm sm:text-base leading-snug flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 px-1">
-          <span className="flex items-center gap-1.5">
-            <span className="text-[#00ff66] text-[12px]">●</span> Easy Daily Tasks
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="text-[#00ff66] text-[12px]">●</span> Instant Profit
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="text-[#00ff66] text-[12px]">●</span> 100% Secure Platform
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="text-[#00ff66] text-[12px]">●</span> Zero Investment Needed
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="text-[#00ff66] text-[12px]">●</span> Start Earning From Day One
-          </span>
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium shadow-sm">
+          <span>🔒</span>
+          <span>Secure</span>
+        </div>
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium shadow-sm">
+          <span>⚡</span>
+          <span>Fast</span>
+        </div>
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium shadow-sm">
+          <span>✓</span>
+          <span>Verified</span>
         </div>
       </motion.div>
     </div>
   );
 }
+

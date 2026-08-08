@@ -109,41 +109,41 @@ export function PropertyNLogo({ className = "w-28 h-28 sm:w-36 sm:h-36" }: BestA
           />
         </g>
 
-        {/* 3. "BEST" TEXT */}
+        {/* 3. "OFFICIAL" TEXT */}
         <g transform="translate(250, 335)" filter="url(#textGlow)">
           <text
             x="0"
             y="0"
             textAnchor="middle"
             fill="#ffffff"
-            fontSize="78"
+            fontSize="62"
             fontWeight="900"
             fontFamily="Arial, Helvetica, sans-serif"
-            letterSpacing="4"
+            letterSpacing="3"
           >
-            BEST
+            OFFICIAL
           </text>
         </g>
 
-        {/* 4. "APPLICATION" TEXT WITH SEPARATOR LINES */}
+        {/* 4. "COMMUNITY ACCESS" TEXT WITH SEPARATOR LINES */}
         <g transform="translate(250, 372)">
           {/* Left Gold Line */}
-          <line x1="-190" y1="-8" x2="-115" y2="-8" stroke="url(#goldRing)" strokeWidth="3" strokeLinecap="round" />
+          <line x1="-190" y1="-8" x2="-130" y2="-8" stroke="url(#goldRing)" strokeWidth="3" strokeLinecap="round" />
           {/* Center Text */}
           <text
             x="0"
             y="0"
             textAnchor="middle"
             fill="url(#goldRing)"
-            fontSize="26"
+            fontSize="22"
             fontWeight="800"
             fontFamily="Arial, Helvetica, sans-serif"
-            letterSpacing="6"
+            letterSpacing="4"
           >
-            APPLICATION
+            COMMUNITY ACCESS
           </text>
           {/* Right Gold Line */}
-          <line x1="115" y1="-8" x2="190" y2="-8" stroke="url(#goldRing)" strokeWidth="3" strokeLinecap="round" />
+          <line x1="130" y1="-8" x2="190" y2="-8" stroke="url(#goldRing)" strokeWidth="3" strokeLinecap="round" />
         </g>
 
         {/* 5. THREE BADGES (Secure, Fast, Reliable) */}
