@@ -1,37 +1,31 @@
 {
   "telegramLink": "https://t.me/+BIHzLUxxu2swNDk1",
   "passcode": "admin123",
-  "title": "Official Community Access",
-  "subtitle": "Secure verification is required before continuing. Please click the button below to proceed.",
+  "title": "Join our community",
+  "subtitle": "Get updates, educational content and community information.",
   "badges": [
     {
       "id": "1",
-      "text": "Join Official WhatsApp Group",
-      "icon": "CheckCircle2",
+      "text": "Educational Content",
+      "icon": "BookOpen",
       "color": "emerald"
     },
     {
       "id": "2",
-      "text": "Explore Available Plans & Platform Features",
-      "icon": "Banknote",
+      "text": "Market Updates",
+      "icon": "TrendingUp",
       "color": "amber"
     },
     {
       "id": "3",
-      "text": "New Members Welcome",
-      "icon": "Flame",
-      "color": "rose"
-    },
-    {
-      "id": "4",
-      "text": "Community Updates & Support",
-      "icon": "Zap",
+      "text": "Community Insights",
+      "icon": "Users",
       "color": "blue"
     }
   ],
-  "buttonText": "JOIN GROUP",
-  "buttonSubtext": "Click to Join WhatsApp Group • Free Access",
-  "secondaryButtonText": "DIRECT WHATSAPP SUPPORT",
+  "buttonText": "Join Community",
+  "buttonSubtext": "Free Educational Telegram Community",
+  "secondaryButtonText": "",
   "whatsappLink": "",
   "showWhatsapp": false,
   "animationType": "pulse-glow",

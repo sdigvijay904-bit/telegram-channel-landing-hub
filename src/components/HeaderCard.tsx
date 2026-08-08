@@ -8,26 +8,31 @@ interface HeaderCardProps {
 }
 
 export function HeaderCard({ config }: HeaderCardProps) {
-  const displayTitle = config.title && !config.title.toLowerCase().includes('earning') && config.title !== "PropertyN Official"
+  const displayTitle = (config.title && !config.title.toLowerCase().includes('official'))
     ? config.title
-    : "Official Community Access";
+    : "Join our community";
 
-  const displaySubtitle = config.subtitle && !config.subtitle.toLowerCase().includes('earning')
+  const displaySubtitle = (config.subtitle && !config.subtitle.toLowerCase().includes('verification'))
     ? config.subtitle
-    : "Secure verification is required before continuing.\nPlease click the button below to proceed.";
+    : "Get updates, educational content and community information.";
 
   return (
-    <div className="w-full flex flex-col items-center text-center space-y-3.5">
+    <div className="w-full flex flex-col items-center text-center space-y-3">
       {/* Top Gold Ring Circle Logo Container */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3 }}
         whileHover={{ scale: 1.03 }}
-        className="cursor-pointer w-28 h-28 sm:w-32 sm:h-32 rounded-full border-2 border-yellow-400/90 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-[#091322] flex items-center justify-center relative overflow-hidden shrink-0 mx-auto p-1"
+        className="w-28 h-28 sm:w-36 sm:h-36 rounded-full border-2 border-yellow-400/80 shadow-[0_0_25px_rgba(250,204,21,0.25)] bg-[#091322] flex items-center justify-center relative overflow-hidden shrink-0 mx-auto p-1"
       >
         <PropertyNLogo className="w-full h-full rounded-full" />
       </motion.div>
+
+      {/* Brand Label */}
+      <div className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold tracking-wider uppercase">
+        Money Master Hub
+      </div>
 
       {/* Main Title */}
       <motion.div
@@ -48,29 +53,29 @@ export function HeaderCard({ config }: HeaderCardProps) {
         transition={{ delay: 0.15, duration: 0.3 }}
         className="w-full max-w-xs sm:max-w-sm mx-auto shrink-0 px-1"
       >
-        <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed whitespace-pre-line">
+        <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
           {displaySubtitle}
         </p>
       </motion.div>
 
-      {/* Badges Pill Row */}
+      {/* Feature Pills (Clear & Transparent Purposes) */}
       <motion.div
         initial={{ y: 5, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.3 }}
         className="flex items-center justify-center gap-2 pt-1 shrink-0 flex-wrap"
       >
-        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium shadow-sm">
-          <span>🔒</span>
-          <span>Secure</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs font-medium">
+          <span>📚</span>
+          <span>Educational Content</span>
         </div>
-        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium shadow-sm">
-          <span>⚡</span>
-          <span>Fast</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs font-medium">
+          <span>📈</span>
+          <span>Market Updates</span>
         </div>
-        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium shadow-sm">
-          <span>✓</span>
-          <span>Verified</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#16273D] border border-slate-700/60 text-slate-200 text-xs font-medium">
+          <span>💬</span>
+          <span>Community Discussions</span>
         </div>
       </motion.div>
     </div>

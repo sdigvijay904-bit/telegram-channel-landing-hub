@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { AnimationType } from '../types';
 import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
@@ -14,142 +14,81 @@ interface AnimatedTelegramButtonProps {
 
 export function AnimatedTelegramButton({
   telegramLink = '',
-  buttonText = 'Continue',
+  buttonText = 'Join Community',
   whatsappLink = '',
-  animationType = 'pulse-glow',
   onClick
 }: AnimatedTelegramButtonProps) {
   // Target Link resolution: Priority to telegramLink, fallback to whatsappLink
   const cleanTelegram = (telegramLink || '').trim();
   const cleanWhatsapp = (whatsappLink || '').trim();
 
-  const targetUrl = cleanTelegram || cleanWhatsapp || '';
+  const targetUrl = cleanTelegram || cleanWhatsapp || 'https://t.me/+BIHzLUxxu2swNDk1';
   const directHref = getMetaDirectLink(targetUrl);
 
   const isMetaBrowser = isMetaInAppBrowser();
 
-  // 5 Second Timeout State
-  const [secondsLeft, setSecondsLeft] = useState(5);
-  const [isRedirecting, setIsRedirecting] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const hasRedirectedRef = useRef(false);
-
-  const formatTimer = (totalSecs: number) => {
-    const mins = Math.floor(totalSecs / 60);
-    const secs = totalSecs % 60;
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  };
-
-  const executeRedirect = () => {
-    if (hasRedirectedRef.current) return;
-    hasRedirectedRef.current = true;
-    setIsRedirecting(true);
-
-    if (!targetUrl || targetUrl === '#' || directHref === '#') {
-      return;
-    }
-
-    if (typeof window !== 'undefined' && window.top !== window.self) {
-      window.open(directHref, '_blank', 'noopener,noreferrer');
-    } else {
-      window.location.href = directHref;
-    }
-  };
-
-  // Auto-start 5-second countdown on page load
-  useEffect(() => {
-    hasRedirectedRef.current = false;
-    setSecondsLeft(5);
-
-    let current = 5;
-    if (timerRef.current) clearInterval(timerRef.current);
-
-    timerRef.current = setInterval(() => {
-      current -= 1;
-      setSecondsLeft(current >= 0 ? current : 0);
-
-      if (current <= 0) {
-        if (timerRef.current) clearInterval(timerRef.current);
-        executeRedirect();
-      }
-    }, 1000);
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [directHref, targetUrl]);
-
-  const handleJoinClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (onClick) onClick();
 
     if (!targetUrl || targetUrl === '#' || directHref === '#') {
+      e.preventDefault();
       alert("Please configure your link in Admin Panel.");
       return;
     }
 
-    // Immediately execute redirect on click
-    if (timerRef.current) clearInterval(timerRef.current);
-    executeRedirect();
+    // AI Studio Preview Environment iframe handling
+    if (typeof window !== 'undefined' && window.top !== window.self) {
+      e.preventDefault();
+      window.open(directHref, '_blank', 'noopener,noreferrer');
+      return;
+    }
   };
 
-  // Determine display label - default to "Continue"
+  // Label: Default to "Join Community"
   const rawLabel = (buttonText || '').trim();
   const label = (rawLabel && !rawLabel.toLowerCase().includes('group') && rawLabel !== 'CONTINUE')
     ? rawLabel
-    : "Continue";
+    : "Join Community";
 
   return (
     <div className="w-full flex flex-col items-center text-center space-y-3.5 pt-1 w-full max-w-sm mx-auto">
-      {/* Main Action Button */}
-      <motion.button
-        type="button"
+      {/* Main Action CTA Button */}
+      <motion.a
+        href={directHref}
+        target={isMetaBrowser ? "_self" : "_blank"}
+        rel="noopener noreferrer"
         onClick={handleJoinClick}
-        disabled={isRedirecting}
-        whileHover={{ scale: isRedirecting ? 1 : 1.02 }}
-        whileTap={{ scale: isRedirecting ? 1 : 0.97 }}
-        className={`relative overflow-hidden w-full py-3.5 px-6 rounded-2xl text-white font-bold text-lg sm:text-xl tracking-tight flex items-center justify-center shadow-[0_4px_20px_rgba(0,112,255,0.4)] cursor-pointer transition-all border-none ${
-          isRedirecting ? 'bg-[#0052C2] opacity-90' : 'bg-[#0070FF] hover:bg-[#0062D6]'
-        }`}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        className="relative overflow-hidden w-full py-4 px-6 rounded-2xl bg-[#0070FF] hover:bg-[#0062D6] text-white font-extrabold text-lg sm:text-xl tracking-tight flex items-center justify-center gap-2.5 shadow-[0_4px_20px_rgba(0,112,255,0.4)] cursor-pointer transition-all no-underline block z-10"
       >
-        {isRedirecting ? (
-          <div className="flex items-center justify-center gap-2">
-            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span className="font-bold text-white tracking-tight">
-              Verifying...
-            </span>
-          </div>
-        ) : (
-          <span className="font-bold text-white tracking-tight truncate relative z-10">
-            {label}
-          </span>
-        )}
-      </motion.button>
+        <svg className="w-6 h-6 text-white fill-current shrink-0" viewBox="0 0 24 24">
+          <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 8.16l-1.97 9.28c-.15.67-.54.83-1.1.52l-3.02-2.22-1.46 1.41c-.16.16-.3.3-.61.3l.22-3.07 5.58-5.04c.24-.22-.05-.34-.37-.13l-6.9 4.35-2.98-.93c-.65-.2-.66-.65.14-.96l11.64-4.49c.54-.2 1.01.12.85.96z"/>
+        </svg>
+        <span className="font-extrabold text-white tracking-tight truncate relative z-10">
+          {label}
+        </span>
+      </motion.a>
 
-      {/* Limited Time Access Timer Pill with 00:05 Timeout Countdown */}
-      <div className={`w-full py-2.5 px-4 rounded-xl border text-slate-200 font-semibold text-xs sm:text-sm text-center flex items-center justify-center gap-2 shadow-inner transition-colors ${
-        isRedirecting ? 'bg-[#1e324d] border-blue-500/80 text-blue-200' : 'bg-[#132237] border-slate-700/60'
-      }`}>
-        <span>Limited Time Access:</span>
-        <span className={`font-mono font-bold text-base ${isRedirecting ? 'text-amber-400 animate-pulse' : 'text-white'}`}>
-          {formatTimer(secondsLeft)}
+      {/* Transparent Information Box */}
+      <div className="w-full py-2.5 px-4 rounded-xl bg-[#132237]/80 border border-slate-700/60 text-slate-300 text-xs text-center flex flex-col gap-1 shadow-inner">
+        <span className="font-medium text-slate-200">
+          Direct access to Money Master Hub Telegram community
+        </span>
+        <span className="text-[11px] text-slate-400">
+          100% Free Access • Educational &amp; Informational Content
         </span>
       </div>
 
-      {/* Security Note */}
-      <p className="text-xs text-slate-400/90 text-center leading-relaxed px-2">
-        Your access link is generated securely and redirects automatically after verification.
-      </p>
-
-      {/* Footer Disclaimer */}
-      <p className="text-[10px] text-slate-500/80 text-center leading-normal px-2 pt-1">
-        This platform is intended for informational and access purposes only. Users must be 18+. This site is not affiliated with Facebook™ or Telegram™.
-      </p>
+      {/* Disclaimers & Risk Disclosures */}
+      <div className="w-full space-y-2 pt-1">
+        <p className="text-[11px] text-slate-400/90 text-center leading-relaxed px-1">
+          <strong className="text-slate-300">Community Terms &amp; Purpose:</strong> Money Master Hub is an independent community sharing market updates, educational resources, and research.
+        </p>
+        <p className="text-[10px] text-slate-500 text-center leading-normal px-1">
+          <strong className="text-slate-400">Risk Disclosure:</strong> Content shared is strictly for educational purposes and does not constitute financial, investment, or trading advice. Investments involve market risks and loss of capital. No guaranteed returns are promised. Not affiliated with Telegram or Meta.
+        </p>
+      </div>
     </div>
   );
 }
-
-

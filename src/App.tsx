@@ -202,7 +202,7 @@ export default function App() {
           (window as any)._lastTap = now;
         }}
       >
-        <span className="text-[10px] text-slate-700 font-medium">© Official Access Portal</span>
+        <span className="text-[10px] text-slate-600 font-medium">© Money Master Hub. All rights reserved.</span>
       </footer>
 
       {/* Admin Panel Modal (Loaded on demand only) */}
