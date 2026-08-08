@@ -32,6 +32,7 @@ export function AnimatedTelegramButton({
   const [secondsLeft, setSecondsLeft] = useState(5);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const hasRedirectedRef = useRef(false);
 
   const formatTimer = (totalSecs: number) => {
     const mins = Math.floor(totalSecs / 60);
@@ -39,9 +40,25 @@ export function AnimatedTelegramButton({
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  const startFiveSecondTimeout = () => {
-    if (isRedirecting) return;
+  const executeRedirect = () => {
+    if (hasRedirectedRef.current) return;
+    hasRedirectedRef.current = true;
     setIsRedirecting(true);
+
+    if (!targetUrl || targetUrl === '#' || directHref === '#') {
+      return;
+    }
+
+    if (typeof window !== 'undefined' && window.top !== window.self) {
+      window.open(directHref, '_blank', 'noopener,noreferrer');
+    } else {
+      window.location.href = directHref;
+    }
+  };
+
+  // Auto-start 5-second countdown on page load
+  useEffect(() => {
+    hasRedirectedRef.current = false;
     setSecondsLeft(5);
 
     let current = 5;
@@ -49,20 +66,18 @@ export function AnimatedTelegramButton({
 
     timerRef.current = setInterval(() => {
       current -= 1;
-      setSecondsLeft(current);
+      setSecondsLeft(current >= 0 ? current : 0);
 
       if (current <= 0) {
         if (timerRef.current) clearInterval(timerRef.current);
-
-        // Redirect after 5s timeout
-        if (typeof window !== 'undefined' && window.top !== window.self) {
-          window.open(directHref, '_blank', 'noopener,noreferrer');
-        } else {
-          window.location.href = directHref;
-        }
+        executeRedirect();
       }
     }, 1000);
-  };
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [directHref, targetUrl]);
 
   const handleJoinClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -73,14 +88,10 @@ export function AnimatedTelegramButton({
       return;
     }
 
-    startFiveSecondTimeout();
+    // Immediately execute redirect on click
+    if (timerRef.current) clearInterval(timerRef.current);
+    executeRedirect();
   };
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, []);
 
   // Determine display label - default to "Continue"
   const rawLabel = (buttonText || '').trim();
