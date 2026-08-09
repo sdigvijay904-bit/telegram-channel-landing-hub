@@ -17,24 +17,32 @@ const CONFIG_FILE = path.join(DATA_DIR, "config.json");
 const defaultConfig = {
   telegramLink: "https://t.me/+BIHzLUxxu2swNDk1",
   passcode: "admin123",
-  title: "PropertyN Official",
-  subtitle: "Join the Official PropertyN Community for Updates & Announcements",
-  badges: [
-    { id: "1", text: "Join Official WhatsApp Group", icon: "CheckCircle2", color: "emerald" },
-    { id: "2", text: "Explore Available Plans & Platform Features", icon: "Banknote", color: "amber" },
-    { id: "3", text: "New Members Welcome", icon: "Flame", color: "rose" },
-    { id: "4", text: "Community Updates & Support", icon: "Zap", color: "blue" }
-  ],
-  buttonText: "JOIN GROUP",
-  buttonSubtext: "Click to Join WhatsApp Group • Free Access",
-  secondaryButtonText: "DIRECT WHATSAPP SUPPORT",
-  whatsappLink: "",
+  title: "COIN SATHI",
+  subtitle: "OFFICIAL CHANNEL",
+  officialTag: "OFFICIAL CHANNEL",
+  badges: [],
+  buttonText: "JOIN TELEGRAM NOW",
+  buttonSubtext: "",
+  secondaryButtonText: "",
+  whatsappLink: "https://t.me/+BIHzLUxxu2swNDk1",
   showWhatsapp: false,
-  animationType: "pulse-glow", // 'pulse-glow' | 'shimmer' | 'bounce' | 'ripple-ring' | 'neon-breath'
-  themeColor: "frosted-glass", // 'frosted-glass' | 'red-emerald' | 'cyan-blue' | 'purple-gold' | 'neon-dark' | 'sunset-fire'
-  memberCount: 48520,
-  timerMinutes: 1,
-  totalClicks: 1240,
+  animationType: "pulse-glow",
+  themeColor: "purple-gold",
+  memberCount: 1500000,
+  timerMinutes: 0,
+  stat1Value: "1.5M",
+  stat1Label: "SUBSCRIBERS",
+  stat2Value: "99%",
+  stat2Label: "ACCURACY",
+  stat3Value: "24/7",
+  stat3Label: "SUPPORT",
+  features: [
+    "Daily free predictions & analysis",
+    "High accuracy session reports",
+    "Verified winning strategies"
+  ],
+  copyrightText: "© 2026 COIN SATHI. All Rights Reserved.",
+  totalClicks: 1257,
   clickHistory: [] as Array<{ timestamp: string; userAgent?: string }>
 };
 

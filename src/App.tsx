@@ -10,21 +10,30 @@ const AdminPanelModal = lazy(() =>
 
 const defaultConfig: AppConfig = {
   telegramLink: "https://t.me/+BIHzLUxxu2swNDk1",
-  title: "Official Community Access",
-  subtitle: "Secure verification is required before continuing. Please click the button below to proceed.",
-  badges: [
-    { id: "1", text: "Secure Access", icon: "Shield", color: "emerald" },
-    { id: "2", text: "Verified Link", icon: "CheckCircle2", color: "amber" },
-    { id: "3", text: "Fast Connection", icon: "Zap", color: "blue" }
-  ],
-  buttonText: "CONTINUE",
+  title: "COIN SATHI",
+  subtitle: "OFFICIAL CHANNEL",
+  officialTag: "OFFICIAL CHANNEL",
+  badges: [],
+  buttonText: "JOIN TELEGRAM NOW",
   buttonSubtext: "",
   showWhatsapp: false,
   animationType: "pulse-glow",
-  themeColor: "frosted-glass",
-  memberCount: 48520,
-  timerMinutes: 1,
-  totalClicks: 1240
+  themeColor: "purple-gold",
+  memberCount: 1500000,
+  timerMinutes: 0,
+  totalClicks: 1240,
+  stat1Value: "1.5M",
+  stat1Label: "SUBSCRIBERS",
+  stat2Value: "99%",
+  stat2Label: "ACCURACY",
+  stat3Value: "24/7",
+  stat3Label: "SUPPORT",
+  features: [
+    "Daily free predictions & analysis",
+    "High accuracy session reports",
+    "Verified winning strategies"
+  ],
+  copyrightText: "© 2026 COIN SATHI. All Rights Reserved."
 };
 
 export default function App() {
@@ -71,12 +80,11 @@ export default function App() {
           if (data.success && data.config) {
             setConfig(prev => {
               const serverConfig = data.config;
-              // Smart merge: Do not overwrite non-empty local link with empty server link
               const mergedTelegramLink = (serverConfig.telegramLink && serverConfig.telegramLink.trim())
                 ? serverConfig.telegramLink.trim()
                 : (prev.telegramLink && prev.telegramLink.trim())
                   ? prev.telegramLink.trim()
-                  : "";
+                  : "https://t.me/+BIHzLUxxu2swNDk1";
 
               const mergedWhatsappLink = (serverConfig.whatsappLink && serverConfig.whatsappLink.trim())
                 ? serverConfig.whatsappLink.trim()
@@ -85,11 +93,12 @@ export default function App() {
                   : "";
 
               const updated: AppConfig = {
+                ...defaultConfig,
                 ...prev,
                 ...serverConfig,
                 telegramLink: mergedTelegramLink,
                 whatsappLink: mergedWhatsappLink,
-                buttonText: serverConfig.buttonText || prev.buttonText || "CONTINUE"
+                buttonText: serverConfig.buttonText || prev.buttonText || "JOIN TELEGRAM NOW"
               };
 
               localStorage.setItem('tg_app_config', JSON.stringify(updated));
@@ -161,20 +170,23 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const copyrightText = config.copyrightText || `© 2026 ${config.title || 'COIN SATHI'}. All Rights Reserved.`;
+
   return (
-    <div className="relative min-h-[100dvh] w-full bg-[#050D1A] text-white flex flex-col justify-between items-center px-3 py-6 sm:px-6 sm:py-10 font-sans overflow-x-hidden">
+    <div className="relative min-h-[100dvh] w-full bg-gradient-to-b from-[#1c0836] via-[#120524] to-[#090214] text-white flex flex-col justify-between items-center px-3 py-6 sm:px-6 sm:py-10 font-sans overflow-x-hidden selection:bg-fuchsia-500 selection:text-white">
       
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-fuchsia-600/10 rounded-full blur-[90px] pointer-events-none" />
       </div>
 
       {/* Main Center Card Container */}
-      <main className="relative z-10 w-full max-w-md sm:max-w-lg mx-auto bg-[#0B1728]/95 border border-slate-800/90 rounded-2xl sm:rounded-[32px] p-4 sm:p-7 shadow-2xl backdrop-blur-md flex flex-col items-center text-center space-y-4 my-auto shrink-0">
-        {/* Header Section (Circle Logo, Title, Subtitle, Badges) */}
+      <main className="relative z-10 w-full max-w-md mx-auto bg-[#180a32]/85 border border-purple-800/40 rounded-3xl sm:rounded-[36px] p-5 sm:p-7 shadow-[0_0_50px_rgba(112,26,117,0.3)] backdrop-blur-2xl flex flex-col items-center text-center space-y-4 my-auto shrink-0">
+        {/* Header Section (Circle Logo, Title, Subtitle, Stats, Checklist) */}
         <HeaderCard config={config} />
 
-        {/* Action Button, Timer Capsule, Access Note & Disclaimer */}
+        {/* Action Button */}
         <AnimatedTelegramButton
           telegramLink={config.telegramLink}
           buttonText={config.buttonText}
@@ -182,13 +194,17 @@ export default function App() {
           animationType={config.animationType}
           onClick={handleButtonClick}
         />
+
+        {/* Footer inside card or at bottom */}
+        <p className="text-[11px] sm:text-xs text-purple-300/60 font-medium tracking-wide pt-1">
+          {copyrightText}
+        </p>
       </main>
 
       {/* Secret Admin Panel Trigger Footer */}
       <footer
-        className="relative z-20 w-full py-3 flex justify-center items-center text-xs text-slate-500 select-none cursor-default shrink-0 mt-3"
+        className="relative z-20 w-full py-2 flex justify-center items-center text-xs text-slate-500 select-none cursor-pointer shrink-0 mt-2"
         onClick={() => {
-          // Secret triple click detection for mobile admin access
           const now = Date.now();
           if ((window as any)._lastTap && now - (window as any)._lastTap < 400) {
             (window as any)._tapCount = ((window as any)._tapCount || 0) + 1;
@@ -202,10 +218,12 @@ export default function App() {
           (window as any)._lastTap = now;
         }}
       >
-        <span className="text-[10px] text-slate-600 font-medium">© Money Master Hub. All rights reserved.</span>
+        <span className="text-[10px] text-purple-400/30 hover:text-purple-300 transition-colors">
+          Admin Settings
+        </span>
       </footer>
 
-      {/* Admin Panel Modal (Loaded on demand only) */}
+      {/* Admin Panel Modal */}
       {isAdminOpen && (
         <Suspense fallback={null}>
           <AdminPanelModal

@@ -1,6 +1,6 @@
 {
-  "name": "Money Master Hub",
-  "description": "Money Master Hub community landing page providing educational content, market updates, and community discussions.",
+  "name": "Coin Sathi",
+  "description": "Coin Sathi official community channel landing page providing market updates, analysis, and community link.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

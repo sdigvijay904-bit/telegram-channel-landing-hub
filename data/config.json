@@ -1,102 +1,36 @@
 {
   "telegramLink": "https://t.me/+BIHzLUxxu2swNDk1",
   "passcode": "admin123",
-  "title": "Join our community",
-  "subtitle": "Get updates, educational content and community information.",
-  "badges": [
-    {
-      "id": "1",
-      "text": "Educational Content",
-      "icon": "BookOpen",
-      "color": "emerald"
-    },
-    {
-      "id": "2",
-      "text": "Market Updates",
-      "icon": "TrendingUp",
-      "color": "amber"
-    },
-    {
-      "id": "3",
-      "text": "Community Insights",
-      "icon": "Users",
-      "color": "blue"
-    }
-  ],
-  "buttonText": "Continue",
-  "buttonSubtext": "Free Educational Telegram Community",
+  "title": "COIN SATHI",
+  "subtitle": "OFFICIAL CHANNEL",
+  "badges": [],
+  "buttonText": "JOIN TELEGRAM NOW",
+  "buttonSubtext": "",
   "secondaryButtonText": "",
   "whatsappLink": "https://t.me/+BIHzLUxxu2swNDk1",
   "showWhatsapp": false,
   "animationType": "pulse-glow",
-  "themeColor": "frosted-glass",
-  "memberCount": 48520,
-  "timerMinutes": 1,
-  "totalClicks": 1256,
+  "themeColor": "purple-gold",
+  "memberCount": 1500000,
+  "timerMinutes": 0,
+  "totalClicks": 1258,
   "clickHistory": [
     {
-      "timestamp": "2026-08-08T13:38:34.460Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-27T02:57:38.613Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-27T02:57:07.083Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-27T02:55:01.611Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-27T02:49:56.771Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-25T10:04:31.363Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-24T17:42:54.927Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-24T17:33:42.545Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:41:46.206Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:36:52.664Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:32:41.685Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:32:30.178Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:24:06.686Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:10:56.389Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:04:56.483Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    },
-    {
-      "timestamp": "2026-07-23T10:04:38.756Z",
+      "timestamp": "2026-08-09T19:20:26.463Z",
       "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
     }
-  ]
+  ],
+  "officialTag": "OFFICIAL CHANNEL",
+  "stat1Value": "1.5M",
+  "stat1Label": "SUBSCRIBERS",
+  "stat2Value": "99%",
+  "stat2Label": "ACCURACY",
+  "stat3Value": "24/7",
+  "stat3Label": "SUPPORT",
+  "features": [
+    "Daily free predictions & analysis",
+    "High accuracy session reports",
+    "Verified winning strategies"
+  ],
+  "copyrightText": "© 2026 COIN SATHI. All Rights Reserved."
 }

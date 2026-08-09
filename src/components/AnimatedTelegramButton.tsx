@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { AnimationType } from '../types';
 import { getMetaDirectLink, isMetaInAppBrowser, performSmartNavigation } from '../utils/telegramHelper';
@@ -9,63 +9,34 @@ interface AnimatedTelegramButtonProps {
   buttonSubtext?: string;
   whatsappLink?: string;
   animationType?: AnimationType;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export function AnimatedTelegramButton({
   telegramLink = '',
-  buttonText = 'Continue',
+  buttonText = 'JOIN TELEGRAM NOW',
   whatsappLink = '',
   onClick
 }: AnimatedTelegramButtonProps) {
-  // Target Link resolution: Priority to telegramLink, fallback to whatsappLink
   const cleanTelegram = (telegramLink || '').trim();
   const cleanWhatsapp = (whatsappLink || '').trim();
 
   const targetUrl = cleanTelegram || cleanWhatsapp || 'https://t.me/+BIHzLUxxu2swNDk1';
   const directHref = getMetaDirectLink(targetUrl);
-
   const isMetaBrowser = isMetaInAppBrowser();
-
-  const [timeLeft, setTimeLeft] = useState<number>(5);
-  const [hasRedirected, setHasRedirected] = useState<boolean>(false);
-  const redirectTriggeredRef = useRef<boolean>(false);
-
-  const executeRedirect = () => {
-    if (redirectTriggeredRef.current) return;
-    redirectTriggeredRef.current = true;
-    setHasRedirected(true);
-
-    if (onClick) onClick();
-
-    performSmartNavigation(targetUrl);
-  };
 
   const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    executeRedirect();
+    if (onClick) onClick();
+    performSmartNavigation(targetUrl);
   };
 
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      executeRedirect();
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft]);
-
-  // Label: Default to "Continue"
   const rawLabel = (buttonText || '').trim();
-  const label = rawLabel || "Continue";
+  const label = rawLabel || "JOIN TELEGRAM NOW";
 
   return (
-    <div className="w-full flex flex-col items-center text-center space-y-2.5 pt-0.5 w-full max-w-sm mx-auto shrink-0">
-      {/* Main Action CTA Button with Pulse & Glow Animation */}
+    <div className="w-full flex flex-col items-center text-center space-y-3 pt-2 w-full max-w-sm sm:max-w-md mx-auto shrink-0">
+      {/* Pink-Purple Gradient Action CTA Button */}
       <motion.a
         href={directHref}
         target={isMetaBrowser ? "_self" : "_blank"}
@@ -74,54 +45,46 @@ export function AnimatedTelegramButton({
         animate={{
           scale: [1, 1.02, 1],
           boxShadow: [
-            "0 4px 14px rgba(0, 112, 255, 0.35)",
-            "0 6px 22px rgba(0, 112, 255, 0.65)",
-            "0 4px 14px rgba(0, 112, 255, 0.35)"
+            "0 0 20px rgba(217,70,239,0.4)",
+            "0 0 35px rgba(217,70,239,0.7)",
+            "0 0 20px rgba(217,70,239,0.4)"
           ]
         }}
         transition={{
           repeat: Infinity,
-          duration: 2.2,
+          duration: 2,
           ease: "easeInOut"
         }}
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.96 }}
-        className="relative overflow-hidden w-full py-3 px-6 sm:py-3.5 sm:px-6 rounded-xl sm:rounded-2xl bg-[#0070FF] hover:bg-[#0062D6] text-white font-extrabold text-base sm:text-lg tracking-wide flex items-center justify-center cursor-pointer transition-colors no-underline block z-10"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        className="relative overflow-hidden w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#d946ef] via-[#a855f7] to-[#6366f1] text-white font-black text-base sm:text-lg tracking-wider flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_0_30px_rgba(217,70,239,0.5)] border border-fuchsia-400/40 no-underline block z-10 uppercase transition-all"
       >
-        {/* Shimmer / Light Beam Effect */}
+        {/* Shimmer Light Beam Effect */}
         <motion.div
           animate={{
             x: ['-100%', '200%']
           }}
           transition={{
             repeat: Infinity,
-            repeatDelay: 1.5,
-            duration: 1.8,
+            repeatDelay: 1.2,
+            duration: 1.6,
             ease: "easeInOut"
           }}
-          className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12 pointer-events-none"
+          className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 pointer-events-none"
         />
-        <span className="font-extrabold text-white uppercase tracking-wider relative z-10">
+
+        {/* Paper Airplane Telegram Icon */}
+        <svg
+          className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-white shrink-0 -rotate-12"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .54-1.43.53-.47-.01-1.37-.26-2.05-.48-.83-.27-1.49-.42-1.43-.88.03-.24.38-.49 1.04-.75 4.08-1.78 6.81-2.95 8.19-3.53 3.9-1.63 4.71-1.91 5.24-1.92.12 0 .37.03.54.17.14.12.18.28.2.42-.01.06.01.24 0 .38z" />
+        </svg>
+
+        <span className="font-extrabold text-white uppercase tracking-wider relative z-10 drop-shadow-sm">
           {label}
         </span>
       </motion.a>
-
-      {/* Timer Badge Capsule */}
-      <div className="w-full py-2.5 px-4 rounded-xl bg-[#0d1e36] border border-slate-700/60 flex items-center justify-center gap-2 text-slate-200 text-xs sm:text-sm font-semibold shadow-inner">
-        <span>00:{String(timeLeft).padStart(2, '0')}</span>
-      </div>
-
-      {/* Information Text Box */}
-      <div className="w-full px-2 py-1 text-slate-300 text-xs sm:text-sm text-center font-normal leading-relaxed">
-        Your access link is generated securely and redirects automatically after verification.
-      </div>
-
-      {/* Disclaimers & Footer note from screenshot */}
-      <div className="w-full pt-3 mt-1">
-        <p className="text-[10px] sm:text-[11px] text-slate-400 text-center leading-relaxed px-1">
-          This platform is intended for informational and access purposes only. Users must be 18+. This site is not affiliated with Facebook™ or Telegram™.
-        </p>
-      </div>
     </div>
   );
 }
