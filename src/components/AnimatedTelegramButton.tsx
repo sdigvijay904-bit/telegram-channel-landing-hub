@@ -29,7 +29,6 @@ export function AnimatedTelegramButton({
 
   const [timeLeft, setTimeLeft] = useState<number>(5);
   const [hasRedirected, setHasRedirected] = useState<boolean>(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const redirectTriggeredRef = useRef<boolean>(false);
 
   const executeRedirect = () => {
@@ -46,51 +45,37 @@ export function AnimatedTelegramButton({
       return;
     }
 
-    // Smooth redirection across all mobile browsers (Meta/Instagram, Telegram, Chrome, Safari, Android, iOS)
-    try {
-      if (typeof window !== 'undefined') {
-        if (window.top && window.top !== window) {
-          try {
-            window.top.location.href = finalUrl;
-            return;
-          } catch {
-            window.open(finalUrl, '_top') || window.open(finalUrl, '_blank');
-            return;
-          }
+    if (typeof window !== 'undefined') {
+      const isIframe = window.self !== window.top;
+      if (isIframe) {
+        try {
+          window.top!.location.href = finalUrl;
+        } catch {
+          window.open(finalUrl, '_blank');
         }
+      } else {
         window.location.href = finalUrl;
       }
-    } catch {
-      window.location.href = finalUrl;
     }
   };
 
   const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
     executeRedirect();
   };
 
   useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          if (timerRef.current) clearInterval(timerRef.current);
-          executeRedirect();
-          return 0;
-        }
-        return prev - 1;
-      });
+    if (timeLeft <= 0) {
+      executeRedirect();
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
 
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [targetUrl]);
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   // Label: Default to "Continue"
   const rawLabel = (buttonText || '').trim();
