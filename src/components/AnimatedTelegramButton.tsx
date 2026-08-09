@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { AnimationType } from '../types';
 import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
@@ -27,22 +27,61 @@ export function AnimatedTelegramButton({
 
   const isMetaBrowser = isMetaInAppBrowser();
 
-  const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const [timeLeft, setTimeLeft] = useState<number>(5);
+  const [hasRedirected, setHasRedirected] = useState<boolean>(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const executeRedirect = () => {
     if (onClick) onClick();
 
     if (!targetUrl || targetUrl === '#' || directHref === '#') {
-      e.preventDefault();
       alert("Please configure your link in Admin Panel.");
       return;
     }
 
     // AI Studio Preview Environment iframe handling
     if (typeof window !== 'undefined' && window.top !== window.self) {
-      e.preventDefault();
       window.open(directHref, '_blank', 'noopener,noreferrer');
       return;
     }
+
+    if (isMetaBrowser) {
+      window.location.href = directHref;
+    } else {
+      window.open(directHref, '_blank', 'noopener,noreferrer');
+    }
   };
+
+  const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    setHasRedirected(true);
+    executeRedirect();
+  };
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current);
+          if (!hasRedirected) {
+            setHasRedirected(true);
+            executeRedirect();
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [hasRedirected, directHref, targetUrl]);
 
   // Label: Default to "Continue"
   const rawLabel = (buttonText || '').trim();
@@ -90,6 +129,23 @@ export function AnimatedTelegramButton({
           {label}
         </span>
       </motion.a>
+
+      {/* 05 Second Timeout Auto-Redirect Badge below Continue Button */}
+      <div className="w-full py-2 px-3.5 rounded-xl bg-[#0e1f38] border border-blue-500/30 flex items-center justify-center gap-2 text-blue-200 text-xs sm:text-sm font-medium shadow-inner">
+        <span className="relative flex h-2.5 w-2.5 shrink-0">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+        </span>
+        {timeLeft > 0 ? (
+          <span>
+            Auto redirecting in <strong className="text-yellow-400 font-bold font-mono text-sm sm:text-base">{String(timeLeft).padStart(2, '0')} seconds</strong>
+          </span>
+        ) : (
+          <span className="text-green-400 font-bold">
+            Redirecting (00s)...
+          </span>
+        )}
+      </div>
 
       {/* Transparent Information Box */}
       <div className="w-full py-2.5 px-4 rounded-xl bg-[#132237]/80 border border-slate-700/60 text-slate-300 text-xs sm:text-sm text-center flex flex-col gap-0.5 shadow-inner">
