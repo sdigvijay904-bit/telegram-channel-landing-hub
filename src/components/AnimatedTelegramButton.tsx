@@ -45,11 +45,8 @@ export function AnimatedTelegramButton({
       return;
     }
 
-    if (isMetaBrowser) {
-      window.location.href = directHref;
-    } else {
-      window.open(directHref, '_blank', 'noopener,noreferrer');
-    }
+    // Use location.href so auto-timer redirects don't get blocked as popups by Chrome/Safari
+    window.location.href = directHref;
   };
 
   const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
