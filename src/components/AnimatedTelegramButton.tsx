@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { AnimationType } from '../types';
-import { getMetaDirectLink, getTelegramDeepLink, isMetaInAppBrowser } from '../utils/telegramHelper';
+import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
 
 interface AnimatedTelegramButtonProps {
   telegramLink?: string;
@@ -39,25 +39,29 @@ export function AnimatedTelegramButton({
 
     if (onClick) onClick();
 
-    const { webUrl, deepLink } = getTelegramDeepLink(targetUrl);
+    const finalUrl = getMetaDirectLink(targetUrl);
 
-    if (!webUrl || webUrl === '#') {
+    if (!finalUrl || finalUrl === '#') {
       alert("Please configure your link in Admin Panel.");
       return;
     }
 
-    // Direct page navigation avoids Pop-up Blocked issues in mobile Chrome/Safari
+    // Smooth redirection across all mobile browsers (Meta/Instagram, Telegram, Chrome, Safari, Android, iOS)
     try {
-      if (deepLink) {
-        window.location.href = deepLink;
-        setTimeout(() => {
-          window.location.href = webUrl;
-        }, 300);
-      } else {
-        window.location.href = webUrl;
+      if (typeof window !== 'undefined') {
+        if (window.top && window.top !== window) {
+          try {
+            window.top.location.href = finalUrl;
+            return;
+          } catch {
+            window.open(finalUrl, '_top') || window.open(finalUrl, '_blank');
+            return;
+          }
+        }
+        window.location.href = finalUrl;
       }
     } catch {
-      window.location.href = webUrl;
+      window.location.href = finalUrl;
     }
   };
 
@@ -135,9 +139,9 @@ export function AnimatedTelegramButton({
         </span>
       </motion.a>
 
-      {/* Limited Time Access Timer Badge Capsule */}
+      {/* Timer Badge Capsule */}
       <div className="w-full py-2.5 px-4 rounded-xl bg-[#0d1e36] border border-slate-700/60 flex items-center justify-center gap-2 text-slate-200 text-xs sm:text-sm font-semibold shadow-inner">
-        <span>Limited Time Access: 00:{String(timeLeft).padStart(2, '0')}</span>
+        <span>00:{String(timeLeft).padStart(2, '0')}</span>
       </div>
 
       {/* Information Text Box */}
