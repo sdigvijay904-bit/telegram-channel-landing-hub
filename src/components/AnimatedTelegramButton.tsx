@@ -92,22 +92,22 @@ export function AnimatedTelegramButton({
       </motion.a>
 
       {/* Transparent Information Box */}
-      <div className="w-full py-2 px-3 rounded-lg bg-[#132237]/80 border border-slate-700/60 text-slate-300 text-[11px] sm:text-xs text-center flex flex-col gap-0.5 shadow-inner">
+      <div className="w-full py-2.5 px-4 rounded-xl bg-[#132237]/80 border border-slate-700/60 text-slate-300 text-xs sm:text-sm text-center flex flex-col gap-0.5 shadow-inner">
         <span className="font-medium text-slate-200">
           Direct access to Money Master Hub Telegram community
         </span>
-        <span className="text-[10px] sm:text-[11px] text-slate-400">
+        <span className="text-[11px] sm:text-xs text-slate-400">
           100% Free Access • Educational &amp; Informational Content
         </span>
       </div>
 
       {/* Disclaimers & Risk Disclosures */}
-      <div className="w-full space-y-1.5 pt-0.5">
-        <p className="text-[10px] sm:text-[11px] text-slate-400/90 text-center leading-relaxed px-1">
-          <strong className="text-slate-300">Community Terms &amp; Purpose:</strong> Money Master Hub is an independent community sharing market updates, educational resources, and research.
+      <div className="w-full space-y-2 pt-2 border-t border-slate-800/80 mt-1">
+        <p className="text-[11px] sm:text-xs text-slate-300 text-center leading-relaxed px-1">
+          <strong className="text-white font-semibold">Community Terms &amp; Purpose:</strong> Money Master Hub is an independent community sharing market updates, educational resources, and research.
         </p>
-        <p className="text-[9.5px] sm:text-[10px] text-slate-500 text-center leading-normal px-1">
-          <strong className="text-slate-400">Risk Disclosure:</strong> Content shared is strictly for educational purposes and does not constitute financial, investment, or trading advice. Investments involve market risks and loss of capital. No guaranteed returns are promised. Not affiliated with Telegram or Meta.
+        <p className="text-[10px] sm:text-[11px] text-slate-400 text-center leading-relaxed px-1">
+          <strong className="text-slate-300 font-semibold">Risk Disclosure:</strong> Content shared is strictly for educational purposes and does not constitute financial, investment, or trading advice. Investments involve market risks and loss of capital. No guaranteed returns are promised. Not affiliated with Telegram or Meta.
         </p>
       </div>
     </div>
