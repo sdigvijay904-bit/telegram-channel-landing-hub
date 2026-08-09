@@ -27,7 +27,7 @@ export function AnimatedTelegramButton({
 
   const isMetaBrowser = isMetaInAppBrowser();
 
-  const [timeLeft, setTimeLeft] = useState<number>(5);
+  const [timeLeft, setTimeLeft] = useState<number>(2);
   const [hasRedirected, setHasRedirected] = useState<boolean>(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
