@@ -14,7 +14,7 @@ interface AnimatedTelegramButtonProps {
 
 export function AnimatedTelegramButton({
   telegramLink = '',
-  buttonText = 'Join Community',
+  buttonText = 'Continue',
   whatsappLink = '',
   onClick
 }: AnimatedTelegramButtonProps) {
@@ -44,48 +44,69 @@ export function AnimatedTelegramButton({
     }
   };
 
-  // Label: Default to "Join Community"
+  // Label: Default to "Continue"
   const rawLabel = (buttonText || '').trim();
-  const label = (rawLabel && !rawLabel.toLowerCase().includes('group') && rawLabel !== 'CONTINUE')
-    ? rawLabel
-    : "Join Community";
+  const label = rawLabel || "Continue";
 
   return (
-    <div className="w-full flex flex-col items-center text-center space-y-3.5 pt-1 w-full max-w-sm mx-auto">
-      {/* Main Action CTA Button */}
+    <div className="w-full flex flex-col items-center text-center space-y-2.5 pt-0.5 w-full max-w-sm mx-auto shrink-0">
+      {/* Main Action CTA Button with Pulse & Glow Animation */}
       <motion.a
         href={directHref}
         target={isMetaBrowser ? "_self" : "_blank"}
         rel="noopener noreferrer"
         onClick={handleJoinClick}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
-        className="relative overflow-hidden w-full py-4 px-6 rounded-2xl bg-[#0070FF] hover:bg-[#0062D6] text-white font-extrabold text-lg sm:text-xl tracking-tight flex items-center justify-center gap-2.5 shadow-[0_4px_20px_rgba(0,112,255,0.4)] cursor-pointer transition-all no-underline block z-10"
+        animate={{
+          scale: [1, 1.02, 1],
+          boxShadow: [
+            "0 4px 14px rgba(0, 112, 255, 0.35)",
+            "0 6px 22px rgba(0, 112, 255, 0.65)",
+            "0 4px 14px rgba(0, 112, 255, 0.35)"
+          ]
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 2.2,
+          ease: "easeInOut"
+        }}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
+        className="relative overflow-hidden w-full py-3 px-6 sm:py-3.5 sm:px-6 rounded-xl sm:rounded-2xl bg-[#0070FF] hover:bg-[#0062D6] text-white font-extrabold text-base sm:text-lg tracking-wide flex items-center justify-center cursor-pointer transition-colors no-underline block z-10"
       >
-        <svg className="w-6 h-6 text-white fill-current shrink-0" viewBox="0 0 24 24">
-          <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 8.16l-1.97 9.28c-.15.67-.54.83-1.1.52l-3.02-2.22-1.46 1.41c-.16.16-.3.3-.61.3l.22-3.07 5.58-5.04c.24-.22-.05-.34-.37-.13l-6.9 4.35-2.98-.93c-.65-.2-.66-.65.14-.96l11.64-4.49c.54-.2 1.01.12.85.96z"/>
-        </svg>
-        <span className="font-extrabold text-white tracking-tight truncate relative z-10">
+        {/* Shimmer / Light Beam Effect */}
+        <motion.div
+          animate={{
+            x: ['-100%', '200%']
+          }}
+          transition={{
+            repeat: Infinity,
+            repeatDelay: 1.5,
+            duration: 1.8,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12 pointer-events-none"
+        />
+        <span className="font-extrabold text-white uppercase tracking-wider relative z-10">
           {label}
         </span>
       </motion.a>
 
       {/* Transparent Information Box */}
-      <div className="w-full py-2.5 px-4 rounded-xl bg-[#132237]/80 border border-slate-700/60 text-slate-300 text-xs text-center flex flex-col gap-1 shadow-inner">
+      <div className="w-full py-2 px-3 rounded-lg bg-[#132237]/80 border border-slate-700/60 text-slate-300 text-[11px] sm:text-xs text-center flex flex-col gap-0.5 shadow-inner">
         <span className="font-medium text-slate-200">
           Direct access to Money Master Hub Telegram community
         </span>
-        <span className="text-[11px] text-slate-400">
+        <span className="text-[10px] sm:text-[11px] text-slate-400">
           100% Free Access • Educational &amp; Informational Content
         </span>
       </div>
 
       {/* Disclaimers & Risk Disclosures */}
-      <div className="w-full space-y-2 pt-1">
-        <p className="text-[11px] text-slate-400/90 text-center leading-relaxed px-1">
+      <div className="w-full space-y-1.5 pt-0.5">
+        <p className="text-[10px] sm:text-[11px] text-slate-400/90 text-center leading-relaxed px-1">
           <strong className="text-slate-300">Community Terms &amp; Purpose:</strong> Money Master Hub is an independent community sharing market updates, educational resources, and research.
         </p>
-        <p className="text-[10px] text-slate-500 text-center leading-normal px-1">
+        <p className="text-[9.5px] sm:text-[10px] text-slate-500 text-center leading-normal px-1">
           <strong className="text-slate-400">Risk Disclosure:</strong> Content shared is strictly for educational purposes and does not constitute financial, investment, or trading advice. Investments involve market risks and loss of capital. No guaranteed returns are promised. Not affiliated with Telegram or Meta.
         </p>
       </div>

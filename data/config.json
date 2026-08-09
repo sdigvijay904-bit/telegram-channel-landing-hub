@@ -23,10 +23,10 @@
       "color": "blue"
     }
   ],
-  "buttonText": "Join Community",
+  "buttonText": "Continue",
   "buttonSubtext": "Free Educational Telegram Community",
   "secondaryButtonText": "",
-  "whatsappLink": "",
+  "whatsappLink": "https://t.me/+BIHzLUxxu2swNDk1",
   "showWhatsapp": false,
   "animationType": "pulse-glow",
   "themeColor": "frosted-glass",

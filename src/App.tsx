@@ -162,7 +162,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-[#050D1A] text-white flex flex-col justify-center items-center p-3 sm:p-6 font-sans overflow-x-hidden">
+    <div className="relative min-h-[100dvh] w-full bg-[#050D1A] text-white flex flex-col justify-between items-center p-2 sm:p-5 font-sans overflow-y-auto overflow-x-hidden">
       
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -170,7 +170,7 @@ export default function App() {
       </div>
 
       {/* Main Center Card Container */}
-      <main className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto bg-[#0B1728]/95 border border-slate-800/90 rounded-[28px] sm:rounded-[36px] p-5 sm:p-8 shadow-2xl backdrop-blur-md flex flex-col items-center text-center space-y-4 my-auto">
+      <main className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto bg-[#0B1728]/95 border border-slate-800/90 rounded-2xl sm:rounded-[32px] p-3.5 sm:p-6 shadow-2xl backdrop-blur-md flex flex-col items-center text-center space-y-3 sm:space-y-4 my-auto shrink-0">
         {/* Header Section (Circle Logo, Title, Subtitle, Badges) */}
         <HeaderCard config={config} />
 
@@ -186,7 +186,7 @@ export default function App() {
 
       {/* Secret Admin Panel Trigger Footer */}
       <footer
-        className="relative z-20 w-full py-2 flex justify-center items-center text-xs text-slate-600 select-none cursor-default shrink-0 mt-2"
+        className="relative z-20 w-full py-1.5 flex justify-center items-center text-xs text-slate-600 select-none cursor-default shrink-0 mt-1"
         onClick={() => {
           // Secret triple click detection for mobile admin access
           const now = Date.now();
