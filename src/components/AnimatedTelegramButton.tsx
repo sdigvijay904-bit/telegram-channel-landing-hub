@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { AnimationType } from '../types';
-import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
+import { getMetaDirectLink, isMetaInAppBrowser, performSmartNavigation } from '../utils/telegramHelper';
 
 interface AnimatedTelegramButtonProps {
   telegramLink?: string;
@@ -38,25 +38,7 @@ export function AnimatedTelegramButton({
 
     if (onClick) onClick();
 
-    const finalUrl = getMetaDirectLink(targetUrl);
-
-    if (!finalUrl || finalUrl === '#') {
-      alert("Please configure your link in Admin Panel.");
-      return;
-    }
-
-    if (typeof window !== 'undefined') {
-      const isIframe = window.self !== window.top;
-      if (isIframe) {
-        try {
-          window.top!.location.href = finalUrl;
-        } catch {
-          window.open(finalUrl, '_blank');
-        }
-      } else {
-        window.location.href = finalUrl;
-      }
-    }
+    performSmartNavigation(targetUrl);
   };
 
   const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {

@@ -15,7 +15,7 @@ const DATA_DIR = path.join(process.cwd(), "data");
 const CONFIG_FILE = path.join(DATA_DIR, "config.json");
 
 const defaultConfig = {
-  telegramLink: "",
+  telegramLink: "https://t.me/+BIHzLUxxu2swNDk1",
   passcode: "admin123",
   title: "PropertyN Official",
   subtitle: "Join the Official PropertyN Community for Updates & Announcements",
