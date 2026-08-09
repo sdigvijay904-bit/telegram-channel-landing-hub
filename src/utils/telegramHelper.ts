@@ -188,107 +188,40 @@ export function getTelegramDeepLink(rawUrl: string, customMessage: string = "I a
   if (!webUrl || webUrl === '#') {
     return { webUrl: '#', deepLink: null };
   }
-
-  // 1. WhatsApp group link (chat.whatsapp.com/CODE)
-  const waGroupMatch = webUrl.match(/chat\.whatsapp\.com\/([A-Za-z0-9_-]+)/i);
-  if (waGroupMatch && waGroupMatch[1]) {
-    return {
-      webUrl,
-      deepLink: `whatsapp://chat?code=${waGroupMatch[1]}`
-    };
-  }
-
-  // 2. WhatsApp direct chat (wa.me/NUMBER)
-  const waMeMatch = webUrl.match(/wa\.me\/(\d+)/i);
-  if (waMeMatch && waMeMatch[1]) {
-    const textParam = webUrl.includes('text=') ? webUrl.split('text=')[1] : '';
-    const textQuery = textParam ? `&text=${textParam}` : '';
-    return {
-      webUrl,
-      deepLink: `whatsapp://send?phone=${waMeMatch[1]}${textQuery}`
-    };
-  }
-
-  // 3. Extract Telegram invite hash with + (e.g. https://t.me/+BIHzLUxxu2swNDk1)
-  const plusMatch = webUrl.match(/t\.me\/\+([A-Za-z0-9_-]+)/i);
-  if (plusMatch && plusMatch[1]) {
-    return {
-      webUrl,
-      deepLink: `tg://join?invite=${plusMatch[1]}`
-    };
-  }
-
-  // 4. Extract Telegram joinchat hash (e.g. https://t.me/joinchat/BIHzLUxxu2swNDk1)
-  const joinchatMatch = webUrl.match(/t\.me\/joinchat\/([A-Za-z0-9_-]+)/i);
-  if (joinchatMatch && joinchatMatch[1]) {
-    return {
-      webUrl,
-      deepLink: `tg://join?invite=${joinchatMatch[1]}`
-    };
-  }
-
-  // 5. Public channel username (e.g. https://t.me/channelname)
-  const usernameMatch = webUrl.match(/t\.me\/([A-Za-z0-9_]{4,})/i);
-  if (usernameMatch && usernameMatch[1] && !['joinchat', 'share', 'addstickers'].includes(usernameMatch[1].toLowerCase())) {
-    return {
-      webUrl,
-      deepLink: `tg://resolve?domain=${usernameMatch[1]}`
-    };
-  }
-
-  // 6. Already direct app scheme
-  if (webUrl.startsWith('tg://') || webUrl.startsWith('whatsapp://')) {
-    return { webUrl, deepLink: webUrl };
-  }
-
+  // Deep links removed per user request: always use direct web URL
   return { webUrl, deepLink: null };
 }
 
 export function performSmartNavigation(rawUrl: string, customMessage: string = "I am interested"): void {
   if (typeof window === 'undefined') return;
 
-  const { webUrl, deepLink } = getTelegramDeepLink(rawUrl, customMessage);
+  const webUrl = parseSmartLink(rawUrl, customMessage);
   if (!webUrl || webUrl === '#') {
-    alert("Please configure a valid Telegram or WhatsApp link.");
+    alert("Please configure a valid link.");
     return;
   }
 
   const isIframe = window.self !== window.top;
 
-  const navigate = (targetUrl: string) => {
-    // Top window navigation for iframe context
-    if (isIframe && window.top) {
-      try {
-        window.top.location.href = targetUrl;
-        return;
-      } catch {
-        // Fall through on cross-origin iframe security lock
-      }
-    }
-
-    // Dynamic anchor click for maximum mobile browser compatibility
+  // Top window navigation for iframe context or direct navigation
+  if (isIframe && window.top) {
     try {
-      const a = document.createElement('a');
-      a.href = targetUrl;
-      a.rel = 'noopener noreferrer';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      window.top.location.href = webUrl;
+      return;
     } catch {
-      window.location.href = targetUrl;
+      // Fall through if cross-origin iframe security lock
     }
-  };
+  }
 
-  if (deepLink) {
-    // Instant launch of Telegram / WhatsApp app via deep link
-    navigate(deepLink);
-
-    // Fallback to https web link if native app didn't capture or isn't installed
-    setTimeout(() => {
-      navigate(webUrl);
-    }, 400);
-  } else {
-    navigate(webUrl);
+  try {
+    const a = document.createElement('a');
+    a.href = webUrl;
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch {
+    window.location.href = webUrl;
   }
 }
 
