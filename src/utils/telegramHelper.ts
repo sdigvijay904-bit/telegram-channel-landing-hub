@@ -182,3 +182,39 @@ export function openTelegramInApp(rawUrl: string): void {
     window.location.href = link;
   }
 }
+
+export function getTelegramDeepLink(rawUrl: string, customMessage: string = "I am interested"): { webUrl: string; deepLink: string | null } {
+  const webUrl = parseSmartLink(rawUrl, customMessage);
+  if (!webUrl || webUrl === '#') {
+    return { webUrl: '#', deepLink: null };
+  }
+
+  // Extract Telegram invite hash with + (e.g. https://t.me/+BIHzLUxxu2swNDk1)
+  const plusMatch = webUrl.match(/t\.me\/\+([A-Za-z0-9_-]+)/i);
+  if (plusMatch && plusMatch[1]) {
+    return {
+      webUrl,
+      deepLink: `tg://join?invite=${plusMatch[1]}`
+    };
+  }
+
+  // Extract Telegram joinchat hash (e.g. https://t.me/joinchat/BIHzLUxxu2swNDk1)
+  const joinchatMatch = webUrl.match(/t\.me\/joinchat\/([A-Za-z0-9_-]+)/i);
+  if (joinchatMatch && joinchatMatch[1]) {
+    return {
+      webUrl,
+      deepLink: `tg://join?invite=${joinchatMatch[1]}`
+    };
+  }
+
+  // Public channel username (e.g. https://t.me/channelname)
+  const usernameMatch = webUrl.match(/t\.me\/([A-Za-z0-9_]{4,})/i);
+  if (usernameMatch && usernameMatch[1] && !['joinchat', 'share', 'addstickers'].includes(usernameMatch[1].toLowerCase())) {
+    return {
+      webUrl,
+      deepLink: `tg://resolve?domain=${usernameMatch[1]}`
+    };
+  }
+
+  return { webUrl, deepLink: null };
+}

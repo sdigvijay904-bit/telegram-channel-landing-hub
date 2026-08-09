@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { AnimationType } from '../types';
-import { getMetaDirectLink, isMetaInAppBrowser } from '../utils/telegramHelper';
+import { getMetaDirectLink, getTelegramDeepLink, isMetaInAppBrowser } from '../utils/telegramHelper';
 
 interface AnimatedTelegramButtonProps {
   telegramLink?: string;
@@ -34,19 +34,28 @@ export function AnimatedTelegramButton({
   const executeRedirect = () => {
     if (onClick) onClick();
 
-    if (!targetUrl || targetUrl === '#' || directHref === '#') {
+    const { webUrl, deepLink } = getTelegramDeepLink(targetUrl);
+
+    if (!webUrl || webUrl === '#') {
       alert("Please configure your link in Admin Panel.");
       return;
     }
 
     // AI Studio Preview Environment iframe handling
     if (typeof window !== 'undefined' && window.top !== window.self) {
-      window.open(directHref, '_blank', 'noopener,noreferrer');
+      window.open(webUrl, '_blank', 'noopener,noreferrer');
       return;
     }
 
-    // Use location.href so auto-timer redirects don't get blocked as popups by Chrome/Safari
-    window.location.href = directHref;
+    // Attempt direct Telegram app deep link (tg://) on mobile for instant opening, fallback to https webUrl
+    if (deepLink) {
+      window.location.href = deepLink;
+      setTimeout(() => {
+        window.location.href = webUrl;
+      }, 400);
+    } else {
+      window.location.href = webUrl;
+    }
   };
 
   const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -63,10 +72,12 @@ export function AnimatedTelegramButton({
       setTimeLeft((prev) => {
         if (prev <= 1) {
           if (timerRef.current) clearInterval(timerRef.current);
-          if (!hasRedirected) {
-            setHasRedirected(true);
-            executeRedirect();
-          }
+          setTimeout(() => {
+            if (!hasRedirected) {
+              setHasRedirected(true);
+              executeRedirect();
+            }
+          }, 1000);
           return 0;
         }
         return prev - 1;
@@ -78,7 +89,7 @@ export function AnimatedTelegramButton({
         clearInterval(timerRef.current);
       }
     };
-  }, [hasRedirected, directHref, targetUrl]);
+  }, [hasRedirected, targetUrl]);
 
   // Label: Default to "Continue"
   const rawLabel = (buttonText || '').trim();
