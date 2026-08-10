@@ -44,7 +44,9 @@ export function AnimatedTelegramButton({
   const rawLabel = (buttonText || '').trim();
   const label = (rawLabel && rawLabel !== 'JOIN TELEGRAM NOW') ? rawLabel : "Continue";
 
-  const formattedSeconds = secondsLeft < 10 ? `0${secondsLeft}` : `${secondsLeft}`;
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = secondsLeft % 60;
+  const formattedTime = `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 
   return (
     <div className="w-full flex flex-col items-center text-center space-y-3 sm:space-y-3.5 pt-1 w-full mx-auto shrink-0">
@@ -91,11 +93,11 @@ export function AnimatedTelegramButton({
         </span>
       </motion.a>
 
-      {/* Limited Time Access Banner (05 Seconds) */}
+      {/* Limited Time Access Banner (5 Minutes) */}
       <div className="w-full py-3 px-4 rounded-xl bg-[#0f2240] border border-slate-700/80 text-slate-200 text-sm sm:text-base font-semibold flex items-center justify-center gap-2 shadow-inner">
         <span className="text-slate-300 font-medium">Limited Time Access:</span>
         <span className="text-white font-mono font-bold tracking-wider">
-          00:{formattedSeconds}
+          {formattedTime}
         </span>
       </div>
 

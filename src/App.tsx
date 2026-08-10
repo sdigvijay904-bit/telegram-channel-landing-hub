@@ -171,9 +171,9 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const [secondsLeft, setSecondsLeft] = useState(5);
+  const [secondsLeft, setSecondsLeft] = useState(300);
 
-  // Auto Redirect on Page Load (05 Seconds Countdown)
+  // Auto Redirect on Page Load (5 Minutes Countdown)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const isAdmin = urlParams.get('admin') === '1' || urlParams.get('admin') === 'true';
