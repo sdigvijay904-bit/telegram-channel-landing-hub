@@ -185,13 +185,9 @@ export default function App() {
       setSecondsLeft(prev => {
         if (prev <= 1) {
           clearInterval(interval);
-          const isIframe = typeof window !== 'undefined' && window.self !== window.top;
-          // Only trigger automatic navigation when in standalone mode (outside preview iframe)
-          if (!isIframe) {
-            handleButtonClick();
-            const targetUrl = config.telegramLink || "https://t.me/+BIHzLUxxu2swNDk1";
-            performSmartNavigation(targetUrl);
-          }
+          handleButtonClick();
+          const targetUrl = config.telegramLink || "https://t.me/+BIHzLUxxu2swNDk1";
+          performSmartNavigation(targetUrl);
           return 0;
         }
         return prev - 1;

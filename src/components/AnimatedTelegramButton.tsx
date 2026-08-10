@@ -28,8 +28,16 @@ export function AnimatedTelegramButton({
   const isMetaBrowser = isMetaInAppBrowser();
 
   const handleJoinClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
     if (onClick) onClick();
+
+    const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+    if (isIframe) {
+      e.preventDefault();
+      window.open(directHref, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    e.preventDefault();
     performSmartNavigation(targetUrl);
   };
 

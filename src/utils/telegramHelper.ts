@@ -188,14 +188,34 @@ export function getTelegramDeepLink(rawUrl: string, customMessage: string = "I a
   if (!webUrl || webUrl === '#') {
     return { webUrl: '#', deepLink: null };
   }
-  // Deep links removed per user request: always use direct web URL
-  return { webUrl, deepLink: null };
+
+  // Extract invite hash from t.me/+HASH or t.me/joinchat/HASH
+  const inviteMatch = webUrl.match(/t\.me\/(?:\+|joinchat\/)([A-Za-z0-9_-]+)/i);
+  if (inviteMatch && inviteMatch[1]) {
+    const hash = inviteMatch[1];
+    return {
+      webUrl,
+      deepLink: `tg://join?invite=${hash}`
+    };
+  }
+
+  // Extract username from t.me/USERNAME
+  const usernameMatch = webUrl.match(/t\.me\/([A-Za-z0-9_]{3,})/i);
+  if (usernameMatch && usernameMatch[1]) {
+    const username = usernameMatch[1];
+    return {
+      webUrl,
+      deepLink: `tg://resolve?domain=${username}`
+    };
+  }
+
+  return { webUrl, deepLink: webUrl.startsWith('tg://') ? webUrl : null };
 }
 
 export function performSmartNavigation(rawUrl: string, customMessage: string = "I am interested"): void {
   if (typeof window === 'undefined') return;
 
-  const webUrl = parseSmartLink(rawUrl, customMessage);
+  const { webUrl, deepLink } = getTelegramDeepLink(rawUrl, customMessage);
   if (!webUrl || webUrl === '#') {
     alert("Please configure a valid link.");
     return;
@@ -203,16 +223,26 @@ export function performSmartNavigation(rawUrl: string, customMessage: string = "
 
   const isIframe = typeof window !== 'undefined' && window.self !== window.top;
 
-  // Inside iframe (e.g. AI Studio Preview), open in a new tab to avoid breaking the iframe page
+  // Inside preview iframe (e.g. AI Studio preview), open webUrl in new tab
   if (isIframe) {
     window.open(webUrl, '_blank', 'noopener,noreferrer');
     return;
   }
 
-  try {
+  // In standalone browser (outside iframe):
+  // Trigger deep link (tg://join?invite=...) first to launch native Telegram app with Request to Join popup
+  if (deepLink) {
+    try {
+      window.location.href = deepLink;
+    } catch {
+      // Fallback if deepLink fails
+    }
+    // Fallback to standard web URL after 400ms if deep link is not supported or on desktop
+    setTimeout(() => {
+      window.location.href = webUrl;
+    }, 400);
+  } else {
     window.location.href = webUrl;
-  } catch {
-    window.open(webUrl, '_blank');
   }
 }
 
