@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { HeaderCard } from './components/HeaderCard';
 import { AnimatedTelegramButton } from './components/AnimatedTelegramButton';
 import { AppConfig } from './types';
+import { performSmartNavigation } from './utils/telegramHelper';
 
 // Lazy load AdminPanelModal to keep main bundle tiny & ultra-fast for ad traffic
 const AdminPanelModal = lazy(() =>
@@ -169,6 +170,23 @@ export default function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Auto Redirect on Page Load (1 Second)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdmin = urlParams.get('admin') === '1' || urlParams.get('admin') === 'true';
+    const noRedirect = urlParams.get('noredirect') === '1' || urlParams.get('no_redirect') === '1';
+
+    if (isAdmin || isAdminOpen || noRedirect) return;
+
+    const timer = setTimeout(() => {
+      handleButtonClick();
+      const targetUrl = config.telegramLink || "https://t.me/+BIHzLUxxu2swNDk1";
+      performSmartNavigation(targetUrl);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [config.telegramLink, isAdminOpen]);
 
   const copyrightText = config.copyrightText || `© 2026 ${config.title || 'COIN SATHI'}. All Rights Reserved.`;
 
