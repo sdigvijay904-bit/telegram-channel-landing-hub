@@ -1,10 +1,11 @@
 {
   "telegramLink": "https://t.me/+BIHzLUxxu2swNDk1",
   "passcode": "admin123",
-  "title": "COIN SATHI",
+  "title": "MONEY MASTER HUB",
   "subtitle": "OFFICIAL CHANNEL",
+  "officialTag": "OFFICIAL CHANNEL",
   "badges": [],
-  "buttonText": "JOIN TELEGRAM NOW",
+  "buttonText": "Continue",
   "buttonSubtext": "",
   "secondaryButtonText": "",
   "whatsappLink": "https://t.me/+BIHzLUxxu2swNDk1",
@@ -13,14 +14,6 @@
   "themeColor": "purple-gold",
   "memberCount": 1500000,
   "timerMinutes": 0,
-  "totalClicks": 1258,
-  "clickHistory": [
-    {
-      "timestamp": "2026-08-09T19:20:26.463Z",
-      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
-    }
-  ],
-  "officialTag": "OFFICIAL CHANNEL",
   "stat1Value": "1.5M",
   "stat1Label": "SUBSCRIBERS",
   "stat2Value": "99%",
@@ -32,5 +25,64 @@
     "High accuracy session reports",
     "Verified winning strategies"
   ],
-  "copyrightText": "© 2026 COIN SATHI. All Rights Reserved."
+  "copyrightText": "© 2026 MONEY MASTER HUB. All Rights Reserved.",
+  "totalClicks": 1271,
+  "clickHistory": [
+    {
+      "timestamp": "2026-08-10T12:57:46.123Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:57:46.051Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:57:34.003Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:57:33.923Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:57:23.438Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:57:23.383Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:57:02.951Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:57:02.876Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:51:27.607Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:51:27.536Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:51:12.468Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:51:12.400Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-10T12:45:21.523Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "timestamp": "2026-08-09T19:20:26.463Z",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+    }
+  ]
 }

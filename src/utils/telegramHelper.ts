@@ -201,27 +201,18 @@ export function performSmartNavigation(rawUrl: string, customMessage: string = "
     return;
   }
 
-  const isIframe = window.self !== window.top;
+  const isIframe = typeof window !== 'undefined' && window.self !== window.top;
 
-  // Top window navigation for iframe context or direct navigation
-  if (isIframe && window.top) {
-    try {
-      window.top.location.href = webUrl;
-      return;
-    } catch {
-      // Fall through if cross-origin iframe security lock
-    }
+  // Inside iframe (e.g. AI Studio Preview), open in a new tab to avoid breaking the iframe page
+  if (isIframe) {
+    window.open(webUrl, '_blank', 'noopener,noreferrer');
+    return;
   }
 
   try {
-    const a = document.createElement('a');
-    a.href = webUrl;
-    a.rel = 'noopener noreferrer';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  } catch {
     window.location.href = webUrl;
+  } catch {
+    window.open(webUrl, '_blank');
   }
 }
 

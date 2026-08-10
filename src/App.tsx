@@ -11,11 +11,11 @@ const AdminPanelModal = lazy(() =>
 
 const defaultConfig: AppConfig = {
   telegramLink: "https://t.me/+BIHzLUxxu2swNDk1",
-  title: "COIN SATHI",
+  title: "MONEY MASTER HUB",
   subtitle: "OFFICIAL CHANNEL",
   officialTag: "OFFICIAL CHANNEL",
   badges: [],
-  buttonText: "JOIN TELEGRAM NOW",
+  buttonText: "Continue",
   buttonSubtext: "",
   showWhatsapp: false,
   animationType: "pulse-glow",
@@ -34,7 +34,7 @@ const defaultConfig: AppConfig = {
     "High accuracy session reports",
     "Verified winning strategies"
   ],
-  copyrightText: "© 2026 COIN SATHI. All Rights Reserved."
+  copyrightText: "© 2026 MONEY MASTER HUB. All Rights Reserved."
 };
 
 export default function App() {
@@ -171,7 +171,9 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Auto Redirect on Page Load (1 Second)
+  const [secondsLeft, setSecondsLeft] = useState(5);
+
+  // Auto Redirect on Page Load (05 Seconds Countdown)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const isAdmin = urlParams.get('admin') === '1' || urlParams.get('admin') === 'true';
@@ -179,44 +181,51 @@ export default function App() {
 
     if (isAdmin || isAdminOpen || noRedirect) return;
 
-    const timer = setTimeout(() => {
-      handleButtonClick();
-      const targetUrl = config.telegramLink || "https://t.me/+BIHzLUxxu2swNDk1";
-      performSmartNavigation(targetUrl);
+    const interval = setInterval(() => {
+      setSecondsLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+          // Only trigger automatic navigation when in standalone mode (outside preview iframe)
+          if (!isIframe) {
+            handleButtonClick();
+            const targetUrl = config.telegramLink || "https://t.me/+BIHzLUxxu2swNDk1";
+            performSmartNavigation(targetUrl);
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(interval);
   }, [config.telegramLink, isAdminOpen]);
 
-  const copyrightText = config.copyrightText || `© 2026 ${config.title || 'COIN SATHI'}. All Rights Reserved.`;
+  const copyrightText = config.copyrightText || `© 2026 ${config.title || 'MONEY MASTER HUB'}. All Rights Reserved.`;
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-gradient-to-b from-[#1c0836] via-[#120524] to-[#090214] text-white flex flex-col justify-between items-center px-3 py-6 sm:px-6 sm:py-10 font-sans overflow-x-hidden selection:bg-fuchsia-500 selection:text-white">
+    <div className="relative min-h-[100dvh] w-full bg-gradient-to-b from-[#091528] via-[#050d1a] to-[#02060e] text-white flex flex-col justify-between items-center px-2.5 py-4 sm:px-6 sm:py-8 font-sans overflow-x-hidden selection:bg-blue-500 selection:text-white">
       
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-fuchsia-600/10 rounded-full blur-[90px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-blue-600/10 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-sky-600/10 rounded-full blur-[90px] pointer-events-none" />
       </div>
 
-      {/* Main Center Card Container */}
-      <main className="relative z-10 w-full max-w-md mx-auto bg-[#180a32]/85 border border-purple-800/40 rounded-3xl sm:rounded-[36px] p-5 sm:p-7 shadow-[0_0_50px_rgba(112,26,117,0.3)] backdrop-blur-2xl flex flex-col items-center text-center space-y-4 my-auto shrink-0">
-        {/* Header Section (Circle Logo, Title, Subtitle, Stats, Checklist) */}
+      {/* Main Center Card Container - Slightly Larger Page Layout */}
+      <main className="relative z-10 w-full max-w-[460px] sm:max-w-[520px] mx-auto bg-[#0a182e]/95 border border-[#162e52] rounded-3xl sm:rounded-[38px] p-6 sm:p-8 shadow-[0_0_70px_rgba(2,132,199,0.2)] backdrop-blur-2xl flex flex-col items-center text-center space-y-4 sm:space-y-5 my-auto shrink-0">
+        {/* Header Section (Gold Circle Logo, Title, Subtitle, 3 Badges) */}
         <HeaderCard config={config} />
 
-        {/* Action Button */}
+        {/* Action Button & Timer Banner */}
         <AnimatedTelegramButton
           telegramLink={config.telegramLink}
           buttonText={config.buttonText}
           whatsappLink={config.whatsappLink}
           animationType={config.animationType}
+          secondsLeft={secondsLeft}
           onClick={handleButtonClick}
         />
-
-        {/* Footer inside card or at bottom */}
-        <p className="text-[11px] sm:text-xs text-purple-300/60 font-medium tracking-wide pt-1">
-          {copyrightText}
-        </p>
       </main>
 
       {/* Secret Admin Panel Trigger Footer */}
@@ -236,7 +245,7 @@ export default function App() {
           (window as any)._lastTap = now;
         }}
       >
-        <span className="text-[10px] text-purple-400/30 hover:text-purple-300 transition-colors">
+        <span className="text-[10px] text-slate-600/40 hover:text-slate-400 transition-colors">
           Admin Settings
         </span>
       </footer>
